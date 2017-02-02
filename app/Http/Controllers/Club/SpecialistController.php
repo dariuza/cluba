@@ -55,13 +55,14 @@ class SpecialistController extends Controller {
 		$moduledata['id_mod'] = '11';
 		
 		//consultamos las especialidades
-		$especialidades = array("NO HAY ESPECIALIDADES");
+		$especialidades_null = array("NO HAY ESPECIALIDADES");
 		$specialties= \DB::table('clu_specialty')->get();
 		foreach ($specialties as $especial){
 			$especialidades[$especial->id] = $especial->name;
 		}
+		$moduledata['especialidades']=$especialidades_null;	
+		if(count($moduledata['especialidades'])) $moduledata['especialidades']=$especialidades;		
 		
-		$moduledata['especialidades']=$especialidades;
 		
 		
 		

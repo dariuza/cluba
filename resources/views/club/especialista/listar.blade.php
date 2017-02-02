@@ -180,11 +180,11 @@
 							
 				<div class="modal-body">
 					<ul class="nav nav-tabs">
-						<li role="bnes_cnt" class="active"><a href="#tab_bnt_cnt1" data-toggle="tab">ESPECIALISTA</a></li>
-						<li role="bnes_cnt"><a href="#tab_bnt_cnt2" data-toggle="tab">DISPONIBILIDAD</a></li>							
+						<li role="bnes_cnt" class="active"><a href="#tab_dispo1" data-toggle="tab">ESPECIALISTA</a></li>
+						<li role="bnes_cnt"><a href="#tab_dispo2" data-toggle="tab">DISPONIBILIDAD</a></li>							
 					</ul>
 					<div class="tab-content">
-						<div class="tab-pane fade in active" id="tab_bnt_cnt1">
+						<div class="tab-pane fade in active" id="tab_dispo1">
 							<div class="row ">
 								<div class="col-md-12 col-md-offset-0 tab_cnt_bnt1">
 									<div class="form-group">
@@ -244,10 +244,10 @@
 								</div>						
 							</div>
 						</div>
-						<div class="tab-pane fade " id="tab_bnt_cnt2">
+						<div class="tab-pane fade " id="tab_dispo2">
 							<div class="row ">
-								<div class="col-md-12 col-md-offset-0 tab_cnt_bnt2">
-									<div class="form-group">
+								<div class="col-md-12 col-md-offset-0 tab_dispo2">
+									<div class="form-group col-md-12">
 										<div class="col-md-2">											
 											{!! Form::label('dispo_dia_1', 'Día', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::select('dispo_dia_1',array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIÉRCOLES' => 'MIÉRCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SÁBADO' => 'SÁBADO', 'DOMINGO' => 'DOMINGO'),old('dispo_dia_1'), array('class' => 'form-control','placeholder'=>'Elije Día')) !!}												
@@ -268,22 +268,22 @@
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
 										</div>
-										<div class="zone col-md-6">
-											{!! Form::label('dispo_especialidades_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_especialidades_1',Session::get('modulo.especialidades'),old('especialidades'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las elpecialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+										<div class="epecialist col-md-6">
+											{!! Form::label('dispo_especialidades_select_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('dispo_especialidades_select_1',Session::get('modulo.especialidades'),old('dispo_especialidades_select_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las elpecialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
 											{!! Form::hidden('dispo_especialidades_1',old('dispo_especialidades_1'),array('id'=>'dispo_especialidades_1')) !!}
-										</div>
-										
-										<div class="col-md-12"><hr size = "1"></hr></div>
-										
+										</div>										
+																				
 									</div>
-									
-									<div class="col-md-1 col-md-offset-11" data-toggle="tooltip" title="" data-original-title="Agregar Disponibilidad">           			
-		            					<a href="javascript:clu_especialidad.add_dispo('1')" class="site_title site_title2" style="text-decoration: none;color:#5A738E !important;  ">
-		            					<i class="fa fa-plus" style="border: 1px solid #5A738E !important"></i>	
-		            					</a>
-	            					</div>
-								</div>						
+
+								</div>	
+								<div class="col-md-12"><hr size = "1"></hr></div>	
+								<div class="col-md-1 col-md-offset-11" data-toggle="tooltip" title="" data-original-title="Agregar Disponibilidad">
+	            					<a href="javascript:clu_especialista.add_dispo('1')" class="site_title site_title2" style="text-decoration: none;color:#5A738E !important;  ">
+	            					<i class="fa fa-plus" style="border: 1px solid #5A738E !important"></i>	
+	            					</a>
+            					</div>
+													
 							</div>
 						</div>
 					</div>
@@ -344,8 +344,8 @@
 
 		$('.chosen-select').chosen();
 		$('.chosen-container').width('100%');		
-		$(".chosen-select").chosen().change(function(event) {
-			$('#especialidades').val($('.chosen-select').chosen().val());		    
+		$("#dispo_especialidades_select_1").chosen().change(function(event) {
+			$('#dispo_especialidades_1').val($("#dispo_especialidades_select_1").chosen().val());		    
 		});	
 
 		$('.input-small').timepicker({showMeridian:false});	

@@ -623,17 +623,18 @@ class SuscriptionController extends Controller {
 		//Modo de evitar que otros roles ingresen por la url
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 		
+		//para el campo de asesor, como autocomplete
 		$adviser = \DB::table('seg_user')
 		->join('seg_rol', 'seg_user.rol_id', '=', 'seg_rol.id')
 		->join('seg_user_profile','seg_user.id','=','seg_user_profile.user_id')
 		->where('rol_id', '=', 4)
 		->where('seg_user.active', '=', 1)
-		->get();
-			
+		->get();			
 		foreach ($adviser as $ad){			
 			$advisers[$ad->user_id] = $ad->names.' '.$ad->surnames.' ['.$ad->code_adviser.'] '.$ad->identificacion;
 		}
-		$moduledata['asesores']=$advisers;		
+		$moduledata['asesores']=$advisers;
+
 		Session::flash('_old_input.code', env('CODE_SUSCRIPTION',10000));
 		if(!empty(\DB::table('clu_suscription')->max('code'))){
 			Session::flash('_old_input.code', \DB::table('clu_suscription')->max('code') + 1);
@@ -684,6 +685,12 @@ class SuscriptionController extends Controller {
 			$advisers[$ad->user_id] = $ad->names.' '.$ad->surnames.' '.$ad->identificacion;
 		}
 		$moduledata['asesores']=$advisers;
+		
+		$hoy = new DateTime();
+		$hoy = $hoy->format('Y-m-d H:i:s');		
+		Session::flash('_old_input.date_suscription', $hoy);
+		Session::flash('_old_input.date_expiration', date ( 'Y-m-j' , strtotime ( '+1 year' , strtotime ( date('Y-m-j')))));
+		Session::flash('_old_input.pay_interval', date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j')))));		
 		
 		//consultamos los departamentos
 		$departments = \DB::table('clu_department')->get();
@@ -1589,6 +1596,11 @@ class SuscriptionController extends Controller {
 				->orderBy('license_id', 'asc')
 				->get()
 				->toArray();
+
+				Session::flash('_old_input.code', env('CODE_SUSCRIPTION',10000));
+				if(!empty(\DB::table('clu_suscription')->max('code'))){
+					Session::flash('_old_input.code', \DB::table('clu_suscription')->max('code') + 1);
+				}
 				
 				return Redirect::to('suscripcion/agregar')->with('message', 'La Suscripción se agrego exitosamente con el código: '.$code)->with('modulo',$moduledata);
 				
