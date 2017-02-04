@@ -379,7 +379,7 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	label.textContent = "Identificación";
 	
 	var input = document.createElement("input");
-	input.setAttribute("class", "form-control");
+	input.setAttribute("class", "form-control solo_numeros");
 	input.setAttribute("placeholder", "Ingresa la identificación");
 	input.setAttribute("name", "bne"+add+"_identification_"+crnt+"_"+n);
 	
@@ -441,7 +441,7 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	label_c.setAttribute("class", "col-md-12 control-label");
 	label_c.setAttribute("for", "movil_number");
 	label_c.textContent = "Celular";
-	input_c.setAttribute("class", "form-control");
+	input_c.setAttribute("class", "form-control solo_numeros");
 	input_c.setAttribute("placeholder", "Ingresa el celular");
 	input_c.setAttribute("name", "bne"+add+"_movil_number_"+crnt+"_"+n);
 	
@@ -552,6 +552,15 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 			}
 		}			
 	});
+
+	$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});	
 };
 
 clu_suscripcion.prototype.add_pay = function() {

@@ -7,6 +7,25 @@ function clu_especialista() {
 clu_especialista.prototype.onjquery = function() {
 };
 
+clu_especialista.prototype.validateNuevoEspecialista = function() {
+	if($("#form_nuevo_especialista :input")[1].value =="" || $("#form_nuevo_especialista :input")[2].value ==""){
+		$('#especialidad_nuevo_modal .alerts-module').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>!Envio Fallido!</strong></br> Faltan campos por diligenciar.</div>');
+		//pintar los inputs problematicos
+		for(var i=0; i < $("#form_nuevo_especialista :input").length ; i++){
+	        if( i==1 || i==2 ) {
+	            if($("#form_nuevo_especialista :input")[i].value ==""){
+	                $($("#form_nuevo_especialista :input")[i]).addClass('input_danger');
+	            }	            
+	        }
+        }
+        $(".close_alert_product").on('click', function () { 
+        	$("#form_nuevo_especialista :input").removeClass("input_danger");        	
+        });
+		return false;
+	}
+	return true;
+};
+
 clu_especialista.prototype.opt_select = function(controlador,metodo) {
 	
 	if(clu_especialista.table.rows('.selected').data().length){		

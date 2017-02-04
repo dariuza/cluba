@@ -114,28 +114,33 @@ class SpecialistController extends Controller {
 	
 	//función para guardar usuarios con su perfil
 	public function postSave(Request $request){
+		
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');		
 		foreach($request->input() as $key=>$value){			
 			$array_input[$key] = strtoupper($value);			
 		}
 		$request->replace($array_input);
+		
 		$messages = [
 			'required' => 'El campo :attribute es requerido.',
 		];
 		
 		$rules = array(
-			'especialidad'=>'required',			
+			'entidad'=>'required',	
+			'nombres'=>'required',			
 		);
 		$validator = Validator::make($request->input(), $rules, $messages);
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}else{
-			$specialty = new Specialty();
+
+			dd($request->input());
+			$specialist = new Specialist();
 				
-			$specialty->name = $request->input()['especialidad'];
-			$specialty->code = $request->input()['codigo'];
-			$specialty->description = $request->input()['descripcion'];			
+			$specialist->name = $request->input()['nombres'];
+			$specialist->code = $request->input()['codigo'];
+			$specialist->description = $request->input()['descripcion'];			
 			if($request->input()['edit']){
 				//se pretende actualizar el rol
 				try {

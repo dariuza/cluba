@@ -28,7 +28,12 @@
 		.message_mod:hover {
 			background-color: #D9DEE4;
 			color: #515356;
-		}	
+		}
+		.input_danger{
+			color: #a94442;
+    		background-color: #f2dede;
+    		border-color: #ebccd1;
+		}
 		
 	</style>
 	<div class="col-md-12 col-md-offset-0 container-fluid" >
@@ -177,7 +182,7 @@
 					<h4 class="modal-title">Agregar Especialista</h4>
 				</div>
 				<div class = "alerts-module"></div>				
-							
+				{!! Form::open(array('url' => 'especialista/save', 'id'=>'form_nuevo_especialista','onsubmit'=>'javascript:return clu_especialista.validateNuevoEspecialista()')) !!}			
 				<div class="modal-body">
 					<ul class="nav nav-tabs">
 						<li role="bnes_cnt" class="active"><a href="#tab_dispo1" data-toggle="tab">ESPECIALISTA</a></li>
@@ -200,15 +205,15 @@
 												{!! Form::text('nombres', old('nombres'), array('class' => 'form-control','placeholder'=>'Ingresa los nombres','autofocus'=>'autofocus'))!!}
 											</div>
 											<div class="col-md-12">
-												{!! Form::label('identificacion', 'Identificación', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::label('identificacion', 'Identificación', array('class' => 'col-md-12 control-label solo_numeros')) !!}
 												{!! Form::text('identificacion', old('identificacion'), array('class' => 'form-control','placeholder'=>'Ingresa la Identificación'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('telefono_uno', 'Teléfono 1', array('class' => 'col-md-12 control-label')) !!}
-												{!! Form::text('telefono_uno', old('telefono_uno'), array('class' => 'form-control','placeholder'=>'Ingresa Teléfono uno'))!!}
+												{!! Form::text('telefono_uno', old('telefono_uno'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Teléfono uno'))!!}
 											</div>
 											<div class="col-md-12">
-												{!! Form::label('telefono_dos', 'Teléfono 2', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::label('telefono_dos', 'Teléfono 2', array('class' => 'col-md-12 control-label solo_numeros')) !!}
 												{!! Form::text('telefono_dos', old('telefono_dos'), array('class' => 'form-control','placeholder'=>'Ingresa Teléfono dos'))!!}
 											</div>
 											<div class="col-md-12">
@@ -222,12 +227,12 @@
 												{!! Form::text('nombres_asistente', old('nombres_asistente'), array('class' => 'form-control','placeholder'=>'Ingresa Nombres de Asistente'))!!}
 											</div>											
 											<div class="col-md-12">
-												{!! Form::label('telefono_uno_asistente', 'Teléfono 1 Asistente', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::label('telefono_uno_asistente', 'Teléfono 1 Asistente', array('class' => 'col-md-12 control-label solo_numeros')) !!}
 												{!! Form::text('telefono_uno_asistente', old('telefono_uno_asistente'), array('class' => 'form-control','placeholder'=>'Ingresa Teléfono uno de Asistente'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('telefono_dos_asistente', 'Teléfono 2 Asistente', array('class' => 'col-md-12 control-label')) !!}
-												{!! Form::text('telefono_dos_asistente', old('telefono_dos_asistente'), array('class' => 'form-control','placeholder'=>'Ingresa Teléfono dos Asistente'))!!}
+												{!! Form::text('telefono_dos_asistente', old('telefono_dos_asistente'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Teléfono dos Asistente'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('correo_electronico_asistente', 'Correo Eletrónico Asistente', array('class' => 'col-md-12 control-label')) !!}
@@ -288,7 +293,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal-footer">		         
+				{!! Form::close() !!}
+				<div class="modal-footer">
+					<button type="submit" form = "form_nuevo_especialista" class="btn btn-default " > @if(Session::has('_old_input.edit')) Editar @else Crear @endif Especialista</button>	         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
 			</div>
@@ -348,7 +355,16 @@
 			$('#dispo_especialidades_1').val($("#dispo_especialidades_select_1").chosen().val());		    
 		});	
 
-		$('.input-small').timepicker({showMeridian:false});	
+		$('.input-small').timepicker({showMeridian:false});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});		
 		
 	</script>
 @endsection

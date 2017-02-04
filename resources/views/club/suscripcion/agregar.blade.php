@@ -133,7 +133,7 @@
 								<div class="form-group">															
 									<div class="col-md-3">									
 										{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('identification', old('identification'), array('class' => 'form-control','placeholder'=>'Ingresa la identificación', 'autofocus'=>'autofocus'))!!}
+										{!! Form::text('identification', old('identification'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación', 'autofocus'=>'autofocus'))!!}
 									</div>
 								</div>
 								
@@ -161,14 +161,14 @@
 								<div class="form-group input-grp">									
 									<div class="col-md-4">
 										{!! Form::label('movil_number', 'Teléfono 1', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('movil_number',old('movil_number'), array('class' => 'form-control','placeholder'=>'Ingresa el número del movil')) !!}
+										{!! Form::text('movil_number',old('movil_number'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el número del movil')) !!}
 									</div>
 								</div>
 			
 								<div class="form-group input-grp">									
 									<div class="col-md-4">
 										{!! Form::label('fix_number', 'Teléfono 2', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('fix_number',old('fix_number'), array('class' => 'form-control','placeholder'=>'Ingresa el número fijo')) !!}
+										{!! Form::text('fix_number',old('fix_number'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el número fijo')) !!}
 									</div>
 								</div>
 								
@@ -243,7 +243,7 @@
 									
 									<div class="col-md-4">
 										{!! Form::label('reference_phone', 'Telefono Referencia', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('reference_phone',old('reference_phone'), array('class' => 'form-control','placeholder'=>'Ingresa el telefono de tu referencia')) !!}
+										{!! Form::text('reference_phone',old('reference_phone'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el telefono de tu referencia')) !!}
 									</div>
 								</div>
 								
@@ -280,7 +280,7 @@
 								<div class="form-group input-grp">									
 									<div class="col-md-3">
 										{!! Form::label('price', 'Precio', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('price',old('price'), array('class' => 'form-control','placeholder'=>'Ingresa el precio de la suscripción')) !!}
+										{!! Form::text('price',old('price'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el precio de la suscripción')) !!}
 									</div>
 								</div>
 								@endif
@@ -289,7 +289,7 @@
 								<div class="form-group input-grp">									
 									<div class="col-md-3">
 										{!! Form::label('payment', 'Couta inicial', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('payment',old('payment'), array('class' => 'form-control','placeholder'=>'Ingresa el primer pago')) !!}																		
+										{!! Form::text('payment',old('payment'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el primer pago')) !!}																		
 										
 									</div>
 								</div>
@@ -419,23 +419,23 @@
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">									
 																							{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::text('bne_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control','placeholder'=>'Ingresa la identificación'))!!}
+																							{!! Form::text('bne_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
 																						</div>
-																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none"> 									
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('relationship', 'Parentesco', array('class' => 'col-md-12 control-label')) !!}
 																							{!! Form::text('bne_relationship_'.$cnt['id'].'_'.$bne['id'], $bne['relationship'], array('class' => 'form-control','placeholder'=>'Ingresa el parentesco'))!!}
 																						</div>
 																						
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">									
 																							{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::text('bne_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control','placeholder'=>'Ingresa el teléfono movil'))!!}
+																							{!! Form::text('bne_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
 																							{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																						</div>
 																						{{--
-																						<div class="col-md-3">									
+																						<div class="col-md-3">	
 																							{!! Form::label('more', 'Otros datos', array('class' => 'col-md-12 control-label')) !!}
 																							{!! Form::text('bne_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
 																						</div>
@@ -485,7 +485,7 @@
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">									
 																							{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::text('bne_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control','placeholder'=>'Ingresa la identificación'))!!}
+																							{!! Form::text('bne_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('relationship', 'Parentesco', array('class' => 'col-md-12 control-label')) !!}
@@ -494,7 +494,7 @@
 																						
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
 																							{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::text('bne_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control','placeholder'=>'Ingresa el teléfono movil'))!!}
+																							{!! Form::text('bne_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
@@ -572,7 +572,7 @@
 																			</div>
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control','placeholder'=>'Ingresa la identificación'))!!}
+																				{!! Form::text('bneadd_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
 																			</div>
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('relationship', 'Parentesco', array('class' => 'col-md-12 control-label')) !!}
@@ -581,7 +581,7 @@
 																			
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control','placeholder'=>'Ingresa el teléfono movil'))!!}
+																				{!! Form::text('bneadd_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
 																			</div>
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
@@ -716,7 +716,7 @@
 																															
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
 																		{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-																		{!! Form::text('bne_identification_1_1', old('bne_identification_1'), array('class' => 'form-control','placeholder'=>'Ingresa la identificación'))!!}
+																		{!! Form::text('bne_identification_1_1', old('bne_identification_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
 																	</div>
 																	
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
@@ -726,7 +726,7 @@
 																	
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
 																		{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
-																		{!! Form::text('bne_movil_number_1_1', old('bne_movil_number_1'), array('class' => 'form-control','placeholder'=>'Ingresa el teléfono movil'))!!}
+																		{!! Form::text('bne_movil_number_1_1', old('bne_movil_number_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
 																	</div>
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
 																		{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
@@ -864,6 +864,15 @@
 				}
 			}			
 		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});		
 	    
 		clu_suscripcion.datos_advisers= [];
 		clu_suscripcion.datos_fechas= [];
