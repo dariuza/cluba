@@ -186,7 +186,8 @@
 				<div class="modal-body">
 					<ul class="nav nav-tabs">
 						<li role="bnes_cnt" class="active"><a href="#tab_dispo1" data-toggle="tab">ESPECIALISTA</a></li>
-						<li role="bnes_cnt"><a href="#tab_dispo2" data-toggle="tab">DISPONIBILIDAD</a></li>							
+						<li role="bnes_cnt"><a href="#tab_dispo2" data-toggle="tab">ESPECIALIDAD</a></li>	
+						<li role="bnes_cnt"><a href="#tab_dispo3" data-toggle="tab">DISPONIBILIDAD</a></li>							
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade in active" id="tab_dispo1">
@@ -251,6 +252,38 @@
 						</div>
 						<div class="tab-pane fade " id="tab_dispo2">
 							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab_cnt_bnt1">
+									<div class="form-group">
+										
+										<div class="col-md-3">
+											{!! Form::label('espe_especialidad_1', 'Especialidad', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('espe_especialidad_1',Session::get('modulo.especialidades'),old('espe_especialidad_1'), array('class' => 'form-control','placeholder'=>'Ingresa La Especialidad')) !!}
+										</div>
+										<div class="col-md-3">
+											{!! Form::label('espe_precio_particular_1', 'Precio Particular', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('espe_precio_particular_1', old('espe_precio_particular_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+										</div>	
+
+										<div class="col-md-3">
+											{!! Form::label('espe_precio_suscriptor_1', 'Precio Suscriptor', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('espe_precio_suscriptor_1', old('espe_precio_suscriptor_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+										</div>
+										<div class="col-md-3">
+											{!! Form::label('espe_duracion_1', 'Tiempo Duraciòn', array('class' => 'col-md-12 control-label')) !!}
+											<div class="input-group bootstrap-timepicker timepicker">									
+												{!! Form::text('espe_duracion_1', old('espe_duracion_1'), array('class' => 'form-control input-small','placeholder'=>'Duraciòn HH:mm'))!!}
+												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							
+
+						</div>
+						<div class="tab-pane fade " id="tab_dispo3">
+							<div class="row ">
 								<div class="col-md-12 col-md-offset-0 tab_dispo2">
 									<div class="form-group col-md-12">
 										<div class="col-md-2">											
@@ -260,7 +293,7 @@
 										
 										<div class="col-md-2">
 											{!! Form::label('dispo_hora_inicio_1', 'Hora Inicio', array('class' => 'col-md-12 control-label')) !!}
-											<div class="input-group bootstrap-timepicker timepicker">										
+											<div class="input-group bootstrap-timepicker timepicker">									
 												{!! Form::text('dispo_hora_inicio_1', old('dispo_hora_inicio_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Inicio HH:mm'))!!}
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
