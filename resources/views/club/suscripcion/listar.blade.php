@@ -398,7 +398,7 @@
 		    "bLengthChange": false,
 		    "serverSide": true,	        
 		    "ajax": "{{url('suscripcion/listarajax')}}",
-		    "iDisplayLength": 25,     	       
+		    "iDisplayLength": 50,     	       
 		    "columns": [				   
 				{ "data": "code"},
 				{ "data": "names_fr" },		        
@@ -458,10 +458,11 @@
 		    "bLengthChange": false,
 		    "serverSide": true,	        
 		    "ajax": "{{url('suscripcion/listarajax')}}",
-		    "iDisplayLength": 25,	       
+		    "iDisplayLength": 50,	       
 		    "columns": [				   
 				{ "data": "code"},  	    
 				{ "data": "names_fr" },
+				{ "data": "city" },
 		        { "data": "names_ad" },
 		        { "data": "mora"},
 		        { "data": "pagos"},

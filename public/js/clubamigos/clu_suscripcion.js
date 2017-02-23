@@ -361,9 +361,17 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	opt2.innerHTML = 'CEDULA CIUDADANIA';
 	select.appendChild(opt2);
 	var opt3 = document.createElement('option');
-	opt3.value = 'CEDULA EXTRANJERIA';
-	opt3.innerHTML = 'CEDULA EXTRANGJERIA';
+	opt3.value = 'TARJETA IDENTIDAD';
+	opt3.innerHTML = 'TARJETA IDENTIDAD';
 	select.appendChild(opt3);
+	var opt4 = document.createElement('option');
+	opt4.value = 'REGISTRO CIVIL';
+	opt4.innerHTML = 'REGISTRO CIVIL';
+	select.appendChild(opt4);
+	var opt5 = document.createElement('option');
+	opt5.value = 'CEDULA EXTRANJERIA';
+	opt5.innerHTML = 'CEDULA EXTRANGJERIA';
+	select.appendChild(opt5);
 	
 	subnode_s.appendChild(label_s);
 	subnode_s.appendChild(select);

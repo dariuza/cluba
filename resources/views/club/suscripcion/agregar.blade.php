@@ -126,7 +126,7 @@
 								<div class="form-group">									
 									<div class="col-md-3">
 										{!! Form::label('typeid', 'Tipo Identificación', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::select('type_id',array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),old('type_id'), array('class' => 'form-control','placeholder'=>'Selecciona una opción')) !!}
+										{!! Form::select('type_id',array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),old('type_id'), array('class' => 'form-control','placeholder'=>'Selecciona una opción')) !!}
 									</div>
 								</div>
 								
@@ -415,7 +415,7 @@
 																				<!-- Comentado por mal entindido con el usuario -->
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::select('bne_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																							{!! Form::select('bne_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">									
 																							{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
@@ -481,7 +481,7 @@
 																				<!-- Comentado por mal entindido con el usuario -->
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::select('bne_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																							{!! Form::select('bne_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">									
 																							{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
@@ -568,7 +568,7 @@
 																	
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::select('bneadd_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																				{!! Form::select('bneadd_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																			</div>
 																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																				{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
@@ -711,7 +711,7 @@
 														
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
 																		{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
-																		{!! Form::select('bne_type_id_1_1',array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),old('type_id'), array('class' => 'form-control','placeholder'=>'SELECCIONE UNA OPCIÓN')) !!}	
+																		{!! Form::select('bne_type_id_1_1',array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),old('type_id'), array('class' => 'form-control','placeholder'=>'SELECCIONE UNA OPCIÓN')) !!}	
 																	</div>
 																															
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">

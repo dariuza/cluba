@@ -103,7 +103,7 @@ class SuscriptionController extends Controller {
 		//preguntamos si tiene mensaje para no asignar las rutas.
 		if(empty(Session::get('message'))){
 			//las siguientes dos lineas solo son utiles cuando se refresca la pagina, ya que al refrescar no se pasa por el controlador
-			$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+			$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 			if(Session::get('opaplus.usuario.rol_id') == 4){
 				$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
 			}
@@ -738,7 +738,7 @@ class SuscriptionController extends Controller {
 		
 		//Proceso de validación
 		$hoy = date('Y-m-j');
-		$fecha = strtotime('-18 year',strtotime($hoy));
+		$fecha = strtotime('-8 year',strtotime($hoy));
 		$fecha = date('Y-m-j',$fecha);
 		
 		$messages = [
@@ -764,7 +764,7 @@ class SuscriptionController extends Controller {
 			//'neighborhood'=> 'required',
 			'movil_number'=> 'numeric',
 			'fix_number'=> 'numeric',			
-			'birthdate'=> "date|before:$fecha",	
+			//'birthdate'=> "date|before:$fecha",	
 			'pay_interval'=> "date",
 			'date_suscription'=> "date",
 			'date_expiration'=> "date",
@@ -1398,6 +1398,7 @@ class SuscriptionController extends Controller {
 				$payment->payment = $request->input()['payment'];
 				$payment->suscription_id = $suscription->id;
 				
+				$bandera_abono = false;
 				if($payment->payment > 0){
 					//hay pago inicial
 					try {
@@ -1405,9 +1406,13 @@ class SuscriptionController extends Controller {
 						if($payment->payment <= ($suscription->price + (($carnets-1)*env('PRICE_LICENSE',5000)) + ($addbenes*env('PRICE_BENEFICIARY',20000)) )){
 							$payment->save();
 						}else{
+							//El abono es mayor al precio de la suscripciòn suscripciòn
+							$bandera_abono = true;
+							/*
 							Suscription::destroy($suscription->id);
 							User::destroy($user->id);
 							return Redirect::back()->with('error', 'El pago inicial es mayor al precio de la suscripción y sus componentes')->withInput()->with('modulo',$moduledata);
+							*/
 						}
 						
 					}catch (\Illuminate\Database\QueryException $e) {
@@ -1602,7 +1607,12 @@ class SuscriptionController extends Controller {
 					Session::flash('_old_input.code', \DB::table('clu_suscription')->max('code') + 1);
 				}
 				
-				return Redirect::to('suscripcion/agregar')->with('message', 'La Suscripción se agrego exitosamente con el código: '.$code)->with('modulo',$moduledata);
+				if(!$bandera_abono){
+					return Redirect::to('suscripcion/agregar')->with('message', 'La Suscripción se agrego exitosamente con el código: '.$code)->with('modulo',$moduledata);
+				}
+
+				return Redirect::to('suscripcion/agregar')->with('message', 'La Suscripción se agrego exitosamente con el código: '.$code.' Sin embargo, el abono inicial, es mañor al precio de suscripciòn')->with('modulo',$moduledata);
+				
 				
 			}
 			
@@ -1750,7 +1760,7 @@ class SuscriptionController extends Controller {
 	public function postBuscar(Request $request){
 	
 		$url = explode("/", Session::get('_previous.url'));
-		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 		if(Session::get('opaplus.usuario.rol_id') == 4){
 			$moduledata['fillable'] = ['N° Contrato','Suscriptor','Identificación','Fecha Vencimiento'];
 		}
@@ -1769,7 +1779,7 @@ class SuscriptionController extends Controller {
 	public function getBuscar($name = null){
 	
 		$url = explode("/", Session::get('_previous.url'));
-		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 		if(Session::get('opaplus.usuario.rol_id') == 4){
 			$moduledata['fillable'] = ['N° Contrato','Suscriptor','Identificación','Fecha Vencimiento'];
 		}
@@ -1864,7 +1874,7 @@ class SuscriptionController extends Controller {
 		$n_receipt = $array[1];
 		
 		//las siguientes dos lineas solo son utiles cuando se refresca la pagina, ya que al refrescar no se pasa por el controlador
-		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 		if(Session::get('opaplus.usuario.rol_id') == 4){
 			$moduledata['fillable'] = ['N° Contrato','Suscriptor','Identificación','Fecha Vencimiento'];
 		}
@@ -1935,7 +1945,7 @@ class SuscriptionController extends Controller {
 		$moduledata['categoria'] = 'Componentes';
 		$moduledata['id_mod'] = 7;
 		
-		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 		if(Session::get('opaplus.usuario.rol_id') == 4){
 			$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
 		}
@@ -2186,7 +2196,7 @@ class SuscriptionController extends Controller {
 		$moduledata['categoria'] = 'Componentes';
 		$moduledata['id_mod'] = 7;
 		
-		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 		if(Session::get('opaplus.usuario.rol_id') == 4){
 			$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
 		}
