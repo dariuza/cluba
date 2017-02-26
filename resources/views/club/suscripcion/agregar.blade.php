@@ -289,8 +289,7 @@
 								<div class="form-group input-grp">									
 									<div class="col-md-3">
 										{!! Form::label('payment', 'Couta inicial', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('payment',old('payment'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el primer pago')) !!}																		
-										
+										{!! Form::text('payment',old('payment'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el primer pago')) !!}
 									</div>
 								</div>
 								@endif
@@ -309,6 +308,13 @@
 									</div>
 								</div>	
 								
+								<div class="form-group input-grp">									
+									<div class="col-md-4">
+										{!! Form::label('provisional', 'N° Provisional', array('class' => 'col-md-12 control-label')) !!}
+										{!! Form::text('provisional',old('provisional'), array('class' => 'form-control','placeholder'=>'Ingresa el número provisional')) !!}
+									</div>
+								</div>
+
 								@if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2)
 									<div class="form-group input-grp">									
 										<div class="col-md-4">

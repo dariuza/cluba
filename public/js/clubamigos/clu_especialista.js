@@ -77,7 +77,7 @@ clu_especialista.prototype.nuevoRespuesta = function(result) {
 
 clu_especialista.prototype.add_dispo = function(add) {
 	
-	var n = document.getElementsByClassName('tab_dispo2')[0].childElementCount + 1 ;
+	var n = document.getElementsByClassName('tab_dispo3')[0].childElementCount + 1 ;
 	var nodo = document.createElement("div");
 	nodo.setAttribute("class", "form-group col-md-12");
 
@@ -201,14 +201,20 @@ clu_especialista.prototype.add_dispo = function(add) {
 	nodo.appendChild(subnodo_2);//hora inicio
 	nodo.appendChild(subnodo_3);//hora fin
 	nodo.appendChild(subnodo_4);//especialidades
-	document.getElementsByClassName('tab_dispo2')[0].appendChild(nodo);
+	document.getElementsByClassName('tab_dispo3')[0].appendChild(nodo);
 	$('.input-small').timepicker({showMeridian:false});
 	$('.chosen-select').chosen();
 	$('.chosen-container').width('100%');		
 	$("#dispo_especialidades_select_"+n).chosen().change(function(event) {
 		$('#dispo_especialidades_'+n).val($("#dispo_especialidades_select_"+n).chosen().val());		    
 	});	
-	
+};
+
+clu_especialista.prototype.add_special = function(add) {
+	var n = document.getElementsByClassName('tab_dispo2')[0].childElementCount + 1 ;
+	var nodo = document.createElement("div");
+	nodo.setAttribute("class", "form-group col-md-12");
+	alert(n);
 };
 
 var clu_especialista = new clu_especialista();

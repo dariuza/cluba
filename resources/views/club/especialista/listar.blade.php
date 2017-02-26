@@ -252,7 +252,7 @@
 						</div>
 						<div class="tab-pane fade " id="tab_dispo2">
 							<div class="row ">
-								<div class="col-md-12 col-md-offset-0 tab_cnt_bnt1">
+								<div class="col-md-12 col-md-offset-0 tab_dispo2">
 									<div class="form-group">
 										
 										<div class="col-md-3">
@@ -275,6 +275,12 @@
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
 										</div>
+										<div class="col-md-12"><hr size = "1"></hr></div>	
+										<div class="col-md-1 col-md-offset-11" data-toggle="tooltip" title="" data-original-title="Agregar Especialidad">
+			            					<a href="javascript:clu_especialista.add_special('1')" class="site_title site_title2" style="text-decoration: none;color:#5A738E !important;  ">
+			            					<i class="fa fa-plus" style="border: 1px solid #5A738E !important"></i>	
+			            					</a>
+		            					</div>
 
 									</div>
 								</div>
@@ -284,7 +290,7 @@
 						</div>
 						<div class="tab-pane fade " id="tab_dispo3">
 							<div class="row ">
-								<div class="col-md-12 col-md-offset-0 tab_dispo2">
+								<div class="col-md-12 col-md-offset-0 tab_dispo3">
 									<div class="form-group col-md-12">
 										<div class="col-md-2">											
 											{!! Form::label('dispo_dia_1', 'Día', array('class' => 'col-md-12 control-label')) !!}

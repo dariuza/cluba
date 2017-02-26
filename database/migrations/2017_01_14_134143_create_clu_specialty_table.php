@@ -15,7 +15,7 @@ class CreateCluSpecialtyTable extends Migration
     	Schema::create('clu_specialty', function(Blueprint $table){
     		$table->increments('id');
     		$table->string('name');
-			$table->string('code')->nullable();
+		$table->string('code')->nullable();
     		$table->string('description')->nullable();
     		$table->boolean('active')->default(true);
     		$table->timestamps();

@@ -923,6 +923,7 @@ class SuscriptionController extends Controller {
 								
 				//$suscription->reason = $request->input()['reason'];
 				$suscription->observation = $request->input()['observation'];
+				$suscription->reason = $request->input()['provisional'];
 				$suscription->state_id = $request->input()['state_id'];
 				//vamos por el asesor
 				$array = explode(" ",$request->input()['adviser']);
@@ -1257,6 +1258,7 @@ class SuscriptionController extends Controller {
 				Session::flash('_old_input.pay_interval',  $suscription->pay_interval);				
 				Session::flash('_old_input.reason',  $suscription->reason);
 				Session::flash('_old_input.observation',  $suscription->observation);
+				Session::flash('_old_input.provisional',  $suscription->reason);
 				Session::flash('_old_input.adviser',  $request->input()['adviser']);
 				Session::flash('_old_input.state_id',  $suscription->state_id);
 				
@@ -1344,7 +1346,8 @@ class SuscriptionController extends Controller {
 				if(!empty($request->input()['pay_interval'])){ $suscription->pay_interval = $request->input()['pay_interval'];}
 				//$suscription->fee = $request->input()['fee'];//Las cuotas de pago ya no se estan usando
 				//$suscription->reason = $request->input()['reason'];//La razon de suscripcion ya no se usa más
-				$suscription->observation = $request->input()['observation'];				
+				$suscription->observation = $request->input()['observation'];
+				$suscription->reason = $request->input()['provisional'];				
 				//vamos por el asesor
 				$array = explode(" ",$request->input()['adviser']);
 				$identification = end($array);
@@ -1743,7 +1746,7 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.price', $suscripcion[0]['price']);
 		Session::flash('_old_input.pay_interval',  $suscripcion[0]['pay_interval']);
 		Session::flash('_old_input.fee',  $suscripcion[0]['fee']);
-		Session::flash('_old_input.reason',  $suscripcion[0]['reason']);
+		Session::flash('_old_input.provisional',  $suscripcion[0]['reason']);
 		Session::flash('_old_input.state_id',  $suscripcion[0]['state_id']);
 		Session::flash('_old_input.observation',  $suscripcion[0]['observation']);
 		Session::flash('_old_input.adviser',  $suscripcion[0]['names_ad'].' '.$suscripcion[0]['surnames_ad'].' '.$suscripcion[0]['identificacion_ad']);		
