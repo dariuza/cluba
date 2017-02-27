@@ -202,6 +202,7 @@ clu_especialista.prototype.add_dispo = function(add) {
 	nodo.appendChild(subnodo_3);//hora fin
 	nodo.appendChild(subnodo_4);//especialidades
 	document.getElementsByClassName('tab_dispo3')[0].appendChild(nodo);
+
 	$('.input-small').timepicker({showMeridian:false});
 	$('.chosen-select').chosen();
 	$('.chosen-container').width('100%');		
@@ -213,8 +214,94 @@ clu_especialista.prototype.add_dispo = function(add) {
 clu_especialista.prototype.add_special = function(add) {
 	var n = document.getElementsByClassName('tab_dispo2')[0].childElementCount + 1 ;
 	var nodo = document.createElement("div");
-	nodo.setAttribute("class", "form-group col-md-12");
-	alert(n);
+	nodo.setAttribute("class", "form-group");
+
+	var subnodo_1 = document.createElement("div")
+	subnodo_1.setAttribute("class", "col-md-3 ");
+	var label_1 = document.createElement("label");
+	label_1.setAttribute("class", "col-md-12 control-label");
+	label_1.setAttribute("for", "espe_especialidad_"+n);
+	label_1.textContent = "Especialidad";
+	var select_1=document.createElement("select");
+	select_1.setAttribute("class", "form-control");	
+	select_1.setAttribute("name", "espe_especialidad_"+n);
+	select_1.setAttribute("id", "espe_especialidad_"+n);
+	select_1.setAttribute("data-placeholder", "Selecciona la elpecialidad");
+	for(var i = 0 ; i < $('#espe_especialidad_1')[0].options.length ; i++){
+		var opt1 = document.createElement('option');
+		opt1.value = $('#espe_especialidad_1')[0].options[i].value;
+		opt1.innerHTML = $('#espe_especialidad_1')[0].options[i].innerHTML;
+		select_1.appendChild(opt1);
+	}
+	subnodo_1.appendChild(label_1);
+	subnodo_1.appendChild(select_1);
+
+	var subnodo_2 = document.createElement("div")
+	subnodo_2.setAttribute("class", "col-md-3 ");
+	var label_2 = document.createElement("label");
+	var input_2 = document.createElement("input");
+	label_2.setAttribute("class", "col-md-12 control-label");
+	label_2.setAttribute("for", "espe_precio_particular_"+n);
+	label_2.textContent = "Precio Particular";		
+	input_2.setAttribute("class", "form-control solo_numeros");
+	input_2.setAttribute("name", "espe_precio_particular_"+n);	
+	input_2.setAttribute("placeholder", "Ingresa Precio");
+	subnodo_2.appendChild(label_2);
+	subnodo_2.appendChild(input_2);
+
+	var subnodo_3 = document.createElement("div")
+	subnodo_3.setAttribute("class", "col-md-3 ");
+	var label_3 = document.createElement("label");
+	var input_3 = document.createElement("input");
+	label_3.setAttribute("class", "col-md-12 control-label");
+	label_3.setAttribute("for", "espe_precio_suscriptor_"+n);
+	label_3.textContent = "Precio Suscriptor";		
+	input_3.setAttribute("class", "form-control solo_numeros");
+	input_3.setAttribute("name", "espe_precio_suscriptor_"+n);	
+	input_3.setAttribute("placeholder", "Ingresa Suscriptor");
+	subnodo_3.appendChild(label_3);
+	subnodo_3.appendChild(input_3);
+
+
+	var subnodo_4 = document.createElement("div")
+	subnodo_4.setAttribute("class", "col-md-3");
+	var label_4 = document.createElement("label");
+	label_4.setAttribute("class", "col-md-12 control-label");
+	label_4.setAttribute("for", "espe_duracion_"+n);
+	label_4.textContent = "Tiempo Duración";
+	var div_4 = document.createElement("div");
+	div_4.setAttribute("class", "input-group bootstrap-timepicker timepicker");
+	var input_4 = document.createElement("input");
+	input_4.setAttribute("class", "form-control input-small");
+	input_4.setAttribute("placeholder", "Duración HH:mm");
+	input_4.setAttribute("name", "espe_duracion_"+n);
+	var span_4 = document.createElement("span");
+	span_4.setAttribute("class", "input-group-addon");
+	var i_4 = document.createElement("span");
+	i_4.setAttribute("class", "glyphicon glyphicon-time");
+	span_4.appendChild(i_4);
+	div_4.appendChild(input_4);
+	div_4.appendChild(span_4);
+	subnodo_4.appendChild(label_4);
+	subnodo_4.appendChild(div_4);
+
+	nodo.appendChild(subnodo_1);//Selector de especialidad
+	nodo.appendChild(subnodo_2);//Precio particular
+	nodo.appendChild(subnodo_3);//Precio suscriptor
+	nodo.appendChild(subnodo_4);//Tiempo duracion
+
+	document.getElementsByClassName('tab_dispo2')[0].appendChild(nodo);
+
+	$('.input-small').timepicker({showMeridian:false});
+	$( ".solo_numeros" ).keypress(function(evt) {
+		 evt = (evt) ? evt : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+	        return false;
+	    }
+	    return true;
+	});	
+	
 };
 
 var clu_especialista = new clu_especialista();
