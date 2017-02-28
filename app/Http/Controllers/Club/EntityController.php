@@ -37,10 +37,25 @@ class EntityController extends Controller {
 	}
 	
 	public function getEnumerar($id_app=null,$categoria=null,$id_mod=null){
+		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se debe alcanzar por url, solo es valido desde las opciones del menú');		
 		
+		return Redirect::to('entidad/listar');
 	}
 	public function getListar(){
+		$moduledata['fillable'] = ['Nombre','Nit','Representante Legal','Contacto RL','Telefono 1','Telefono 2','Correo Electrónico'];
+		//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
+		$url = explode("/", Session::get('_previous.url'));
 		
+		//estas opciones se usaran para pintar las opciones adecuadamente con respecto al modulo
+		$moduledata['modulo'] = 'entidad';
+		$moduledata['id_app'] = '2';
+		$moduledata['categoria'] = 'Componentes';
+		$moduledata['id_mod'] = '9';//este es el que manda la parada para la generación de opciones
+
+		//para llevar temporalmente las variables a la vista.
+		Session::flash('modulo', $moduledata);
+
+		return view('club.entidad.listar');
 	}
 	public function getListarajax(Request $request){
 		

@@ -29,6 +29,7 @@ return array(
     'CreateCluSpecialistXSpecialtyTable' => $baseDir . '/database/migrations/2017_01_26_144143_create_clu_specialist_x_specialty_table.php',
     'CreateCluSpecialtyTable' => $baseDir . '/database/migrations/2017_01_14_134143_create_clu_specialty_table.php',
     'CreateCluStateTable' => $baseDir . '/database/migrations/2016_09_22_094807_create_clu_state_table.php',
+    'CreateCluSubentityTable' => $baseDir . '/database/migrations/2017_02_28_112922_create_clu_subentity_table.php',
     'CreateSegAppTable' => $baseDir . '/database/migrations/2016_01_11_115659_create_seg_app_table.php',
     'CreateSegAppXUserTable' => $baseDir . '/database/migrations/2016_01_11_120127_create_seg_app_x_user_table.php',
     'CreateSegModuleTable' => $baseDir . '/database/migrations/2016_01_11_115913_create_seg_module_table.php',

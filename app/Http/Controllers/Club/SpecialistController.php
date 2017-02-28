@@ -62,10 +62,7 @@ class SpecialistController extends Controller {
 		}
 		$moduledata['especialidades']=$especialidades_null;	
 		if(count($moduledata['especialidades'])) $moduledata['especialidades']=$especialidades;		
-		
-		
-		
-		
+				
 		//para llevar temporalmente las variables a la vista.
 		Session::flash('modulo', $moduledata);
 		
