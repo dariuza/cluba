@@ -139,9 +139,9 @@
     </table>
     
     <!-- Form en blanco para capturar la url editar y eliminar-->
-    {!! Form::open(array('id'=>'form_ver','url' => 'especialista/ver')) !!}
+    {!! Form::open(array('id'=>'form_ver','url' => 'entidad/ver')) !!}
     {!! Form::close() !!}
-    {!! Form::open(array('id'=>'form_nuevo','url' => 'especialista/nuevo')) !!}
+    {!! Form::open(array('id'=>'form_nuevo','url' => 'entidad/nuevo')) !!}
     {!! Form::close() !!}
 	</div>
 @endsection
@@ -154,7 +154,7 @@
 	      	<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Resumen Especialista</h4>
+					<h4 class="modal-title">Resumen Entidad</h4>
 				</div>
 				<div class = "alerts-module"></div>				
 							
@@ -167,6 +167,88 @@
 				<div class="modal-footer">		         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="entidad_nuevo_modal" role="dialog" data-backdrop="false">
+		<div class="modal-dialog modal-lg">	    
+	    <!-- Modal content-->      
+	      	<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Agregar Entidad</h4>
+				</div>
+				<div class = "alerts-module"></div>
+				{!! Form::open(array('url' => 'entidad/save', 'id'=>'form_nuevo_entidad','onsubmit'=>'javascript:return clu_entidad.validateNuevoEspecialista()')) !!}	
+				<div class="modal-body">
+					<ul class="nav nav-tabs">
+						<li role="bnes_cnt" class="active"><a href="#tab_entidad1" data-toggle="tab">ENTIDAD</a></li>
+						<li role="bnes_cnt"><a href="#tab_entidad2" data-toggle="tab">SUCURSALES</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab_entidad1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0">
+									<div class="form-group">
+
+										<div class="row col-md-12">
+											<div class="col-md-12">
+												{!! Form::label('nombre', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('nombre', old('nombre'), array('class' => 'form-control','placeholder'=>'Ingresa el nombre de la Entidad','autofocus'=>'autofocus'))!!}
+											</div>
+										</div>
+										<div class="row col-md-6">											
+											<div class="col-md-12">
+												{!! Form::label('representante_legal', 'Representate Legal', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('representante_legal', old('representante_legal'), array('class' => 'form-control','placeholder'=>'Ingresa el Representante Legal'))!!}
+											</div>
+											<div class="col-md-12">
+												{!! Form::label('telefono1', 'Telegono 2', array('class' => 'col-md-12 control-label solo_numeros')) !!}
+												{!! Form::text('telefono1', old('telefono1'), array('class' => 'form-control','placeholder'=>'Ingresa un número telefonico'))!!}
+											</div>
+											<div class="col-md-12">
+												{!! Form::label('correo', 'Correo de Contacto', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('correo', old('correo'), array('class' => 'form-control','placeholder'=>'Ingresa el correo del contacto'))!!}
+											</div>
+										</div>
+										<div class="row col-md-6">
+											<div class="col-md-12">
+												{!! Form::label('nit', 'NIT', array('class' => 'col-md-12 control-label solo_numeros')) !!}
+												{!! Form::text('nit', old('nit'), array('class' => 'form-control','placeholder'=>'Ingresa el Nit'))!!}
+											</div>
+											<div class="col-md-12">
+												{!! Form::label('contancto_rlegal', 'Contancto Representate Legal', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('contancto_rlegal', old('contancto_rlegal'), array('class' => 'form-control','placeholder'=>'Ingresa el contacto del Representante Legal'))!!}
+											</div>
+											<div class="col-md-12">
+												{!! Form::label('telefono2', 'Telegono 2', array('class' => 'col-md-12 control-label solo_numeros')) !!}
+												{!! Form::text('telefono2', old('telefono2'), array('class' => 'form-control','placeholder'=>'Ingresa un número telefonico'))!!}
+											</div>
+										</div>
+										<div class="row col-md-12">
+											<div class="col-md-12">
+												{!! Form::label('descripcion', 'Descripción', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows'=>'4','placeholder'=>'Ingresa las Descripciónes u Observaciones')) !!}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade " id="tab_entidad2">
+
+
+						</div>
+					</div>
+
+				</div>
+				{!! Form::close() !!}
+				<div class="modal-footer">
+					<button type="submit" form = "form_nuevo_entidad" class="btn btn-default " > @if(Session::has('_old_input.edit')) Editar @else Crear @endif Entidad</button>	         
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
+		        </div>
+
 			</div>
 		</div>
 	</div>

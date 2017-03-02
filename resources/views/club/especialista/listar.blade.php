@@ -243,7 +243,7 @@
 										<div class="row col-md-12">
 											<div class="col-md-12">
 												{!! Form::label('descripcion', 'Descripción', array('class' => 'col-md-12 control-label')) !!}
-												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows'=>'4','placeholder'=>'Ingresa la Descripciónes u Observaciones')) !!}
+												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows'=>'4','placeholder'=>'Ingresa las Descripciónes u Observaciones')) !!}
 											</div>
 										</div>
 									</div>

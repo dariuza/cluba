@@ -42,7 +42,7 @@ class EntityController extends Controller {
 		return Redirect::to('entidad/listar');
 	}
 	public function getListar(){
-		$moduledata['fillable'] = ['Nombre','Nit','Representante Legal','Contacto RL','Telefono 1','Telefono 2','Correo Electrónico'];
+		$moduledata['fillable'] = ['Nombre','Nit','Representante Legal','Contacto RLegal','Telefono 1','Telefono 2','Correo Electrónico'];
 		//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
 		$url = explode("/", Session::get('_previous.url'));
 		
@@ -79,6 +79,11 @@ class EntityController extends Controller {
 	
 	public function postBuscar(Request $request){
 	
+	}
+
+	public function postNuevo(Request $request){
+		//consultas necesarias
+		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
 	
 	public function getEspecialidades($id_app=null,$categoria=null,$id_mod=null){	
