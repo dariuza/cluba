@@ -856,4 +856,9 @@ clu_suscripcion.prototype.carnetsRespuesta = function(result) {
 	alert('listo');
 };
 
+clu_suscripcion.prototype.opt_cargarsus = function(result) {
+	$('#suscripcion_cargasus_modal').modal();
+};
+
+
 var clu_suscripcion = new clu_suscripcion();

@@ -138,6 +138,13 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 				'active'=>1
 				)
 		);
+		\DB::table('seg_option')->insert(array(
+				'option'=>'CargaSuscriptor',
+				'action'=>'cargasus',
+				'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"glyphicon glyphicon-book"}',
+				'active'=>1
+				)
+		);
 		
 		
 	}

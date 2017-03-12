@@ -102,7 +102,7 @@
 	            			@elseif($opc['accion'] == 'mirar')
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="javascript:clu_suscripcion.opt_ver()" class="site_title site_title2" style = "text-decoration: none; ">
-			            				<i class="{{$opc['icono']}}"></i>	            				           				
+			            				<i class="{{$opc['icono']}}"></i>
 			            				<!--  <span >{{$opc[$key]}}</span> -->	            				
 			            			</a>
 		            			</div>
@@ -140,7 +140,14 @@
 			            				<i class="{{$opc['icono']}}"></i>	            				           				
 			            				<!--  <span >{{$opc[$key]}}</span> -->	            				
 			            			</a>
-		            			</div>		
+		            			</div>
+
+		            		@elseif($opc['accion'] == 'cargasus')
+	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
+		            				<a href="javascript:clu_suscripcion.opt_cargarsus()" class="site_title site_title2" style = "text-decoration: none; ">
+			            				<i class="{{$opc['icono']}}"></i>
+			            			</a>
+		            			</div>			
 	            			@else
 	            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
 		            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
@@ -364,7 +371,7 @@
 	<div class="modal fade" id="suscripcion_seereprint_modal" role="dialog" data-backdrop="false">
 	    <div class="modal-dialog">	    
 	      <!-- Modal content-->
-	      <div class="modal-content">
+	     	<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title">Reimpresiones</h4>
@@ -381,8 +388,33 @@
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
 		         {!! Form::close() !!}          
-	      </div>
-      </div>
+	      	</div>
+      	</div>
+	</div>
+
+	<div class="modal fade" id="suscripcion_cargasus_modal" role="dialog" data-backdrop="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Cargar Suscripción</h4>
+				</div>
+				<div class = "alerts-module"></div>	
+
+				{!! Form::open(array('url' => 'suscripcion/cargasus')) !!}			
+				<div class="modal-body">
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0 row_izq"></div>						
+					</div>
+		        </div>
+		        <div class="modal-footer">
+			        {!! Form::submit('Cargar', array('class' => 'btn btn-default')) !!}
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		        </div>
+		        {!! Form::close() !!}        
+
+			</div>
+		</div>
 	</div>
 	
 
