@@ -179,7 +179,7 @@
 			
 			@if(Session::has('message'))
 				<div class="alert alert-info">
-					<strong>¡Modulo Roles!</strong> La operación se ha realizado adecuadamente.<br><br>
+					<strong>¡Modulo Suscriptores!</strong> La operación se ha realizado adecuadamente.<br><br>
 					<ul>								
 						<li>{{ Session::get('message') }}</li>
 					</ul>
@@ -401,10 +401,17 @@
 				</div>
 				<div class = "alerts-module"></div>	
 
-				{!! Form::open(array('url' => 'suscripcion/cargasus')) !!}			
+				{!! Form::open(array('url' => 'suscripcion/cargasus','files'=>true)) !!}			
 				<div class="modal-body">
 					<div class="row ">
-						<div class="col-md-12 col-md-offset-0 row_izq"></div>						
+						<div class="col-md-12 col-md-offset-0 row_izq">
+							<div class="form-group">
+								{!! Form::label('file', 'Archivo a cargar', array('class' => 'col-md-12 control-label')) !!}							
+								<div class="col-md-12">
+									{!! Form::file('carga_suscripcion') !!}
+								</div>
+							</div>
+						</div>						
 					</div>
 		        </div>
 		        <div class="modal-footer">

@@ -15,6 +15,7 @@ use App\Core\Club\LicensePrint;
 use App\Core\Club\Beneficiary;
 use App\Core\Club\City;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
@@ -953,6 +954,7 @@ class SuscriptionController extends Controller {
 				$ids_pago = Array();
 				$fechas_pagos = Array();
 				$pagos = Array();
+				$recibos = Array();
 				
 				foreach($request->input() as $key=>$value){
 					if(strpos($key,'fecha_pago_') !== false){						
@@ -965,17 +967,25 @@ class SuscriptionController extends Controller {
 						$id_abono = end($array);
 						$pagos[$id_abono] = $value;
 					}
+
+					if(strpos($key,'n_receipt_') !== false){
+						$array=explode('_',$key);
+						$id_abono = end($array);
+						$recibos[$id_abono] = $value;
+					}
 				}				
 				//abonos				
 				$i=0;
 				//borrado de todos los abonos
 				Payment::where('suscription_id', (int) $request->input()['suscription_id'])->delete();
+				//creación de todos los abonos
 				foreach($pagos as $key=>$value){
-					if(!empty($fechas_pagos[$key]) && !empty($value)){
+					//if(!empty($fechas_pagos[$key]) && !empty($value)){
 						try{						
 							$payment = new Payment();
 							$payment->date_payment = $fechas_pagos[$key];
 							$payment->payment = $value;
+							$payment->n_receipt = $recibos[$key];
 							$payment->suscription_id = $request->input()['suscription_id'];
 							$payment->save();
 							/*
@@ -991,9 +1001,10 @@ class SuscriptionController extends Controller {
 						$moduledata['pagos'][$i]['id']=$key;
 						$moduledata['pagos'][$i]['payment']=$value;
 						$moduledata['pagos'][$i]['date_payment']=$fechas_pagos[$key];
+						$moduledata['pagos'][$i]['n_receipt']=$recibos[$key];
 						$i++;
 							
-					}			
+					//}			
 					
 				}
 				
@@ -1399,6 +1410,7 @@ class SuscriptionController extends Controller {
 				
 				$payment->date_payment = date("Y-m-d H:i:s");
 				$payment->payment = $request->input()['payment'];
+				$payment->n_receipt = $request->input()['n_receipt'];
 				$payment->suscription_id = $suscription->id;
 				
 				$bandera_abono = false;
@@ -2228,6 +2240,87 @@ class SuscriptionController extends Controller {
 		
 		Session::flash('message', 'Reimpresiones actualizadas adecuadamente.');
 		return Redirect::to('suscripcion/listar');
+	}
+
+	public function postCargasus(Request $request){
+
+		$moduledata['modulo'] = 'suscripcion';
+		$moduledata['id_app'] = '2';
+		$moduledata['categoria'] = 'Componentes';
+		$moduledata['id_mod'] = '7';
+
+		$mimeTypes = [
+		'application/csv',
+		'application/excel',
+		'application/vnd.ms-excel',
+		'application/vnd.msexcel',
+		'text/csv',
+		'text/anytext',
+		'text/plain',
+		'text/x-c',
+		'text/csv',
+		'csv',
+		'txt',
+		'application/octet-stream',
+		'text/comma-separated-values',
+		'inode/x-empty',
+		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		'application/vnd.oasis.opendocument.spreadsheet',			
+		];
+
+		$file = request()->hasFile('carga_suscripcion');
+		if ($file) {
+			$file = array('carga_suscripcion' => Input::file('carga_suscripcion'));
+			if (!in_array(request()->file('carga_suscripcion')->getClientMimeType(), $mimeTypes)) {
+				Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido.');
+				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;					
+			}
+
+			if ($file['carga_suscripcion']->isValid()) {
+
+				if($file['carga_suscripcion']->getClientSize() < 2097152){
+					//.xls que se pueden cargar
+					
+					//\Excel::load($file['carga_suscripcion'], function($results) {
+
+					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(FALSE)->chunk(500, function($results){
+						//objeto suscriptor
+						//dd($results->get());
+						$user = new User();			
+						$userprofile = new UserProfile();
+						$suscription = new Suscription();
+
+						foreach($results as $hoja){
+							// Creamos el array
+							foreach($hoja as $row){								
+								dd($row);
+								$filas[] = array(
+									'nro_contrato'=>$row->contrato								
+								);
+								Session::flash('nro_user', Session::get('nro_user') + 1);
+							}
+							
+						}
+						dd($filas);
+
+					});				
+					
+				}else{
+					Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido, es demaciado grande.');
+					return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;
+				}
+				
+				return Redirect::to('suscripcion/listar')->with('message', 'La carga ha sido efectuada correctamente.')->with('modulo',$moduledata);;
+
+			}		
+		}
+
+
+		Session::flash('error', 'La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.');
+		return Redirect::to('suscripcion/listar');
+
+
+				
 	}
 	
 	public function getCarnets($datos = null){
