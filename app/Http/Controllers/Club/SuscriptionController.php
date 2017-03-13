@@ -2283,7 +2283,7 @@ class SuscriptionController extends Controller {
 					
 					//\Excel::load($file['carga_suscripcion'], function($results) {
 
-					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(FALSE)->chunk(500, function($results){
+					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(2000, function($results){
 						//objeto suscriptor
 						//dd($results->get());
 						$user = new User();			
@@ -2291,18 +2291,46 @@ class SuscriptionController extends Controller {
 						$suscription = new Suscription();
 
 						foreach($results as $hoja){
-							// Creamos el array
-							foreach($hoja as $row){								
-								dd($row);
-								$filas[] = array(
-									'nro_contrato'=>$row->contrato								
-								);
-								Session::flash('nro_user', Session::get('nro_user') + 1);
-							}
-							
-						}
-						dd($filas);
+							// Creamos el array							
+							foreach($hoja as $row){	
 
+								if($hoja->getTitle() == 'Hoja1'){
+									//suacripciones								
+									$fecha_nacimiento = ((25569 + ((($row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
+									$inicio_suscripcion = ((25569 + ((($row->fecha_de_suscripcion - 25569) * 86400) / 86400)) - 25569) * 86400;
+									$fin_suscripcion = ((25569 + ((($row->fecha_de_terminacion - 25569) * 86400) / 86400)) - 25569) * 86400;
+
+									$suscripciones[] = array(
+										'user_name'=>$row->cedula,
+										'user_email'=>$row->cedula.'@yopmail.com',
+										'user_password' => '0000',
+										'user_profile_identificacion' => $row->cedula,
+										'user_profile_names' => $row->nombre_titular,
+										'user_profile_names' => $row->nombre_titular,
+										'user_profile_birthplace' => $row->de,								
+										'user_profile_birthdate' => gmdate("d-m-Y", $fecha_nacimiento),
+										'user_profile_adress' => $row->direccion_de_cobro,
+										'user_profile_city' => $row->ciudad_c,								
+										'user_profile_neighborhhod' => $row->barrio_c,
+										'user_profile_fix_number' => $row->tel_trabajo.' - '.$row->telefono_res,
+										'user_profile_movil_number' => $row->celular,								
+										'suscription_description' => $row->contrato,
+										'suscription_code' => $row->numero_suscripcion,
+										'suscription_date_suscription' => gmdate("d-m-Y", $inicio_suscripcion),
+										'suscription_date_expiration' => gmdate("d-m-Y", $fin_suscripcion),
+										'suscription_bne1' => $row->nombre_gf1,
+										'suscription_bne2' => $row->nombre_gf2,
+										'suscription_bne3' => $row->nombre_gf3,
+										'suscription_bne4' => $row->nombre_gf4,
+										'suscription_bne5' => $row->nombre_gf5,
+										'suscription_bne6' => $row->nombre_gf6,
+										'suscription_bne7' => $row->nombre_gf7
+									);
+								}
+									
+							}
+						}
+						dd($suscripciones);				
 					});				
 					
 				}else{
