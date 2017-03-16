@@ -2275,7 +2275,7 @@ class SuscriptionController extends Controller {
 				Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido.');
 				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;					
 			}
-
+			$message;
 			if ($file['carga_suscripcion']->isValid()) {
 
 				if($file['carga_suscripcion']->getClientSize() < 2097152){
@@ -2283,27 +2283,42 @@ class SuscriptionController extends Controller {
 					
 					//\Excel::load($file['carga_suscripcion'], function($results) {
 
-					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(2000, function($results){
+					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results){
 						//objeto suscriptor
 						//dd($results->get());
-						$user = new User();			
+						$message = '';
+						$usuarios = array();		
 						$userprofile = new UserProfile();
 						$suscription = new Suscription();
 
 						foreach($results as $hoja){
 							// Creamos el array							
-							foreach($hoja as $row){	
+							foreach($hoja as $row){
 
 								if($hoja->getTitle() == 'Hoja1'){
-									//suacripciones								
+									//suacripciones
+									
 									$fecha_nacimiento = ((25569 + ((($row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
 									$inicio_suscripcion = ((25569 + ((($row->fecha_de_suscripcion - 25569) * 86400) / 86400)) - 25569) * 86400;
 									$fin_suscripcion = ((25569 + ((($row->fecha_de_terminacion - 25569) * 86400) / 86400)) - 25569) * 86400;
 
+									if(!array_key_exists($row->cedula,$usuarios)){
+										$usuarios[$row->cedula] = array(
+											'name'=>$row->cedula,
+											'email'=>$row->cedula.'@yopmail.com',
+											'password' => '0000',
+											'active' => 1,
+											'active' => 0,
+											'ip' => 0,
+											'rol_id' => 3,
+										);
+									}else{
+										$message = $message.' Cedula repetida: '.$row->cedula;
+									}
+
+																	
 									$suscripciones[] = array(
-										'user_name'=>$row->cedula,
-										'user_email'=>$row->cedula.'@yopmail.com',
-										'user_password' => '0000',
+										
 										'user_profile_identificacion' => $row->cedula,
 										'user_profile_names' => $row->nombre_titular,
 										'user_profile_names' => $row->nombre_titular,
@@ -2326,25 +2341,40 @@ class SuscriptionController extends Controller {
 										'suscription_bne6' => $row->nombre_gf6,
 										'suscription_bne7' => $row->nombre_gf7
 									);
-								}
-									
+								}								
 							}
+
+							
+
+							foreach ($usuarios as $key => $value) {
+								$user = new User($value);								
+
+								try {
+									$user->save();
+								}catch (\Illuminate\Database\QueryException $e) {
+									$message = $message.' El Archivo no logro se cargar';							
+								}
+							}
+							
+													
+							
 						}
-						dd($suscripciones);				
+									
 					});				
 					
 				}else{
-					Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido, es demaciado grande.');
+					$message = $message.' Archivo no se puede cargar, no es un archivo valido, es demaciado grande.';
+					Session::flash('error', $message);
 					return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;
 				}
-				
-				return Redirect::to('suscripcion/listar')->with('message', 'La carga ha sido efectuada correctamente.')->with('modulo',$moduledata);;
+				$message = $message.' La carga ha sido efectuada correctamente.';
+				return Redirect::to('suscripcion/listar')->with('message', $message)->with('modulo',$moduledata);;
 
 			}		
 		}
 
-
-		Session::flash('error', 'La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.');
+		$message = $message.' La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.';
+		Session::flash('error', $message);
 		return Redirect::to('suscripcion/listar');
 
 
