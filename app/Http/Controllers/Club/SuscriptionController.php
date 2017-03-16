@@ -2275,7 +2275,7 @@ class SuscriptionController extends Controller {
 				Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido.');
 				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;					
 			}
-			$message;
+			$message = '';
 			if ($file['carga_suscripcion']->isValid()) {
 
 				if($file['carga_suscripcion']->getClientSize() < 2097152){
@@ -2283,10 +2283,9 @@ class SuscriptionController extends Controller {
 					
 					//\Excel::load($file['carga_suscripcion'], function($results) {
 
-					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results){
+					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results) use(& $message){
 						//objeto suscriptor
-						//dd($results->get());
-						$message = '';
+						//dd($results->get());						
 						$usuarios = array();		
 						$userprofile = new UserProfile();
 						$suscription = new Suscription();
@@ -2301,7 +2300,7 @@ class SuscriptionController extends Controller {
 									$fecha_nacimiento = ((25569 + ((($row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
 									$inicio_suscripcion = ((25569 + ((($row->fecha_de_suscripcion - 25569) * 86400) / 86400)) - 25569) * 86400;
 									$fin_suscripcion = ((25569 + ((($row->fecha_de_terminacion - 25569) * 86400) / 86400)) - 25569) * 86400;
-
+									
 									if(!array_key_exists($row->cedula,$usuarios)){
 										$usuarios[$row->cedula] = array(
 											'name'=>$row->cedula,
@@ -2315,6 +2314,7 @@ class SuscriptionController extends Controller {
 									}else{
 										$message = $message.' Cedula repetida: '.$row->cedula;
 									}
+									
 
 																	
 									$suscripciones[] = array(
@@ -2344,11 +2344,10 @@ class SuscriptionController extends Controller {
 								}								
 							}
 
+							//dd($usuarios);
 							
-
 							foreach ($usuarios as $key => $value) {
-								$user = new User($value);								
-
+								$user = new User($value);
 								try {
 									$user->save();
 								}catch (\Illuminate\Database\QueryException $e) {
@@ -2367,6 +2366,7 @@ class SuscriptionController extends Controller {
 					Session::flash('error', $message);
 					return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;
 				}
+
 				$message = $message.' La carga ha sido efectuada correctamente.';
 				return Redirect::to('suscripcion/listar')->with('message', $message)->with('modulo',$moduledata);;
 
