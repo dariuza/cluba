@@ -2249,6 +2249,12 @@ class SuscriptionController extends Controller {
 		$moduledata['categoria'] = 'Componentes';
 		$moduledata['id_mod'] = '7';
 
+		$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+		if(Session::get('opaplus.usuario.rol_id') == 4){
+			$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
+		}
+
+
 		$mimeTypes = [
 		'application/csv',
 		'application/excel',
@@ -2281,19 +2287,23 @@ class SuscriptionController extends Controller {
 				if($file['carga_suscripcion']->getClientSize() < 2097152){
 					//.xls que se pueden cargar
 					
-					//\Excel::load($file['carga_suscripcion'], function($results) {
+					\Excel::load($file['carga_suscripcion'], function($results)  use(&$message, &$moduledata) {
 
-					\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results) use(& $message,$moduledata){
+					//\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results) use(&$message, &$moduledata){
 						
 						$moduledata['modulo'] = 'suscripcion';
 						$moduledata['id_app'] = 2;
 						$moduledata['categoria'] = 'Componentes';
 						$moduledata['id_mod'] = 7;
-						$usuarios = array();		
-						//$userprofile = new UserProfile();
-						//$suscription = new Suscription();
 
-						foreach($results as $hoja){
+						$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+						if(Session::get('opaplus.usuario.rol_id') == 4){
+							$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
+						}
+						$usuarios = array();		
+						
+						//foreach($results as $hoja){
+						foreach($results->get() as $hoja){							
 							// Creamos el array							
 							foreach($hoja as $row){
 
@@ -2329,7 +2339,7 @@ class SuscriptionController extends Controller {
 											'suscription_bne7' => $row->nombre_gf7
 										);
 									}else{
-										$message = $message.' Cedula repetida: '.$row->cedula;
+										$message = $message.' Cedula repetida: '.$row->cedula.'.';
 									}
 								}								
 							}
@@ -2347,7 +2357,7 @@ class SuscriptionController extends Controller {
 								try {
 									$user->save();
 								}catch (\Illuminate\Database\QueryException $e) {
-									$message = $message.' El Archivo no logro se cargar '.$user->name;					
+									$message = $message.' El Archivo no logro se cargar '.$user->name.'.';					
 								}
 								
 								if($user->id){					
@@ -2376,15 +2386,15 @@ class SuscriptionController extends Controller {
 
 									if(empty($value['user_profile_movil_number'])){
 										$userprofile->movil_number = 0;
-										if($value['user_profile_fix_number'] == ' - ' || $value['user_profile_fix_number'] == '0 - 0'){											
-											$message = $message.' El siguiente perfil no tiene Telefonos '.$userprofile->identificacion;
+										if($value['user_profile_fix_number'] == ' - ' || $value['user_profile_fix_number'] == '0 - 0'){								
+											$message = $message.' El siguiente perfil no tiene Telefonos '.$userprofile->identificacion.'.';
 										}										
 									}
 									
 									try {
 										$userprofile->save();
 									}catch (\Illuminate\Database\QueryException $e) {
-										$message = $message.' El siguiente perfil no se logro cargar '.$userprofile->identificacion;							
+										$message = $message.' El siguiente perfil no se logro cargar '.$userprofile->identificacion.'.';							
 									}
 
 									//guardamos la suscripciòn
@@ -2403,15 +2413,16 @@ class SuscriptionController extends Controller {
 									try {
 										$suscription->save();
 									}catch (\Illuminate\Database\QueryException $e) {
-										$message = $message.' LA SIGUIENTE SUSCRIPCON no se logro cargar '.$userprofile->identificacion;
+										$message = $message.' LA SIGUIENTE SUSCRIPCON no se logro cargar '.$userprofile->identificacion.'.';
 									}
 
 								}else{
-									$message = $message.'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'];
+									$message = $message.'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'].'.';
 									
 								}							
 							}
 							Session::flash('message', $message);
+							Session::flash('modulo', $moduledata);
 							//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);	
 							//return Redirect::back()->with('modulo',$moduledata);
 						}	
@@ -2420,22 +2431,25 @@ class SuscriptionController extends Controller {
 				}else{
 					$message = $message.' Archivo no se puede cargar, no es un archivo valido, es demaciado grande.';
 					Session::flash('error', $message);
-					//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
-					return Redirect::back()->with('modulo',$moduledata);
+					Session::flash('modulo', $moduledata);
+					return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
+					//return Redirect::back()->with('modulo',$moduledata);
 				}
 
 				$message = $message.' La carga ha sido efectuada correctamente.';
 				Session::flash('message', $message);
-				//return Redirect::to('suscripcion/listar')->with('message', $message)->with('modulo',$moduledata);
-				return Redirect::back()->with('modulo',$moduledata);
+				Session::flash('modulo', $moduledata);
+				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
+				//return Redirect::back()->with('modulo',$moduledata);
 
 			}		
 		}
 
 		$message = $message.' La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.';
 		Session::flash('error', $message);
-		//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
-		return Redirect::back()->with('modulo',$moduledata);
+		Session::flash('modulo', $moduledata);
+		return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
+		//return Redirect::back()->with('modulo',$moduledata);
 
 
 				
