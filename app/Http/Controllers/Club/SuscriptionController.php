@@ -2281,33 +2281,31 @@ class SuscriptionController extends Controller {
 				Session::flash('error', 'Archivo no se puede cargar, no es un archivo valido.');
 				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);;					
 			}
-			$message = '';
+			$message = array();
 			if ($file['carga_suscripcion']->isValid()) {
 
 				if($file['carga_suscripcion']->getClientSize() < 2097152){
 					//.xls que se pueden cargar
 					
-					\Excel::load($file['carga_suscripcion'], function($results)  use(&$message, &$moduledata) {
+					\Excel::load($file['carga_suscripcion'], function($results)  use(&$message) {
 
-					//\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results) use(&$message, &$moduledata){
+					//\Excel::filter('chunk')->load($file['carga_suscripcion']->getPathname(),'UTF-8', true)->noHeading()->formatDates(true, 'Y-m-d')->chunk(200, function($results) use(&$message, &$moduledata){				
 						
-						$moduledata['modulo'] = 'suscripcion';
-						$moduledata['id_app'] = 2;
-						$moduledata['categoria'] = 'Componentes';
-						$moduledata['id_mod'] = 7;
 
 						$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
 						if(Session::get('opaplus.usuario.rol_id') == 4){
 							$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
 						}
-						$usuarios = array();		
+						$usuarios = array();	
+						$usuarios_borrar = array();	
+						$abonos = array();		
 						
 						//foreach($results as $hoja){
 						foreach($results->get() as $hoja){							
 							// Creamos el array							
 							foreach($hoja as $row){
 
-								if($hoja->getTitle() == 'Hoja1'){
+								if($hoja->getTitle() == 'CARGAR'){
 									//suacripciones
 									
 									$fecha_nacimiento = ((25569 + ((($row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
@@ -2339,105 +2337,160 @@ class SuscriptionController extends Controller {
 											'suscription_bne7' => $row->nombre_gf7
 										);
 									}else{
-										$message = $message.' Cedula repetida: '.$row->cedula.'.';
+										$message[] = ' Cedula repetida: '.$row->cedula.'.';
 									}
-								}								
+								}
+
+								if($hoja->getTitle() == 'DESCARGAR'){
+									
+									if(!array_key_exists($row->cedula,$usuarios_borrar)){
+										$usuarios_borrar[$row->cedula] = array(
+											'name_sucriptor'=>$row->cedula
+										);
+									}else{
+										$message[] = ' Cedula repetida: '.$row->cedula.'.';
+									}									
+
+								}
+
+								if($hoja->getTitle() == 'PAGOS'){
+									//verificamos que si tenga el numero_suscripcion
+									if($row->numero_suscripcion){
+										$abonos[$row->numero_suscripcion]=array(
+											'date_payment'=>$row->fecha_pago,
+											'payment'=>$row->pago,
+											'n_receipt'=>$row->numero_recibo
+										);
+									}
+									
+								}						
 							}
-
-							foreach ($usuarios as $key => $value) {
+						}
+						
+						$nro_suscription = 0; 
+						$nro_descarga = 0; 
+						$nro_abonos = 0; 
+						foreach ($usuarios as $key => $value) {
 								
-								$user = new User();
-								$user->name = $value['name_sucriptor'];
-								$user->email = $value['email_suscriptor'];
-								$user->password = '0000';
-								$user->active = 1;
-								$user->ip = 0;
-								$user->rol_id = 3;								
+							$user = new User();
+							$user->name = $value['name_sucriptor'];
+							$user->email = $value['email_suscriptor'];
+							$user->password = '0000';
+							$user->active = 1;
+							$user->ip = 0;
+							$user->rol_id = 3;								
 
-								try {
-									$user->save();
-								}catch (\Illuminate\Database\QueryException $e) {
-									$message = $message.' El Archivo no logro se cargar '.$user->name.'.';					
+							try {
+								$user->save();
+							}catch (\Illuminate\Database\QueryException $e) {
+								$message[] = ' El Archivo no se logro cargar '.$user->name.'.';					
+							}
+							
+							if($user->id){					
+								//se ha guardado con exito el usuario
+								$userprofile = new UserProfile();
+								$userprofile->identificacion = $value['name_sucriptor'];
+								$userprofile->type_id = 'CEDULA CIUDADANIA';
+								$userprofile->names = $value['user_profile_names'];
+								$userprofile->birthdate = $value['user_profile_birthdate'];
+								$userprofile->birthplace = $value['user_profile_birthplace'];
+								//$userprofile->sex = null;
+								//$userprofile->civil_status = 'NULL';
+								$userprofile->adress = $value['user_profile_adress'];
+								$userprofile->city = $value['user_profile_city'];
+								//$userprofile->home = null;
+								$userprofile->neighborhood = $value['user_profile_neighborhhod'];
+								$userprofile->avatar = 'default.png';
+								$userprofile->description = 'default';
+								$userprofile->template = 'default';									
+								$userprofile->movil_number = $value['user_profile_movil_number'];
+								$userprofile->fix_number = $value['user_profile_fix_number'];
+								//$userprofile->date_start = null;
+								//$userprofile->code_adviser = null;
+								//$userprofile->zone = null;
+								$userprofile->user_id = $user->id;
+
+								if(empty($value['user_profile_movil_number'])){
+									$userprofile->movil_number = 0;
+									if($value['user_profile_fix_number'] == ' - ' || $value['user_profile_fix_number'] == '0 - 0'){								
+										$message[] = ' El siguiente perfil no tiene Telefonos '.$userprofile->identificacion.'.';
+									}										
 								}
 								
-								if($user->id){					
-									//se ha guardado con exito el usuario
-									$userprofile = new UserProfile();
-									$userprofile->identificacion = $value['name_sucriptor'];
-									$userprofile->type_id = 'CEDULA CIUDADANIA';
-									$userprofile->names = $value['user_profile_names'];
-									$userprofile->birthdate = $value['user_profile_birthdate'];
-									$userprofile->birthplace = $value['user_profile_birthplace'];
-									//$userprofile->sex = null;
-									//$userprofile->civil_status = 'NULL';
-									$userprofile->adress = $value['user_profile_adress'];
-									$userprofile->city = $value['user_profile_city'];
-									//$userprofile->home = null;
-									$userprofile->neighborhood = $value['user_profile_neighborhhod'];
-									$userprofile->avatar = 'default.png';
-									$userprofile->description = 'default';
-									$userprofile->template = 'default';									
-									$userprofile->movil_number = $value['user_profile_movil_number'];
-									$userprofile->fix_number = $value['user_profile_fix_number'];
-									//$userprofile->date_start = null;
-									//$userprofile->code_adviser = null;
-									//$userprofile->zone = null;
-									$userprofile->user_id = $user->id;
+								try {
+									$userprofile->save();
+								}catch (\Illuminate\Database\QueryException $e) {
+									$message[] = ' El siguiente perfil no se logro cargar '.$userprofile->identificacion.'.';							
+								}
 
-									if(empty($value['user_profile_movil_number'])){
-										$userprofile->movil_number = 0;
-										if($value['user_profile_fix_number'] == ' - ' || $value['user_profile_fix_number'] == '0 - 0'){								
-											$message = $message.' El siguiente perfil no tiene Telefonos '.$userprofile->identificacion.'.';
-										}										
-									}
-									
-									try {
-										$userprofile->save();
-									}catch (\Illuminate\Database\QueryException $e) {
-										$message = $message.' El siguiente perfil no se logro cargar '.$userprofile->identificacion.'.';							
-									}
+								//guardamos la suscripciòn
+								$suscription = new Suscription();
+								$suscription->code = $value['suscription_code'];
+								$suscription->date_suscription = $value['suscription_date_suscription'];
+								$suscription->date_expiration = $value['suscription_date_expiration'];
+								$suscription->price =  env('PRICE_SUSCRIPTION',130000);
+								$suscription->waytopay = 'EFECTIVO';
+								$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
+								$suscription->reason = $value['suscription_description'];//N provisional
+								$suscription->adviser_id = 3;
+								$suscription->friend_id = $user->id;
+								$suscription->state_id = 2;
 
-									//guardamos la suscripciòn
-									$suscription = new Suscription();
-									$suscription->code = $value['suscription_code'];
-									$suscription->date_suscription = $value['suscription_date_suscription'];
-									$suscription->date_expiration = $value['suscription_date_expiration'];
-									$suscription->price =  env('PRICE_SUSCRIPTION',130000);
-									$suscription->waytopay = 'EFECTIVO';
-									$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
-									$suscription->reason = $value['suscription_description'];//N provisional
-									$suscription->adviser_id = 3;
-									$suscription->friend_id = $user->id;
-									$suscription->state_id = 2;
+								try {
+									$suscription->save();
+								}catch (\Illuminate\Database\QueryException $e) {
+									$message[] = ' LA SIGUIENTE SUSCRIPCON no se logro cargar '.$userprofile->identificacion.'.';
+								}
+								$nro_suscription++;
 
-									try {
-										$suscription->save();
-									}catch (\Illuminate\Database\QueryException $e) {
-										$message = $message.' LA SIGUIENTE SUSCRIPCON no se logro cargar '.$userprofile->identificacion.'.';
-									}
-
-								}else{
-									$message = $message.'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'].'.';
-									
-								}							
+							}else{
+								$message[] = 'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'].'.';
+								
 							}
-							Session::flash('message', $message);
-							Session::flash('modulo', $moduledata);
-							//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);	
-							//return Redirect::back()->with('modulo',$moduledata);
-						}	
+													
+						}
+
+						foreach ($usuarios_borrar as $key => $value) {
+							$user= User::where('name', $key)->first();
+							if($user != null){
+								try {
+									$user->delete();
+								}catch (\Illuminate\Database\QueryException $e) {
+									$message[] = ' El usuario no se logro borrar '.$key.'.';					
+								}
+								$nro_descarga++;
+							}
+									
+						}
+
+						foreach ($abonos as $key => $value) {
+							//consultamos las suscripciones
+							$suscripcion= Suscription::where('code', $key)->first();												
+							if($suscripcion != null){
+								dd($value);
+							}
+						}
+
+						Session::flash('messageup', $message);
+						Session::flash('modulo', $moduledata);
+
+						$message[] = ' Las suscripciones cargadas fueròn: '.$nro_suscription;
+						$message[] = ' Las suscripciones descargadas fueròn: '.$nro_descarga;
+						//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);	
+						//return Redirect::back()->with('modulo',$moduledata);
 					});				
 					
 				}else{
-					$message = $message.' Archivo no se puede cargar, no es un archivo valido, es demaciado grande.';
-					Session::flash('error', $message);
+					$message[] = ' Archivo no se puede cargar, no es un archivo valido, es demaciado grande.';
+					Session::flash('errorup', $message);
 					Session::flash('modulo', $moduledata);
 					return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
 					//return Redirect::back()->with('modulo',$moduledata);
 				}
 
-				$message = $message.' La carga ha sido efectuada correctamente.';
-				Session::flash('message', $message);
+				$message[] = ' La carga ha sido efectuada correctamente.';
+
+				Session::flash('messageup', $message);
 				Session::flash('modulo', $moduledata);
 				return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
 				//return Redirect::back()->with('modulo',$moduledata);
@@ -2445,8 +2498,8 @@ class SuscriptionController extends Controller {
 			}		
 		}
 
-		$message = $message.' La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.';
-		Session::flash('error', $message);
+		$message[] = ' La carga no ha sido efectuada, ya que no se selecciono un archivo de carga.';
+		Session::flash('errorup', $message);
 		Session::flash('modulo', $moduledata);
 		return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
 		//return Redirect::back()->with('modulo',$moduledata);

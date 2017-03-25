@@ -186,6 +186,37 @@
 				</div>
                 
             @endif
+
+            @if(Session::has('messageup'))
+				<div class="alert alert-info alert-dismissible fade in" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>¡Modulo Suscriptores!</strong>  El proceso se ejecuto correctamente.<br>			
+					<ul>								
+						@foreach (Session::get('messageup') as $mensaje)
+							<li>{{ $mensaje }}</li>
+						@endforeach															
+					</ul>
+				</div>       
+                
+            @endif
+
+             @if(Session::has('errorup'))
+				<div class="alert alert-danger  alert-dismissible fade in" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<strong>¡Algo no va bien!</strong> Hay problemas con los datos diligenciados.<br><br>
+					<ul>								
+						@foreach (Session::get('errorup') as $mensaje)
+							<li>{{ $mensaje }}</li>
+						@endforeach															
+					</ul>
+				</div>
+                
+            @endif
+
             <!-- error llega cuando se esta recuperando la contraseña inadecuadamente -->
             @if(Session::has('error'))
 				<div class="alert alert-danger">
