@@ -1698,7 +1698,7 @@ class SuscriptionController extends Controller {
 		where('clu_license.suscription_id', $id)
 		->get()
 		->toArray();
-		
+
 		$moduledata['cnts'] = $cnts;
 		
 		$moduledata['bnes'] =
@@ -2306,28 +2306,28 @@ class SuscriptionController extends Controller {
 							foreach($hoja as $row){
 
 								if($hoja->getTitle() == 'CARGAR'){
-									//suacripciones
+									//suacripciones								
+
+									$fecha_nacimiento = ((25569 + ((((string)$row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
+									$inicio_suscripcion = ((25569 + ((((string)$row->fecha_de_suscripcion - 25569) * 86400) / 86400)) - 25569) * 86400;
+									$fin_suscripcion = ((25569 + ((((string)$row->fecha_de_terminacion - 25569) * 86400) / 86400)) - 25569) * 86400;
 									
-									$fecha_nacimiento = ((25569 + ((($row->fecha_de_nacimiento - 25569) * 86400) / 86400)) - 25569) * 86400;
-									$inicio_suscripcion = ((25569 + ((($row->fecha_de_suscripcion - 25569) * 86400) / 86400)) - 25569) * 86400;
-									$fin_suscripcion = ((25569 + ((($row->fecha_de_terminacion - 25569) * 86400) / 86400)) - 25569) * 86400;
-									
-									if(!array_key_exists($row->cedula,$usuarios)){
+									if(!array_key_exists((string)$row->cedula,$usuarios) && !empty($row->cedula)){
 										$usuarios[$row->cedula] = array(
-											'name_sucriptor'=>$row->cedula,
+											'name_sucriptor'=>(string)$row->cedula,
 											'email_suscriptor'=>$row->cedula.'@yopmail.com',
 											'user_profile_names' => $row->nombre_titular,
 											'user_profile_birthplace' => $row->de,								
-											'user_profile_birthdate' => gmdate("d-m-Y", $fecha_nacimiento),
+											'user_profile_birthdate' => gmdate("Y-m-d", $fecha_nacimiento),
 											'user_profile_adress' => $row->direccion_de_cobro,
 											'user_profile_city' => $row->ciudad_c,								
 											'user_profile_neighborhhod' => $row->barrio_c,
-											'user_profile_fix_number' => $row->tel_trabajo.' - '.$row->telefono_res,
-											'user_profile_movil_number' => $row->celular,								
+											'user_profile_fix_number' => (string)$row->tel_trabajo.' - '.(string)$row->telefono_res,
+											'user_profile_movil_number' => (string)$row->celular,								
 											'suscription_description' => $row->contrato,
-											'suscription_code' => $row->numero_suscripcion,
-											'suscription_date_suscription' => gmdate("d-m-Y", $inicio_suscripcion),
-											'suscription_date_expiration' => gmdate("d-m-Y", $fin_suscripcion),
+											'suscription_code' => $row->contrato,
+											'suscription_date_suscription' => gmdate("Y-m-d", $inicio_suscripcion),
+											'suscription_date_expiration' => gmdate("Y-m-d", $fin_suscripcion),
 											'suscription_bne1' => $row->nombre_gf1,
 											'suscription_bne2' => $row->nombre_gf2,
 											'suscription_bne3' => $row->nombre_gf3,
@@ -2349,15 +2349,14 @@ class SuscriptionController extends Controller {
 										);
 									}else{
 										$message[] = ' Cedula repetida: '.$row->cedula.'.';
-									}									
-
+									}
 								}
 
 								if($hoja->getTitle() == 'PAGOS'){
-									//verificamos que si tenga el numero_suscripcion
-									if($row->numero_suscripcion){
-										$abonos[$row->numero_suscripcion]=array(
-											'date_payment'=>$row->fecha_pago,
+									//verificamos que si tenga el numero_suscripcion									
+									if($row->contrato){
+										$abonos[$row->contrato]=array(
+											'date_payment'=>$row->fecha_pago,											
 											'payment'=>$row->pago,
 											'n_receipt'=>$row->numero_recibo
 										);
@@ -2366,10 +2365,11 @@ class SuscriptionController extends Controller {
 								}						
 							}
 						}
-						
+						//dd($usuarios);
 						$nro_suscription = 0; 
 						$nro_descarga = 0; 
-						$nro_abonos = 0; 
+						$nro_abonos = 0;
+						$carnet = null;
 						foreach ($usuarios as $key => $value) {
 								
 							$user = new User();
@@ -2383,7 +2383,7 @@ class SuscriptionController extends Controller {
 							try {
 								$user->save();
 							}catch (\Illuminate\Database\QueryException $e) {
-								$message[] = ' El Archivo no se logro cargar '.$user->name.'.';					
+								$message[] = ' La suscripciòn no se logro cargar '.$user->name.'.';					
 							}
 							
 							if($user->id){					
@@ -2396,8 +2396,9 @@ class SuscriptionController extends Controller {
 								$userprofile->birthplace = $value['user_profile_birthplace'];
 								//$userprofile->sex = null;
 								//$userprofile->civil_status = 'NULL';
+								$userprofile->state = 'Antioquia';
 								$userprofile->adress = $value['user_profile_adress'];
-								$userprofile->city = $value['user_profile_city'];
+								$userprofile->city = $value['user_profile_city'];								
 								//$userprofile->home = null;
 								$userprofile->neighborhood = $value['user_profile_neighborhhod'];
 								$userprofile->avatar = 'default.png';
@@ -2430,21 +2431,141 @@ class SuscriptionController extends Controller {
 								$suscription->date_expiration = $value['suscription_date_expiration'];
 								$suscription->price =  env('PRICE_SUSCRIPTION',130000);
 								$suscription->waytopay = 'EFECTIVO';
-								$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
+								$suscription->pay_interval = date ( 'Y-m-d' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
 								$suscription->reason = $value['suscription_description'];//N provisional
-								$suscription->adviser_id = 3;
+								$suscription->adviser_id = 60;//para producciòn es 60 UNION
 								$suscription->friend_id = $user->id;
 								$suscription->state_id = 2;
-
+								
 								try {
 									$suscription->save();
+									$nro_suscription++;
 								}catch (\Illuminate\Database\QueryException $e) {
 									$message[] = ' LA SIGUIENTE SUSCRIPCON no se logro cargar '.$userprofile->identificacion.'.';
 								}
-								$nro_suscription++;
+
+								//creamos el carnet
+								$carnet = new License();
+								$carnet->type = 'suscripcion';
+								$carnet->price = 0;
+								$carnet->date = $value['suscription_date_suscription'];
+								$carnet->suscription_id = $suscription->id;
+
+								try {
+									$carnet->save();
+									
+								}catch (\Illuminate\Database\QueryException $e) {
+									$message[] = ' El siguiente carnet no se logro cargar '.$userprofile->identificacion.'.';
+								}
+
+								
 
 							}else{
-								$message[] = 'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'].'.';
+								//$message[] = 'No entra, Ya esta en la base de datos:'. $value['name_sucriptor'].'.';
+								
+							}
+
+							//BENEFICIARIOS
+							if($carnet != null){
+								
+								if(!empty($value['suscription_bne1'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne1'];//explode(' ',$value['suscription_bne1'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne2'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne2'];//explode(' ',$value['suscription_bne2'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne3'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne3'];//explode(' ',$value['suscription_bne3'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne4'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne4'];//explode(' ',$value['suscription_bne4'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne5'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne5'];//explode(' ',$value['suscription_bne5'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne6'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne6'];//explode(' ',$value['suscription_bne6'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
+								if(!empty($value['suscription_bne7'])){
+									$beneficiario = new Beneficiary();
+									$beneficiario->names = $value['suscription_bne7'];//explode(' ',$value['suscription_bne7'])[0];
+									$beneficiario->surnames = '.';
+									$beneficiario->state= 'Pago por suscripción';
+									$beneficiario->alert= '#dff0d8';
+									$beneficiario->price= 0;
+									$beneficiario->license_id= $carnet->id;
+									try {
+										$beneficiario->save();
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente beneficiario no se logro cargar '.$beneficiario->names .'.';
+									}
+								}
 								
 							}
 													
@@ -2455,19 +2576,36 @@ class SuscriptionController extends Controller {
 							if($user != null){
 								try {
 									$user->delete();
+									$nro_descarga++;
 								}catch (\Illuminate\Database\QueryException $e) {
 									$message[] = ' El usuario no se logro borrar '.$key.'.';					
 								}
-								$nro_descarga++;
+								
 							}
 									
 						}
 
 						foreach ($abonos as $key => $value) {
-							//consultamos las suscripciones
-							$suscripcion= Suscription::where('code', $key)->first();												
+							//consultamos las suscripciones							
+							$suscripcion= Suscription::where('code', $key)->first();							
 							if($suscripcion != null){
-								dd($value);
+								//hay suscripciòn
+								$abono = new Payment($value);
+								$abono->suscription_id = $suscripcion->id;								
+								//preguntamos por el numero de recivo
+								$abono_base= Payment::where('n_receipt', $value['n_receipt'])->first();
+								if( $abono_base == null){
+									//si se puede guardar
+									try {										
+										$abono->save();
+										$nro_abonos++;
+									}catch (\Illuminate\Database\QueryException $e) {
+										$message[] = ' El siguiente abono no se logro cargar '. $key .'.';
+									}
+								}else{
+									$message[] = ' El siguiente abono ya existe '. $key .'. Nùmero recibo: '.$value['n_receipt'].'.';
+								}
+
 							}
 						}
 
@@ -2476,6 +2614,7 @@ class SuscriptionController extends Controller {
 
 						$message[] = ' Las suscripciones cargadas fueròn: '.$nro_suscription;
 						$message[] = ' Las suscripciones descargadas fueròn: '.$nro_descarga;
+						$message[] = ' Abonos cargados fueròn: '.$nro_abonos;
 						//return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);	
 						//return Redirect::back()->with('modulo',$moduledata);
 					});				
