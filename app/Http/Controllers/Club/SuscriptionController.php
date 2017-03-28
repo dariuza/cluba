@@ -2446,7 +2446,7 @@ class SuscriptionController extends Controller {
 
 								//creamos el carnet
 								$carnet = new License();
-								$carnet->type = 'suscripcion';
+								$carnet->type = 'suscription';
 								$carnet->price = 0;
 								$carnet->date = $value['suscription_date_suscription'];
 								$carnet->suscription_id = $suscription->id;
