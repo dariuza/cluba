@@ -660,6 +660,7 @@ class SuscriptionController extends Controller {
 		
 		return view('club.suscripcion.agregar');
 	}
+
 	//función para guardar usuarios con su perfil
 	public function postSave(Request $request){
 		
@@ -1111,6 +1112,7 @@ class SuscriptionController extends Controller {
 						$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
 					}
 				}
+				dd($array);
 				foreach($array as $vector){
 					foreach($vector as $value){
 						if(!empty($value['names']) && !empty($value['surnames'])){
@@ -1184,6 +1186,8 @@ class SuscriptionController extends Controller {
 				where('clu_license.suscription_id', $request->input()['suscription_id'])
 				->get()
 				->toArray();
+
+				//dd($cnts);
 				
 				$bandera_cnt = true;//para permitir solo un carnet con cero beneficiarios				
 				foreach( $cnts as $cnt){
@@ -1197,7 +1201,7 @@ class SuscriptionController extends Controller {
 						//el total es cero
 						if($bandera_cnt){
 							$bandera_cnt = false;
-						}else{
+						}else{							
 							License::where('id', $cnt['id'])->delete();
 						}
 					}					
