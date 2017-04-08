@@ -2359,7 +2359,8 @@ class SuscriptionController extends Controller {
 								if($hoja->getTitle() == 'PAGOS'){
 									//verificamos que si tenga el numero_suscripcion									
 									if($row->contrato){
-										$abonos[$row->contrato]=array(
+										$abonos[]=array(
+											'contrato'=>$row->contrato,
 											'date_payment'=>$row->fecha_pago,											
 											'payment'=>$row->pago,
 											'n_receipt'=>$row->numero_recibo
@@ -2591,7 +2592,7 @@ class SuscriptionController extends Controller {
 
 						foreach ($abonos as $key => $value) {
 							//consultamos las suscripciones							
-							$suscripcion= Suscription::where('code', $key)->first();							
+							$suscripcion= Suscription::where('code', $value['contrato'])->first();							
 							if($suscripcion != null){
 								//hay suscripciòn
 								$abono = new Payment($value);
