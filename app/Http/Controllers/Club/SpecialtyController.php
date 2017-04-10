@@ -100,7 +100,7 @@ class SpecialtyController extends Controller {
 	}
 	
 	//función para guardar usuarios con su perfil
-	public function postSave(Request $request){
+	public function postSave(Request $request){		
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');		
 		foreach($request->input() as $key=>$value){			
@@ -123,8 +123,9 @@ class SpecialtyController extends Controller {
 			$specialty->name = $request->input()['especialidad'];
 			$specialty->code = $request->input()['codigo'];
 			$specialty->description = $request->input()['descripcion'];			
-			if($request->input()['edit']){
-				//se pretende actualizar el rol
+			if($request->input()['edit'] == 'TRUE'){
+
+				//se pretende actualizar la especialidad
 				try {
 					$specialtyAffectedRows = Specialty::where('id', $request->input()['specialty_id'])->update(array(
 						'name' => $specialty->name,
@@ -140,7 +141,7 @@ class SpecialtyController extends Controller {
 				Session::flash('_old_input.codigo', $specialty->code);
 				Session::flash('_old_input.descripcion', $specialty->description);
 				Session::flash('_old_input.specialty_id', $request->input()['specialty_id']);
-				Session::flash('_old_input.edit', true);
+				Session::flash('_old_input.edit', 'true');
 				Session::flash('titulo', 'Editar');
 			
 				return Redirect::to('especialidad/agregar')->withInput()->with('message', 'Especialidad editada exitosamente');
@@ -169,7 +170,7 @@ class SpecialtyController extends Controller {
 		Session::flash('_old_input.codigo', $specialty[0]['code']);
 		Session::flash('_old_input.descripcion', $specialty[0]['description']);
 		Session::flash('_old_input.specialty_id', $id);
-		Session::flash('_old_input.edit', true);
+		Session::flash('_old_input.edit', 'true');
 		Session::flash('titulo', 'Editar');
 		
 		return Redirect::to('especialidad/agregar');

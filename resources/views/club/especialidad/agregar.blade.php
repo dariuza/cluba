@@ -19,7 +19,7 @@
 				@endif			
 				@if(Session::has('message'))
 					<div class="alert alert-info">
-						<strong>¡Ingreso de Especialidad!</strong> El rol se ha agregado adecuadamente.<br><br>
+						<strong>¡Ingreso de Especialidad!</strong> La especialidad se ha agregado adecuadamente.<br><br>
 						<ul>								
 							<li>{{ Session::get('message') }}</li>
 						</ul>

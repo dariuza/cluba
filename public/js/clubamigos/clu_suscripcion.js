@@ -548,6 +548,7 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	
 	document.getElementsByClassName("inputs_c_"+crnt)[0].appendChild(node);
 	
+	$('.btn_more').off("click");//borramos las anteriores eventos de la clase
 	$('.btn_more').click(function(){
 		if(this.innerHTML == "Información Adicional"){
 			//se quiere mostrar los datos
