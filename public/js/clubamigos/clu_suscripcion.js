@@ -822,15 +822,11 @@ clu_suscripcion.prototype.carnetRespuesta = function(result) {
 					node.appendChild(n_group);
 					
 					//node.appendChild(n_group_drop);
-					
-					
 					document.getElementsByClassName("tab_cnt_bnt2")[0].appendChild(node);
-					
 					
 				}	
 			}
 			$( "input[type=checkbox]" ).prop( "checked", false );
-			
 		}
 	}
 	
