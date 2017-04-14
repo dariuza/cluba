@@ -66,7 +66,6 @@ clu_suscripcion.prototype.verRespuesta = function(result) {
 	$("#suscripcion_ver_modal .modal-body .row_cen0").html($("#suscripcion_ver_modal .modal-body .row_cen0").html()+'<div class="col-md-5" >Referencia: '+clu_suscripcion.table.rows('.selected').data()[0].reference+'</div>');
 	$("#suscripcion_ver_modal .modal-body .row_cen0").html($("#suscripcion_ver_modal .modal-body .row_cen0").html()+'<div class="col-md-7" >Telefono Referencia: '+clu_suscripcion.table.rows('.selected').data()[0].reference_phone+'</div>');
 	
-	
 	$("#suscripcion_ver_modal .modal-body .row_cen").html($("#suscripcion_ver_modal .modal-body .row_cen").html()+'<div class="col-md-12" ><hr size="1"/></div>');
 	$("#suscripcion_ver_modal .modal-body .row_cen").html($("#suscripcion_ver_modal .modal-body .row_cen").html()+'<div class="col-md-12" style="text-align: center;" ><b>ABONOS</b></div>');
 	if(result.respuesta){

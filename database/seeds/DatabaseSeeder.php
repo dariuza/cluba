@@ -23,9 +23,10 @@ class DatabaseSeeder extends Seeder {
 		$this->call('OptionTableSeeder');
 		$this->call('PermitTableSeeder');	
 		$this->call('CluStateTableSeeder');
-		//$this->call('CluSuscriptionTableSeeder');
-		//$this->call('CluLicenseTableSeeder');
+		$this->call('CluSuscriptionTableSeeder');
+		$this->call('CluLicenseTableSeeder');
 		$this->call('EntityTableSeeder');
+		$this->call('SubEntityTableSeeder');
 		$this->call('SpecialtyTableSeeder');		
 		$this->call('DepartmentTableSeeder');
 		$this->call('CityTableSeeder');		

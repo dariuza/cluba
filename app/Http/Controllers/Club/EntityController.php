@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers\Club;
 
 use Validator;
+use App\Core\Club\Entity;
+use App\Core\Club\Subentity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -31,8 +33,7 @@ class EntityController extends Controller {
 	public function getIndex($id=null, $modulo=null, $descripcion= null, $id_aplicacion = null, $categoria = null){
 		
 	}
-	public function getGeneral(){
-		
+	public function getGeneral(){		
 		
 	}
 	
@@ -42,6 +43,7 @@ class EntityController extends Controller {
 		return Redirect::to('entidad/listar');
 	}
 	public function getListar(){
+		
 		$moduledata['fillable'] = ['Nombre','Nit','Representante Legal','Contacto RLegal','Telefono 1','Telefono 2','Correo Electrónico'];
 		//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
 		$url = explode("/", Session::get('_previous.url'));
@@ -58,6 +60,32 @@ class EntityController extends Controller {
 		return view('club.entidad.listar');
 	}
 	public function getListarajax(Request $request){
+		$moduledata['total']=Entity::count();
+		//realizamos la consulta
+		if(!empty($request->input('search')['value'])){
+			Session::flash('search', $request->input('search')['value']);			
+			
+			$moduledata['entidades']=
+			Entity::			
+			where(function ($query) {
+				$query->where('clu_entity.business_name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.nit', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.legal_representative', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.contact_representative', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.phone1_contact', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.phone2_contact', 'like', '%'.Session::get('search').'%')	
+				->orWhere('clu_entity.email_contact', 'like', '%'.Session::get('search').'%');			
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->get();		
+			$moduledata['filtro'] = count($moduledata['entidades']);
+		}else{			
+			$moduledata['entidades']=\DB::table('clu_entity')->skip($request->input('start'))->take($request->input('length'))->get();
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+		
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['entidades']]);
 		
 	}
 	
@@ -75,6 +103,32 @@ class EntityController extends Controller {
 	}
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		
+	}
+
+	public function postVer(Request $request){
+
+		$entidad =
+		Entity::		
+		where('clu_entity.id', $request->input()['id'])		
+		->get()
+		->toArray();
+		
+		$array['entidad'] = $entidad;
+
+		$sucursales =
+		Subentity::		
+		where('clu_subentity.entity_id', $request->input()['id'])		
+		->get()
+		->toArray();
+		
+		$array['sucursales'] = $sucursales;
+
+		if(count($entidad)){
+			return response()->json(['respuesta'=>true,'data'=>$array]);
+		}
+		
+
+		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
 	
 	public function postBuscar(Request $request){

@@ -148,7 +148,7 @@
 
 @section('modal')
 
-	<div class="modal fade" id="especialista_ver_modal" role="dialog" data-backdrop="false">
+	<div class="modal fade" id="entidad_ver_modal" role="dialog" data-backdrop="false">
 	    <div class="modal-dialog">	    
 	    <!-- Modal content-->      
 	      	<div class="modal-content">
@@ -159,10 +159,22 @@
 				<div class = "alerts-module"></div>				
 							
 				<div class="modal-body">
-					<div class="row ">
-						<div class="col-md-12 col-md-offset-0 row_izq">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#tab1" data-toggle="tab">ENTIDAD</a></li>
+						<li role="presentation"><a href="#tab2" data-toggle="tab">SUCURSALES</a></li>					
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab1"></div>						
+							</div>
 						</div>
-					</div>
+						<div class="tab-pane fade " id="tab2">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab2"></div>						
+							</div>
+						</div>
+					</div>					
 				</div>
 				<div class="modal-footer">		         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
@@ -287,8 +299,40 @@
 	
 @endsection
 
-@section('script')
-	
-	<script type="text/javascript">		
+@section('script')	
+	<script type="text/javascript">
+		javascript:clu_entidad.table = $('#example').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('entidad/listarajax')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [				   
+		        { "data": "business_name"},        	            
+		        { "data": "nit" },
+		        { "data": "legal_representative" },
+		        { "data": "contact_representative" },		        
+		        { "data": "phone1_contact" },
+		        { "data": "phone2_contact" },
+		        { "data": "email_contact" }
+		                    
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    }		    
+		});
+		@if(Session::has('filtro'))
+			clu_entidad.table.search( "{{Session::get('filtro')}}" ).draw();
+		@endif
+		javascript:$('#example tbody').on( 'click', 'tr', function () {
+		    if ($(this).hasClass('selected')) {
+		        $(this).removeClass('selected');
+		    }
+		    else {
+		    	clu_entidad.table.$('tr.selected').removeClass('selected');
+		        $(this).addClass('selected');
+		    }
+		});
 	</script>
 @endsection

@@ -11,7 +11,7 @@ class Entity extends Model
      */
 	protected $table = 'clu_entity';
 	
-	protected $fillable =['id','entity','identification','adress','description'];
+	protected $fillable =['id','business_name','nit','legal_representative','contact_representative','phone1_contact','phone2_contact','email_contact','description','active'];
 			
 }
 

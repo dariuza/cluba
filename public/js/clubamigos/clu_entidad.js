@@ -16,7 +16,7 @@ clu_entidad.prototype.opt_select = function(controlador,metodo) {
 	if(clu_entidad.table.rows('.selected').data().length){		
 		window.location=metodo + "/" + clu_entidad.table.rows('.selected').data()[0]['id'];
 	}else{
-		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong>Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_edit_perfil" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong>Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
 	}
 };
 
@@ -26,17 +26,31 @@ clu_entidad.prototype.opt_ver = function() {
   		datos['id'] = clu_entidad.table.rows('.selected').data()[0].id;  		
   		seg_ajaxobject.peticionajax($('#form_ver').attr('action'),datos,"clu_entidad.verRespuesta");
 	}else{
-		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
-	}   
-	
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_edit_perfil" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+	}	
 };
 
 clu_entidad.prototype.verRespuesta = function(result) {
-	$("#especialidad_ver_modal .modal-body .row_izq").html('');
-	$("#especialidad_ver_modal .modal-body .row_izq").html('<div class="col-md-12" >Especialidad: '+clu_entidad.table.rows('.selected').data()[0].name+'</div>');
-	$("#especialidad_ver_modal .modal-body .row_izq").html($("#especialidad_ver_modal .modal-body .row_izq").html()+'<div class="col-md-12" >Descripción: '+clu_entidad.table.rows('.selected').data()[0].description+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html('');
+	$("#entidad_ver_modal .modal-body .tab1").html('<div class="col-md-12" >Entidad: '+clu_entidad.table.rows('.selected').data()[0].business_name+' - NIT: '+clu_entidad.table.rows('.selected').data()[0].nit+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Representante Legal: '+clu_entidad.table.rows('.selected').data()[0].legal_representative+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Contacto Representante Legal: '+clu_entidad.table.rows('.selected').data()[0].contact_representative+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Telèfono 1: '+clu_entidad.table.rows('.selected').data()[0].phone1_contact+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Telèfono 2: '+clu_entidad.table.rows('.selected').data()[0].phone2_contact+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Correo Electrònico: '+clu_entidad.table.rows('.selected').data()[0].email_contact+'</div>');
+	$("#entidad_ver_modal .modal-body .tab1").html($("#entidad_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Descripciòn: '+clu_entidad.table.rows('.selected').data()[0].description+'</div>');
 	
-	$("#especialidad_ver_modal").modal();
+	$("#entidad_ver_modal .modal-body .tab2").html('');
+	if(result.respuesta){
+		if(result.data.sucursales){
+			$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Nombre</div> <div class="col-md-2">Direcciòn</div> <div class="col-md-2">Telèfonos</div> <div class="col-md-5">Email</div> <b> </div>');
+			for(var i = 0; i < result.data.sucursales.length; i++){
+				$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" > <div class="col-md-1">'+(i+1)+'</div> <div class="col-md-2">'+result.data.sucursales[i].sucursal_name+'</div> <div class="col-md-2">'+result.data.sucursales[i].adress+'</div> <div class="col-md-2">'+result.data.sucursales[i].phone1_contact+' - '+result.data.sucursales[i].phone2_contact+'</div> <div class="col-md-5">'+result.data.sucursales[i].email_contact+'</div> </div>');
+			}
+		}
+	}
+	//result.data.entidad[0].business_name
+	$("#entidad_ver_modal").modal();
 };
 
 clu_entidad.prototype.opt_agregar = function() {
@@ -137,7 +151,5 @@ clu_entidad.prototype.add_subent = function(add) {
 	});	
 
 }
-
-
 
 var clu_entidad = new clu_entidad();
