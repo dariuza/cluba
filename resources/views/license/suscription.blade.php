@@ -6,8 +6,7 @@
 	</head>
 	
 	{{ Html::style('css/license.css')}}	
-	<body>	
-			
+	<body>			
 		<div class ="cnt_conteiner">		
 			@php ($c=0)			
 			@foreach ($cnts as $cnt)
