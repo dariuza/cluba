@@ -20,8 +20,8 @@
 						<div class = "bnt_body">
 							<div class = "head_titular"> <font style = "font-size: 11px;"> TITULAR</font> </div>
 							<div class = "cnt_titular">
-								<div> <font style = "font-size: 9px;"><b> {{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }} </b></font> </div> 
-								<div> <font style = "font-size: 9px;"> C.C. {{$suscription['identificacion_fr'] }} </font></div>
+								<div> <font style = "font-size: 12px;"><b> {{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }} </b></font> </div> 
+								<div> <font style = "font-size: 12px;"> C.C. {{$suscription['identificacion_fr'] }} </font></div>
 							</div>
 							<div style = "margin-left: 5%;margin-bottom: 5px;">
 								<div > <font ><b> BENEFICIARIOS </b></font> </div>															
@@ -35,10 +35,10 @@
 							</div>
 							<div class = "foot">
 								<div class="info_foot">
-									<span>CUPO N° </span>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <b> <span>VENCE</span></b>         
+									<span>CUPO N° </span>     &nbsp;&nbsp;&nbsp;   <b> <span>VENCE</span></b>         
 								</div>
 								<div class="info_foot" style = "font-size: 15px;">
-									<span style = "font-size: 15px;"> <b> {{ $suscription['code']}} </b> <b></span>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{date('j-m-Y',strtotime($suscription['date_expiration']))}}</b>
+									<span style = "font-size: 15px;"> <b> {{ $suscription['code']}} </b> <b></span>     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{date('j-m-Y',strtotime($suscription['date_expiration']))}}</b>
 								</div>
 							</div>
 							

@@ -24,6 +24,7 @@ font{
     border-left-style:dotted;
     border-left-style:dotted;
     border-right-style:dotted;
+    border-color: #b7b7b7;
     
 }
 .bnt_container{
@@ -71,10 +72,10 @@ font{
 }
 .cnt_bnt{
 	margin-left: 2%;
-	font-size: 8px !important;	
+	font-size: 11px !important;	
 }
 .cnt_benes{
-	height:108px;
+	height:102px;
 	;
 }
 .foot{
@@ -82,7 +83,7 @@ font{
 	font-size: 10px;	
 }
 .info_foot{	
-	margin-left: 15px !important;
+	margin-left: 9px !important;
 	font-size: 12px;
 }
 .foot_info{

@@ -2246,6 +2246,44 @@ class SuscriptionController extends Controller {
 		return Redirect::to('suscripcion/listar');
 	}
 
+	public function getCarnets($datos = null){
+		//creación de array de id de suscripción		
+		$ids = explode('_',$datos);
+		
+		$array = array();
+		$i=0;
+		foreach($ids as $key=>$value){
+			$array[$i]['suscription'] = Suscription::where('clu_suscription.id', (int)$value)
+			->select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			->get()[0]->toArray();
+			
+			$cnts =
+			License::
+			where('clu_license.suscription_id', $value)
+			->get()
+			->toArray();
+			$array[$i]['cnts'] = $cnts;
+			
+			$array[$i]['bnes'] =
+			Beneficiary::
+			where(function ($query) use ($cnts){
+				foreach($cnts as $key => $value){
+					$query->orwhere('clu_beneficiary.license_id', $value['id']);
+				}
+			})
+			->orderBy('license_id', 'asc')
+			->get()
+			->toArray();
+			
+			$i++;
+		}
+		$array['data'] = $array;
+		$pdf = \PDF::loadView('license.suscriptions',$array);
+		return $pdf->download('Carnest'.date("Y-m-d H:i:s").'.pdf');
+	}
+
 	public function postCargasus(Request $request){
 
 		$moduledata['modulo'] = 'suscripcion';
@@ -2647,47 +2685,6 @@ class SuscriptionController extends Controller {
 		Session::flash('modulo', $moduledata);
 		return Redirect::to('suscripcion/listar')->with('modulo',$moduledata);
 		//return Redirect::back()->with('modulo',$moduledata);
-
-
-				
-	}
-	
-	public function getCarnets($datos = null){
-		//creación de array de id de suscripción		
-		$ids = explode('_',$datos);
-		
-		$array = array();
-		$i=0;
-		foreach($ids as $key=>$value){
-			$array[$i]['suscription'] = Suscription::where('clu_suscription.id', (int)$value)
-			->select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone')
-			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
-			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
-			->get()[0]->toArray();
-			
-			$cnts =
-			License::
-			where('clu_license.suscription_id', $value)
-			->get()
-			->toArray();
-			$array[$i]['cnts'] = $cnts;
-			
-			$array[$i]['bnes'] =
-			Beneficiary::
-			where(function ($query) use ($cnts){
-				foreach($cnts as $key => $value){
-					$query->orwhere('clu_beneficiary.license_id', $value['id']);
-				}
-			})
-			->orderBy('license_id', 'asc')
-			->get()
-			->toArray();
-			
-			$i++;
-		}
-		$array['data'] = $array;
-		$pdf = \PDF::loadView('license.suscriptions',$array);
-		return $pdf->download('Carnest'.date("Y-m-d H:i:s").'.pdf');
 	}
 	
 	public function postConsultarcity(Request $request){		

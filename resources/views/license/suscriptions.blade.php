@@ -21,8 +21,8 @@
 							<div class = "bnt_body">
 								<div class = "head_titular"> <b><font style = "font-size: 11px;"> TITULAR</font></b> </div>
 								<div class = "cnt_titular">
-									<div> <font style = "font-size: 9px;" ><b> {{ $dato['suscription']['names_fr'].' '.$dato['suscription']['surnames_fr'] }} </b></font> </div> 
-									<div> <font style = "font-size: 9px;" > C.C. {{$dato['suscription']['identificacion_fr'] }} </font></div>
+									<div> <font style = "font-size: 12px;" ><b> {{ $dato['suscription']['names_fr'].' '.$dato['suscription']['surnames_fr'] }} </b></font> </div> 
+									<div> <font style = "font-size: 12px;" > C.C. {{$dato['suscription']['identificacion_fr'] }} </font></div>
 								</div>
 								<div style = "margin-left: 5%;margin-bottom: 5px;">
 									<div > <font ><b> BENEFICIARIOS </b></font> </div>															
