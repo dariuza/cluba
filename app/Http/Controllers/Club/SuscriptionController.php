@@ -1686,7 +1686,13 @@ class SuscriptionController extends Controller {
 		//consultamos el ciudad
 		$city_id = \DB::table('clu_city')
 		->where('city',$suscripcion[0]['city'])
-		->get()[0]->id;
+		->get();
+		
+		if(empty($city_id)){
+			$city_id = 180;	
+		}else{
+			$city_id = $city_id[0]->id; 	
+		}		
 		
 		//abonos
 		//consultar los pagos de la suscripcción
