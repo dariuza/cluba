@@ -7,7 +7,22 @@ function clu_entidad() {
 clu_entidad.prototype.onjquery = function() {
 };
 
-clu_entidad.prototype.validateNuevaEntidad = function() {	
+clu_entidad.prototype.validateNuevaEntidad = function() {
+	if($("#form_nuevo_entidad :input")[1].value =="" || $("#form_nuevo_entidad :input")[5].value ==""){
+		$('#entidad_nuevo_modal .alerts-module').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>!Envio Fallido!</strong></br> Faltan campos por diligenciar.</div>');
+		//pintar los inputs problematicos
+		for(var i=0; i < $("#form_nuevo_entidad :input").length ; i++){
+	        if( i==1 || i==5 ) {
+	            if($("#form_nuevo_entidad :input")[i].value ==""){
+	                $($("#form_nuevo_entidad :input")[i]).addClass('input_danger');
+	            }	            
+	        }
+        }
+        $(".close_alert_product").on('click', function () { 
+        	$("#form_nuevo_entidad :input").removeClass("input_danger");        	
+        });
+		return false;
+	}
 	return true;
 };
 

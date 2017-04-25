@@ -98,7 +98,83 @@ class EntityController extends Controller {
 		
 	}
 	//función para guardar usuarios con su perfil
-	public function postSave(Request $request){		
+	public function postSave(Request $request){
+
+		//preparación de datos
+
+		$messages = [
+			'required' => 'El campo :attribute es requerido.',				
+		];
+		
+		$rules = array(
+			'nombre'    => 'required',
+			'nit' => 'required',
+			//'titular_id' => 'required',
+		);
+		
+		$validator = Validator::make($request->input(), $rules, $messages);
+		if ($validator->fails()) {
+			return Redirect::back()->withErrors($validator)->withInput();
+		}else{
+			$entidad = new Entity();
+			$entidad->business_name = strtoupper($request->input()['nombre']);
+			$entidad->nit = $request->input()['nit'];
+			$entidad->legal_representative = strtoupper($request->input()['representante_legal']);
+			$entidad->contact_representative = strtoupper($request->input()['contancto_rlegal']);
+			$entidad->phone1_contact = $request->input()['telefono1'];
+			$entidad->phone2_contact = $request->input()['telefono2'];
+			$entidad->email_contact = $request->input()['correo'];
+			$entidad->description = $request->input()['descripcion'];
+
+			if($request->input()['edit']){
+				//editar entidad
+			}else{
+				//nueva entidad
+				try {
+					$entidad->save();					
+				}catch (\Illuminate\Database\QueryException $e) {										
+					return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
+				}	
+			}
+
+			//agregar las suscripciones
+			$array = Array();
+			foreach($request->input() as $key=>$value){
+				if(strpos($key,'subent_') !== false){
+					$vector=explode('_',$key);
+					$n=count($vector);
+					$id_bne = end($vector);
+					//$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
+					if($vector[1] != 'nombre'){
+						$array[$id_bne][$vector[1]] = ($value);
+					}else{
+						$array[$id_bne][$vector[1]] = strtoupper($value);
+					}
+					
+				}
+			}
+			
+			foreach($array as $key => $vector){
+				$subentidad = new Subentity();
+				if($vector['nombre'] != '' ) {
+					//podemos guardar
+					$subentidad->sucursal_name = $vector['nombre'];
+					$subentidad->adress = $vector['direccion'];
+					$subentidad->phone1_contact = $vector['telefonouno'];
+					$subentidad->phone2_contact = $vector['telefonodos'];
+					$subentidad->email_contact = $vector['email'];
+					$subentidad->entity_id =$entidad->id;
+					try {
+						$subentidad->save();					
+					}catch (\Illuminate\Database\QueryException $e) {										
+						return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
+					}	
+				}
+				
+			}
+
+			return Redirect::to('entidad/listar')->withInput()->with('message', 'Entidad agregada exitosamente');
+		}
 		
 	}
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){

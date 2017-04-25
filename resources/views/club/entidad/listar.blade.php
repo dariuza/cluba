@@ -108,7 +108,7 @@
 			
 			@if(Session::has('message'))
 				<div class="alert alert-info">
-					<strong>¡Modulo Especialistas!</strong> La operación se ha realizado adecuadamente.<br><br>
+					<strong>¡Modulo Entidad!</strong> La operación se ha realizado adecuadamente.<br><br>
 					<ul>								
 						<li>{{ Session::get('message') }}</li>
 					</ul>
@@ -216,8 +216,8 @@
 												{!! Form::text('representante_legal', old('representante_legal'), array('class' => 'form-control','placeholder'=>'Ingresa el Representante Legal'))!!}
 											</div>
 											<div class="col-md-12">
-												{!! Form::label('telefono1', 'Telegono 2', array('class' => 'col-md-12 control-label solo_numeros')) !!}
-												{!! Form::text('telefono1', old('telefono1'), array('class' => 'form-control','placeholder'=>'Ingresa un número telefonico'))!!}
+												{!! Form::label('telefono1', 'Telefono 1', array('class' => 'col-md-12 control-label ')) !!}
+												{!! Form::text('telefono1', old('telefono1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa un número telefonico'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('correo', 'Correo de Contacto', array('class' => 'col-md-12 control-label')) !!}
@@ -226,16 +226,16 @@
 										</div>
 										<div class="row col-md-6">
 											<div class="col-md-12">
-												{!! Form::label('nit', 'NIT', array('class' => 'col-md-12 control-label solo_numeros')) !!}
-												{!! Form::text('nit', old('nit'), array('class' => 'form-control','placeholder'=>'Ingresa el Nit'))!!}
+												{!! Form::label('nit', 'NIT', array('class' => 'col-md-12 control-label ')) !!}
+												{!! Form::text('nit', old('nit'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el Nit'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('contancto_rlegal', 'Contancto Representate Legal', array('class' => 'col-md-12 control-label')) !!}
 												{!! Form::text('contancto_rlegal', old('contancto_rlegal'), array('class' => 'form-control','placeholder'=>'Ingresa el contacto del Representante Legal'))!!}
 											</div>
 											<div class="col-md-12">
-												{!! Form::label('telefono2', 'Telegono 2', array('class' => 'col-md-12 control-label solo_numeros')) !!}
-												{!! Form::text('telefono2', old('telefono2'), array('class' => 'form-control','placeholder'=>'Ingresa un número telefonico'))!!}
+												{!! Form::label('telefono2', 'Telefono 2', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('telefono2', old('telefono2'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa un número telefonico'))!!}
 											</div>
 										</div>
 										<div class="row col-md-12">
@@ -244,6 +244,8 @@
 												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows'=>'4','placeholder'=>'Ingresa las Descripciónes u Observaciones')) !!}
 											</div>
 										</div>
+										{!! Form::hidden('edit', old('edit')) !!}
+										{!! Form::hidden('entity_id', old('entity_id')) !!}
 									</div>
 								</div>
 							</div>
@@ -334,5 +336,16 @@
 		        $(this).addClass('selected');
 		    }
 		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});		
+
+
 	</script>
 @endsection
