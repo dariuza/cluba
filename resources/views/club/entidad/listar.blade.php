@@ -96,7 +96,8 @@
 	<div class="col-md-12 col-md-offset-0">
 	<div class = "alerts">
 			@if (count($errors) > 0)
-				<div class="alert alert-danger">
+				<div class="alert alert-danger alert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>Algo no va bien con el Modulo!</strong> Hay problemas con con los datos diligenciados.<br><br>
 					<ul>
 						@foreach ($errors->all() as $error)
@@ -107,7 +108,8 @@
 			@endif
 			
 			@if(Session::has('message'))
-				<div class="alert alert-info">
+				<div class="alert alert-info alert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>¡Modulo Entidad!</strong> La operación se ha realizado adecuadamente.<br><br>
 					<ul>								
 						<li>{{ Session::get('message') }}</li>
@@ -117,7 +119,8 @@
             @endif
             <!-- error llega cuando se esta recuperando la contraseña inadecuadamente -->
             @if(Session::has('error'))
-				<div class="alert alert-danger">
+				<div class="alert alert-danger alert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>¡Algo no va bien!</strong> Hay problemas con los datos diligenciados.<br><br>
 					<ul>								
 						<li>{{ Session::get('error') }}</li>								
