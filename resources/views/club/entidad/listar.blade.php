@@ -47,10 +47,10 @@
 	            		@if($opc['vista'] == 'listar')	            		
 	            			@if($opc['accion'] == 'actualizar' OR $opc['accion'] == 'borrar')
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
-		            				<a href="javascript:clu_entidad.opt_select('{{json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador}}','{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}')" class="site_title site_title2" style = "text-decoration: none; ">
+		            				<a href="javascript:clu_entidad.opt_edt()" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
-		            			</div>
+		            			</div>		
 		            		@elseif($opc['accion'] == 'crear')	            			
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="javascript:clu_entidad.opt_agregar()" class="site_title site_title2" style = "text-decoration: none; ">
@@ -80,8 +80,7 @@
 	            			@else
 	            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">		
 		            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
-		            				<i class="{{$opc['icono']}}"></i>	            				           				
-		            				<!--  <span >{{$opc[$key]}}</span> -->	            				
+		            				<i class="{{$opc['icono']}}"></i>		            				            				
 		            			</a>
 	            			</div>
 	            			
@@ -146,6 +145,7 @@
     {!! Form::close() !!}
     {!! Form::open(array('id'=>'form_nuevo','url' => 'entidad/nuevo')) !!}
     {!! Form::close() !!}
+
 	</div>
 @endsection
 
@@ -192,7 +192,7 @@
 	      	<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Agregar Entidad</h4>
+					<h4 class="modal-title" id="form_entidad_title" >Agregar Entidad</h4>
 				</div>
 				<div class = "alerts-module"></div>
 				{!! Form::open(array('url' => 'entidad/save', 'id'=>'form_nuevo_entidad','onsubmit'=>'javascript:return clu_entidad.validateNuevaEntidad()')) !!}	
@@ -247,8 +247,8 @@
 												{!! Form::textarea('descripcion',old('descripcion'), array('class' => 'form-control','rows'=>'4','placeholder'=>'Ingresa las Descripciónes u Observaciones')) !!}
 											</div>
 										</div>
-										{!! Form::hidden('edit', old('edit')) !!}
-										{!! Form::hidden('entity_id', old('entity_id')) !!}
+										{!! Form::hidden('edit', old('edit'),array('id'=>'edit')) !!}
+										{!! Form::hidden('entity_id', old('entity_id'),array('id'=>'entity_id')) !!}
 									</div>
 								</div>
 							</div>
@@ -293,7 +293,7 @@
 				</div>
 				{!! Form::close() !!}
 				<div class="modal-footer">
-					<button type="submit" form = "form_nuevo_entidad" class="btn btn-default " > @if(Session::has('_old_input.edit')) Editar @else Crear @endif Entidad</button>	         
+					<button type="submit" form = "form_nuevo_entidad" class="btn btn-default" id="form_entidad_button" >Crear Entidad</button>	         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
 

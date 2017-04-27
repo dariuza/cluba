@@ -127,7 +127,22 @@ class EntityController extends Controller {
 			$entidad->description = $request->input()['descripcion'];
 
 			if($request->input()['edit']){
-				//editar entidad
+				//editar entidad				
+				$entidad = Entity::find($request->input('entity_id'));
+				$entidad->business_name = strtoupper($request->input()['nombre']);
+				$entidad->nit = $request->input()['nit'];
+				$entidad->legal_representative = strtoupper($request->input()['representante_legal']);
+				$entidad->contact_representative = strtoupper($request->input()['contancto_rlegal']);
+				$entidad->phone1_contact = $request->input()['telefono1'];
+				$entidad->phone2_contact = $request->input()['telefono2'];
+				$entidad->email_contact = $request->input()['correo'];
+				$entidad->description = $request->input()['descripcion'];
+				try {
+					$entidad->save();					
+				}catch (\Illuminate\Database\QueryException $e) {										
+					return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
+				}			
+
 			}else{
 				//nueva entidad
 				try {
@@ -138,6 +153,9 @@ class EntityController extends Controller {
 			}
 
 			//agregar las suscripciones
+			//borramos las anteriores
+			Subentity::where("entity_id",$request->input('entity_id'))->delete();
+
 			$array = Array();
 			foreach($request->input() as $key=>$value){
 				if(strpos($key,'subent_') !== false){
@@ -177,6 +195,8 @@ class EntityController extends Controller {
 		}
 		
 	}
+
+	//reemplazada por postEdit y una forma en ajax.
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		
 	}
@@ -211,11 +231,12 @@ class EntityController extends Controller {
 	
 	}
 
+	//ajax para consultar la preinformacion de la entidad nueva
 	public function postNuevo(Request $request){
 		//consultas necesarias
 		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
-	
+
 	public function getEspecialidades($id_app=null,$categoria=null,$id_mod=null){	
 		return redirect()->action('Club\SpecialtyController@getEnumerar', ['id_app' => $id_app, 'categoria'=>$categoria, 'id_mod'=>$id_mod]);
 	}
