@@ -3,8 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Carnet PDF</title>
-	</head>
-	
+	</head>	
 	{{ Html::style('css/license.css')}}	
 	<body>			
 		<div class ="cnt_conteiner">		
