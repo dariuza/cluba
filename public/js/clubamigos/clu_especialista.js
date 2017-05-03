@@ -75,6 +75,33 @@ clu_especialista.prototype.nuevoRespuesta = function(result) {
 	$("#especialidad_nuevo_modal").modal();
 };
 
+clu_especialista.prototype.changeSelectEntidad = function(e) {
+	//hacemos la llamada asincrona para averiguar las sucursales de la entidad
+	var datos = new Array();	
+	datos['id_entity'] = e.selectedOptions[0].value;
+	seg_ajaxobject.peticionajax($('#form_select_entity').attr('action'),datos,"clu_especialista.selectEntidadRespuesta");	
+}
+
+clu_especialista.prototype.selectEntidadRespuesta = function(result) {
+	var selects = document.getElementsByClassName("select-subentity");
+	for(var j=0;j<selects.length;j++){
+		selects[j].innerHTML = "";		
+		for(var i=0;i<result.data.length;i++){
+			var opt1 = document.createElement('option');
+			opt1.value = result.data[i].id;
+			opt1.innerHTML = result.data[i].sucursal_name;
+			selects[j].appendChild(opt1);		
+		}
+		/* falta reasignar las relaciones
+		$(".select-subentity").chosen().change(function(event) {
+			$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
+		});
+		*/	
+	}
+	$('.chosen-select').chosen();
+	$('.chosen-container').width('100%');	
+	
+}
 clu_especialista.prototype.add_dispo = function(add) {
 	
 	var n = document.getElementsByClassName('tab_dispo3')[0].childElementCount + 1 ;
@@ -170,7 +197,7 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_3.appendChild(div_3);
 
 	var subnodo_4 = document.createElement("div")
-	subnodo_4.setAttribute("class", "col-md-6 ");
+	subnodo_4.setAttribute("class", "col-md-3 ");
 	var label_4 = document.createElement("label");
 	label_4.setAttribute("class", "col-md-12 control-label");
 	label_4.setAttribute("for", "dispo_especialidades_select_"+n);
@@ -181,7 +208,7 @@ clu_especialista.prototype.add_dispo = function(add) {
 	select_4.setAttribute("tabindex", "4");	
 	select_4.setAttribute("name", "dispo_especialidades_select_"+n);
 	select_4.setAttribute("id", "dispo_especialidades_select_"+n);
-	select_4.setAttribute("data-placeholder", "Selecciona las elpecialidades");
+	select_4.setAttribute("data-placeholder", "Selecciona las especialidades");
 	for(var i = 0 ; i < $('#dispo_especialidades_select_1')[0].options.length ; i++){
 		var opt4 = document.createElement('option');
 		opt4.value = $('#dispo_especialidades_select_1')[0].options[i].value;
@@ -208,7 +235,12 @@ clu_especialista.prototype.add_dispo = function(add) {
 	$('.chosen-container').width('100%');		
 	$("#dispo_especialidades_select_"+n).chosen().change(function(event) {
 		$('#dispo_especialidades_'+n).val($("#dispo_especialidades_select_"+n).chosen().val());		    
+	});
+	/*esto falta hacerlo
+	$("#dispo_subentity_select_1").chosen().change(function(event) {
+		$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
 	});	
+	*/
 };
 
 clu_especialista.prototype.add_special = function(add) {

@@ -145,6 +145,8 @@
     {!! Form::close() !!}
     {!! Form::open(array('id'=>'form_nuevo','url' => 'especialista/nuevo')) !!}
     {!! Form::close() !!}
+    {!! Form::open(array('id'=>'form_select_entity','url' => 'especialista/selectentity')) !!}
+    {!! Form::close() !!}
 	</div>
 @endsection
 
@@ -197,7 +199,7 @@
 										<div class="row col-md-12">
 											<div class="col-md-12">
 												{!! Form::label('entidad', 'Entidad', array('class' => 'col-md-12 control-label')) !!}
-												{!! Form::select('entidad',array(),old('entidad'), array('class' => 'form-control','placeholder'=>'Ingresa la Entidad')) !!}
+												{!! Form::select('entidad',array(),old('entidad'), array('class' => 'form-control','onchange'=>'clu_especialista.changeSelectEntidad(this)','placeholder'=>'Ingresa la Entidad')) !!}
 											</div>											
 										</div>
 										<div class="row col-md-6">
@@ -309,10 +311,15 @@
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
 										</div>
-										<div class="epecialist col-md-6">
+										<div class="epecialist col-md-3">
 											{!! Form::label('dispo_especialidades_select_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_especialidades_select_1',Session::get('modulo.especialidades'),old('dispo_especialidades_select_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las elpecialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+											{!! Form::select('dispo_especialidades_select_1',Session::get('modulo.especialidades'),old('dispo_especialidades_select_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las especialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
 											{!! Form::hidden('dispo_especialidades_1',old('dispo_especialidades_1'),array('id'=>'dispo_especialidades_1')) !!}
+										</div>
+										<div class="epecialist col-md-3">
+											{!! Form::label('dispo_subentity_select_1', 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('dispo_subentity_select_1',array(),old('dispo_subentity_select_1'), array('class' => 'form-control chosen-select select-subentity','multiple' ,'data-placeholder'=>'Selecciona las sucursales','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+											{!! Form::hidden('dispo_subentity_1',old('dispo_subentity_1'),array('id'=>'dispo_subentity_1')) !!}
 										</div>										
 																				
 									</div>
@@ -389,6 +396,9 @@
 		$('.chosen-container').width('100%');		
 		$("#dispo_especialidades_select_1").chosen().change(function(event) {
 			$('#dispo_especialidades_1').val($("#dispo_especialidades_select_1").chosen().val());		    
+		});
+		$("#dispo_subentity_select_1").chosen().change(function(event) {
+			$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
 		});	
 
 		$('.input-small').timepicker({showMeridian:false});

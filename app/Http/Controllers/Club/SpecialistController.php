@@ -3,6 +3,7 @@
 use Validator;
 use App\Core\Club\Specialist;
 use App\Core\Club\Entity;
+use App\Core\Club\Subentity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -212,6 +213,17 @@ class SpecialistController extends Controller {
 	public function postNuevo(Request $request){
 		$entity=Entity::select('clu_entity.id','clu_entity.business_name')->where('clu_entity.active', 1)->get()->toArray();		
 		if(count($entity))return response()->json(['respuesta'=>true,'data'=>$entity]);
+		return response()->json(['respuesta'=>true,'data'=>null]);
+	}
+
+	public function postSelectentity(Request $request){
+		//buscamos las sucursales de la entidad
+		$subentity =
+		Subentity::
+		where('clu_subentity.entity_id', $request->input('id_entity'))
+		->get()
+		->toArray();
+		if(count($subentity))return response()->json(['respuesta'=>true,'data'=>$subentity]);
 		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
 	
