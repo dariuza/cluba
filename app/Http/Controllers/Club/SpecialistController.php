@@ -4,6 +4,7 @@ use Validator;
 use App\Core\Club\Specialist;
 use App\Core\Club\Entity;
 use App\Core\Club\Subentity;
+use App\Core\Club\SpecialistSpecialty;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -102,7 +103,7 @@ class SpecialistController extends Controller {
 		//Modo de evitar que otros roles ingresen por la url
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 			
-		return Redirect::to('especialidad/agregar');
+		return Redirect::to('especialista/agregar');
 	}
 	
 	public function getAgregar(){
@@ -132,13 +133,20 @@ class SpecialistController extends Controller {
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}else{
-
-			dd($request->input());
+			
 			$specialist = new Specialist();
 				
 			$specialist->name = $request->input()['nombres'];
-			$specialist->code = $request->input()['codigo'];
-			$specialist->description = $request->input()['descripcion'];			
+			$specialist->identification = $request->input()['identificacion'];
+			$specialist->phone1 = $request->input()['telefono_uno'];
+			$specialist->phone2 = $request->input()['telefono_dos'];
+			$specialist->email = $request->input()['correo_electronico'];
+			$specialist->name_assistant = $request->input()['nombres_asistente'];
+			$specialist->phone1_assistant = $request->input()['telefono_uno_asistente'];
+			$specialist->phone2_assistant = $request->input()['telefono_dos_asistente'];
+			$specialist->email_assistant = $request->input()['correo_electronico_asistente'];			
+			$specialist->description = $request->input()['descripcion'];
+					
 			if($request->input()['edit']){
 				//se pretende actualizar el rol
 				try {
@@ -159,15 +167,34 @@ class SpecialistController extends Controller {
 				Session::flash('_old_input.edit', true);
 				Session::flash('titulo', 'Editar');
 			
-				return Redirect::to('especialidad/agregar')->withInput()->with('message', 'Especialidad editada exitosamente');
+				return Redirect::to('especialista/agregar')->withInput()->with('message', 'Especialidad editada exitosamente');
 			
 			}else{
 				try {
-					$specialty->save();
-					return Redirect::to('especialidad/agregar')->withInput()->with('message', 'Especialidad agregada exitosamente');
+					//$specialist->save();
+
+					//relacionamos las especialidades
+					$array = Array();
+					foreach($request->input() as $key=>$value){
+						if(strpos($key,'espe_') !== false){
+							$vector=explode('_',$key);
+							$n=count($vector);
+							$id_bne = end($vector);
+							//$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);							
+							$array[$id_bne][$vector[1]] = $value;
+						}
+					}
+					dd($array);
+
+					$speciallistspecialty = new SpecialistSpecialty;
+
+					$speciallistspecialty->specialist_id = $specialist->id;
+					$speciallistspecialty->specialty_id = $specialist->id;
+
+					return Redirect::to('especialista/agregar')->withInput()->with('message', 'Especialista agregado exitosamente');
 				}catch (\Illuminate\Database\QueryException $e) {
-					$message = 'La especialidad no se logro agregar';
-					return Redirect::to('especialidad/agregar')->with('error', $e->getMessage())->withInput();
+					$message = 'El especialista no se logro agregar';
+					return Redirect::to('especialista/agregar')->with('error', $e->getMessage())->withInput();
 				}
 			}
 		}

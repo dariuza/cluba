@@ -262,13 +262,13 @@
 											{!! Form::select('espe_especialidad_1',Session::get('modulo.especialidades'),old('espe_especialidad_1'), array('class' => 'form-control','placeholder'=>'Ingresa La Especialidad')) !!}
 										</div>
 										<div class="col-md-3">
-											{!! Form::label('espe_precio_particular_1', 'Precio Particular', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::text('espe_precio_particular_1', old('espe_precio_particular_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+											{!! Form::label('espe_precioparticular_1', 'Precio Particular', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('espe_precioparticular_1', old('espe_precioparticular_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
 										</div>	
 
 										<div class="col-md-3">
-											{!! Form::label('espe_precio_suscriptor_1', 'Precio Suscriptor', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::text('espe_precio_suscriptor_1', old('espe_precio_suscriptor_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+											{!! Form::label('espe_preciosuscriptor_1', 'Precio Suscriptor', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('espe_preciosuscriptor_1', old('espe_preciosuscriptor_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
 										</div>
 										<div class="col-md-3">
 											{!! Form::label('espe_duracion_1', 'Tiempo Duraciòn', array('class' => 'col-md-12 control-label')) !!}
@@ -318,10 +318,8 @@
 										</div>
 										<div class="epecialist col-md-3">
 											{!! Form::label('dispo_subentity_select_1', 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_subentity_select_1',array(),old('dispo_subentity_select_1'), array('class' => 'form-control chosen-select select-subentity','multiple' ,'data-placeholder'=>'Selecciona las sucursales','tabindex'=>'4', 'style'=>'width:350px;')) !!}
-											{!! Form::hidden('dispo_subentity_1',old('dispo_subentity_1'),array('id'=>'dispo_subentity_1')) !!}
-										</div>										
-																				
+											{!! Form::select('dispo_subentity_select_1',array(),old('dispo_subentity_select_1'), array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}											
+										</div>									
 									</div>
 
 								</div>	
@@ -334,6 +332,8 @@
 													
 							</div>
 						</div>
+						{!! Form::hidden('edit', old('edit'),array('id'=>'edit')) !!}
+						{!! Form::hidden('specialist_id', old('specialist_id'),array('id'=>'specialist_id')) !!}
 					</div>
 				</div>
 				{!! Form::close() !!}
@@ -396,10 +396,7 @@
 		$('.chosen-container').width('100%');		
 		$("#dispo_especialidades_select_1").chosen().change(function(event) {
 			$('#dispo_especialidades_1').val($("#dispo_especialidades_select_1").chosen().val());		    
-		});
-		$("#dispo_subentity_select_1").chosen().change(function(event) {
-			$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
-		});	
+		});		
 
 		$('.input-small').timepicker({showMeridian:false});
 

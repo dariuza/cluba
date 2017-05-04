@@ -83,25 +83,18 @@ clu_especialista.prototype.changeSelectEntidad = function(e) {
 }
 
 clu_especialista.prototype.selectEntidadRespuesta = function(result) {
-	var selects = document.getElementsByClassName("select-subentity");
+	var selects = document.getElementsByClassName("select-subentity");	
 	for(var j=0;j<selects.length;j++){
 		selects[j].innerHTML = "";		
 		for(var i=0;i<result.data.length;i++){
 			var opt1 = document.createElement('option');
 			opt1.value = result.data[i].id;
 			opt1.innerHTML = result.data[i].sucursal_name;
-			selects[j].appendChild(opt1);		
-		}
-		/* falta reasignar las relaciones
-		$(".select-subentity").chosen().change(function(event) {
-			$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
-		});
-		*/	
-	}
-	$('.chosen-select').chosen();
-	$('.chosen-container').width('100%');	
-	
+			selects[j].appendChild(opt1);			
+		}			
+	}	
 }
+
 clu_especialista.prototype.add_dispo = function(add) {
 	
 	var n = document.getElementsByClassName('tab_dispo3')[0].childElementCount + 1 ;
@@ -224,10 +217,33 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_4.appendChild(select_4);
 	subnodo_4.appendChild(input_4);
 
+	var subnodo_5 = document.createElement("div")
+	subnodo_5.setAttribute("class", "col-md-3 ");
+	var label_5 = document.createElement("label");
+	label_5.setAttribute("class", "col-md-12 control-label");
+	label_5.setAttribute("for", "dispo_subentity_select_"+n);
+	label_5.textContent = "Sucursales";
+	var select_5=document.createElement("select")
+
+	for(var i = 0 ; i < $('#dispo_subentity_select_1')[0].options.length ; i++){
+		var opt5 = document.createElement('option');
+		opt5.value = $('#dispo_subentity_select_1')[0].options[i].value;
+		opt5.innerHTML = $('#dispo_subentity_select_1')[0].options[i].innerHTML;
+		select_5.appendChild(opt5);
+	}
+	select_5.setAttribute("class", "form-control select-subentity");
+	select_5.setAttribute("placeholder", "ingresa la sucursal");
+	select_5.setAttribute("name", "dispo_subentity_select_"+n);
+	select_5.setAttribute("id", "dispo_subentity_select_"+n);
+
+	subnodo_5.appendChild(label_5);
+	subnodo_5.appendChild(select_5);
+
 	nodo.appendChild(subnodo_1);//Selector de Dìa
 	nodo.appendChild(subnodo_2);//hora inicio
 	nodo.appendChild(subnodo_3);//hora fin
 	nodo.appendChild(subnodo_4);//especialidades
+	nodo.appendChild(subnodo_5);//sucursales
 	document.getElementsByClassName('tab_dispo3')[0].appendChild(nodo);
 
 	$('.input-small').timepicker({showMeridian:false});
@@ -236,11 +252,7 @@ clu_especialista.prototype.add_dispo = function(add) {
 	$("#dispo_especialidades_select_"+n).chosen().change(function(event) {
 		$('#dispo_especialidades_'+n).val($("#dispo_especialidades_select_"+n).chosen().val());		    
 	});
-	/*esto falta hacerlo
-	$("#dispo_subentity_select_1").chosen().change(function(event) {
-		$('#dispo_subentity_1').val($("#dispo_subentity_select_1").chosen().val());		    
-	});	
-	*/
+	
 };
 
 clu_especialista.prototype.add_special = function(add) {
@@ -273,10 +285,10 @@ clu_especialista.prototype.add_special = function(add) {
 	var label_2 = document.createElement("label");
 	var input_2 = document.createElement("input");
 	label_2.setAttribute("class", "col-md-12 control-label");
-	label_2.setAttribute("for", "espe_precio_particular_"+n);
+	label_2.setAttribute("for", "espe_precioparticular_"+n);
 	label_2.textContent = "Precio Particular";		
 	input_2.setAttribute("class", "form-control solo_numeros");
-	input_2.setAttribute("name", "espe_precio_particular_"+n);	
+	input_2.setAttribute("name", "espe_precioparticular_"+n);	
 	input_2.setAttribute("placeholder", "Ingresa Precio");
 	subnodo_2.appendChild(label_2);
 	subnodo_2.appendChild(input_2);
@@ -286,10 +298,10 @@ clu_especialista.prototype.add_special = function(add) {
 	var label_3 = document.createElement("label");
 	var input_3 = document.createElement("input");
 	label_3.setAttribute("class", "col-md-12 control-label");
-	label_3.setAttribute("for", "espe_precio_suscriptor_"+n);
+	label_3.setAttribute("for", "espe_preciosuscriptor_"+n);
 	label_3.textContent = "Precio Suscriptor";		
 	input_3.setAttribute("class", "form-control solo_numeros");
-	input_3.setAttribute("name", "espe_precio_suscriptor_"+n);	
+	input_3.setAttribute("name", "espe_preciosuscriptor_"+n);	
 	input_3.setAttribute("placeholder", "Ingresa Suscriptor");
 	subnodo_3.appendChild(label_3);
 	subnodo_3.appendChild(input_3);
