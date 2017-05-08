@@ -149,14 +149,14 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_2.setAttribute("class", "col-md-2 ");
 	var label_2 = document.createElement("label");
 	label_2.setAttribute("class", "col-md-12 control-label");
-	label_2.setAttribute("for", "dispo_hora_inicio_"+n);
+	label_2.setAttribute("for", "dispo_horainicio_"+n);
 	label_2.textContent = "Hora Inicio";
 	var div_2 = document.createElement("div");
 	div_2.setAttribute("class", "input-group bootstrap-timepicker timepicker");
 	var input_2 = document.createElement("input");
 	input_2.setAttribute("class", "form-control input-small");
 	input_2.setAttribute("placeholder", "Hora Inicio HH:mm");
-	input_2.setAttribute("name", "dispo_hora_inicio_"+n);
+	input_2.setAttribute("name", "dispo_horainicio_"+n);
 	var span_2 = document.createElement("span");
 	span_2.setAttribute("class", "input-group-addon");
 	var i_2 = document.createElement("span");
@@ -171,14 +171,14 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_3.setAttribute("class", "col-md-2 ");
 	var label_3 = document.createElement("label");
 	label_3.setAttribute("class", "col-md-12 control-label");
-	label_3.setAttribute("for", "dispo_hora_fin_"+n);
+	label_3.setAttribute("for", "dispo_horafin_"+n);
 	label_3.textContent = "Hora Fin";
 	var div_3 = document.createElement("div");
 	div_3.setAttribute("class", "input-group bootstrap-timepicker timepicker");
 	var input_3 = document.createElement("input");
 	input_3.setAttribute("class", "form-control input-small");
 	input_3.setAttribute("placeholder", "Hora Fin HH:mm");
-	input_3.setAttribute("name", "dispo_hora_fin_"+n);
+	input_3.setAttribute("name", "dispo_horafin_"+n);
 	var span_3 = document.createElement("span");
 	span_3.setAttribute("class", "input-group-addon");
 	var i_3 = document.createElement("span");
@@ -193,19 +193,19 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_4.setAttribute("class", "col-md-3 ");
 	var label_4 = document.createElement("label");
 	label_4.setAttribute("class", "col-md-12 control-label");
-	label_4.setAttribute("for", "dispo_especialidades_select_"+n);
+	label_4.setAttribute("for", "dispo_especialidadesselect_"+n);
 	label_4.textContent = "Especialidades";
 	var select_4=document.createElement("select");
 	select_4.setAttribute("class", "form-control chosen-select");
 	select_4.setAttribute("multiple", "multiple");
 	select_4.setAttribute("tabindex", "4");	
-	select_4.setAttribute("name", "dispo_especialidades_select_"+n);
-	select_4.setAttribute("id", "dispo_especialidades_select_"+n);
+	select_4.setAttribute("name", "dispo_especialidadesselect_"+n);
+	select_4.setAttribute("id", "dispo_especialidadesselect_"+n);
 	select_4.setAttribute("data-placeholder", "Selecciona las especialidades");
-	for(var i = 0 ; i < $('#dispo_especialidades_select_1')[0].options.length ; i++){
+	for(var i = 0 ; i < $('#dispo_especialidadesselect_1')[0].options.length ; i++){
 		var opt4 = document.createElement('option');
-		opt4.value = $('#dispo_especialidades_select_1')[0].options[i].value;
-		opt4.innerHTML = $('#dispo_especialidades_select_1')[0].options[i].innerHTML;
+		opt4.value = $('#dispo_especialidadesselect_1')[0].options[i].value;
+		opt4.innerHTML = $('#dispo_especialidadesselect_1')[0].options[i].innerHTML;
 		select_4.appendChild(opt4);
 	}
 	var input_4 = document.createElement("input");
@@ -221,20 +221,20 @@ clu_especialista.prototype.add_dispo = function(add) {
 	subnodo_5.setAttribute("class", "col-md-3 ");
 	var label_5 = document.createElement("label");
 	label_5.setAttribute("class", "col-md-12 control-label");
-	label_5.setAttribute("for", "dispo_subentity_select_"+n);
+	label_5.setAttribute("for", "dispo_subentityselect_"+n);
 	label_5.textContent = "Sucursales";
 	var select_5=document.createElement("select")
 
-	for(var i = 0 ; i < $('#dispo_subentity_select_1')[0].options.length ; i++){
+	for(var i = 0 ; i < $('#dispo_subentityselect_1')[0].options.length ; i++){
 		var opt5 = document.createElement('option');
-		opt5.value = $('#dispo_subentity_select_1')[0].options[i].value;
-		opt5.innerHTML = $('#dispo_subentity_select_1')[0].options[i].innerHTML;
+		opt5.value = $('#dispo_subentityselect_1')[0].options[i].value;
+		opt5.innerHTML = $('#dispo_subentityselect_1')[0].options[i].innerHTML;
 		select_5.appendChild(opt5);
 	}
 	select_5.setAttribute("class", "form-control select-subentity");
 	select_5.setAttribute("placeholder", "ingresa la sucursal");
-	select_5.setAttribute("name", "dispo_subentity_select_"+n);
-	select_5.setAttribute("id", "dispo_subentity_select_"+n);
+	select_5.setAttribute("name", "dispo_subentityselect_"+n);
+	select_5.setAttribute("id", "dispo_subentityselect_"+n);
 
 	subnodo_5.appendChild(label_5);
 	subnodo_5.appendChild(select_5);
@@ -249,8 +249,8 @@ clu_especialista.prototype.add_dispo = function(add) {
 	$('.input-small').timepicker({showMeridian:false});
 	$('.chosen-select').chosen();
 	$('.chosen-container').width('100%');		
-	$("#dispo_especialidades_select_"+n).chosen().change(function(event) {
-		$('#dispo_especialidades_'+n).val($("#dispo_especialidades_select_"+n).chosen().val());		    
+	$("#dispo_especialidadesselect_"+n).chosen().change(function(event) {
+		$('#dispo_especialidades_'+n).val($("#dispo_especialidadesselect_"+n).chosen().val());		    
 	});
 	
 };

@@ -126,7 +126,7 @@ class EntityController extends Controller {
 			$entidad->email_contact = $request->input()['correo'];
 			$entidad->description = $request->input()['descripcion'];
 
-			if($request->input()['edit']){
+			if($request->input()['entity_id']){
 				//editar entidad				
 				$entidad = Entity::find($request->input('entity_id'));
 				$entidad->business_name = strtoupper($request->input()['nombre']);

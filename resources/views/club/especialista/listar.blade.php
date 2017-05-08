@@ -98,7 +98,8 @@
 	<div class="col-md-12 col-md-offset-0">
 	<div class = "alerts">
 			@if (count($errors) > 0)
-				<div class="alert alert-danger">
+				<div class="alert alert-danger lert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>Algo no va bien con el Modulo!</strong> Hay problemas con con los datos diligenciados.<br><br>
 					<ul>
 						@foreach ($errors->all() as $error)
@@ -109,7 +110,8 @@
 			@endif
 			
 			@if(Session::has('message'))
-				<div class="alert alert-info">
+				<div class="alert alert-info lert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>¡Modulo Especialistas!</strong> La operación se ha realizado adecuadamente.<br><br>
 					<ul>								
 						<li>{{ Session::get('message') }}</li>
@@ -119,7 +121,8 @@
             @endif
             <!-- error llega cuando se esta recuperando la contraseña inadecuadamente -->
             @if(Session::has('error'))
-				<div class="alert alert-danger">
+				<div class="alert alert-danger lert-dismissable">
+					<button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button>
 					<strong>¡Algo no va bien!</strong> Hay problemas con los datos diligenciados.<br><br>
 					<ul>								
 						<li>{{ Session::get('error') }}</li>								
@@ -297,28 +300,28 @@
 										</div>
 										
 										<div class="col-md-2">
-											{!! Form::label('dispo_hora_inicio_1', 'Hora Inicio', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::label('dispo_horainicio_1', 'Hora Inicio', array('class' => 'col-md-12 control-label')) !!}
 											<div class="input-group bootstrap-timepicker timepicker">									
-												{!! Form::text('dispo_hora_inicio_1', old('dispo_hora_inicio_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Inicio HH:mm'))!!}
+												{!! Form::text('dispo_horainicio_1', old('dispo_horainicio_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Inicio HH:mm'))!!}
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
 										</div>
 										
 										<div class="col-md-2">
-											{!! Form::label('dispo_hora_fin_1', 'Hora Fin', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::label('dispo_horafin_1', 'Hora Fin', array('class' => 'col-md-12 control-label')) !!}
 											<div class="input-group bootstrap-timepicker timepicker">										
-												{!! Form::text('dispo_hora_fin_1', old('dispo_hora_fin_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Fin HH:mm'))!!}
+												{!! Form::text('dispo_horafin_1', old('dispo_horafin_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Fin HH:mm'))!!}
 												<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 											</div>
 										</div>
 										<div class="epecialist col-md-3">
-											{!! Form::label('dispo_especialidades_select_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_especialidades_select_1',Session::get('modulo.especialidades'),old('dispo_especialidades_select_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las especialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+											{!! Form::label('dispo_especialidadesselect_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('dispo_especialidadesselect_1',Session::get('modulo.especialidades'),old('dispo_especialidadesselect_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las especialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
 											{!! Form::hidden('dispo_especialidades_1',old('dispo_especialidades_1'),array('id'=>'dispo_especialidades_1')) !!}
 										</div>
 										<div class="epecialist col-md-3">
-											{!! Form::label('dispo_subentity_select_1', 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_subentity_select_1',array(),old('dispo_subentity_select_1'), array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}											
+											{!! Form::label('dispo_subentityselect_1', 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('dispo_subentityselect_1',array(),old('dispo_subentityselect_1'), array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}
 										</div>									
 									</div>
 
@@ -394,8 +397,8 @@
 
 		$('.chosen-select').chosen();
 		$('.chosen-container').width('100%');		
-		$("#dispo_especialidades_select_1").chosen().change(function(event) {
-			$('#dispo_especialidades_1').val($("#dispo_especialidades_select_1").chosen().val());		    
+		$("#dispo_especialidadesselect_1").chosen().change(function(event) {
+			$('#dispo_especialidades_1').val($("#dispo_especialidadesselect_1").chosen().val());		    
 		});		
 
 		$('.input-small').timepicker({showMeridian:false});

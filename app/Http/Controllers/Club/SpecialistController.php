@@ -5,6 +5,8 @@ use App\Core\Club\Specialist;
 use App\Core\Club\Entity;
 use App\Core\Club\Subentity;
 use App\Core\Club\SpecialistSpecialty;
+use App\Core\Club\Available;
+use App\Core\Club\AvailableSpecialty;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -114,10 +116,15 @@ class SpecialistController extends Controller {
 	//función para guardar usuarios con su perfil
 	public function postSave(Request $request){
 		
-		$array_input = array();
-		$array_input['_token'] = $request->input('_token');		
-		foreach($request->input() as $key=>$value){			
-			$array_input[$key] = strtoupper($value);			
+		$array_input = array();		
+		$array_input['_token'] = $request->input('_token');
+		$array_input['correo_electronico'] = $request->input('correo_electronico');
+		$array_input['correo_electronico_asistente'] = $request->input('correo_electronico_asistente');
+		foreach($request->input() as $key=>$value){
+			if($key != "_token" && $key != "correo_electronico" && $key != "correo_electronico_asistente"){			
+				$array_input[$key] = strtoupper($value);
+			}		
+						
 		}
 		$request->replace($array_input);
 		
@@ -129,6 +136,7 @@ class SpecialistController extends Controller {
 			'entidad'=>'required',	
 			'nombres'=>'required',			
 		);
+
 		$validator = Validator::make($request->input(), $rules, $messages);
 		if ($validator->fails()) {
 			return Redirect::back()->withErrors($validator)->withInput();
@@ -167,12 +175,11 @@ class SpecialistController extends Controller {
 				Session::flash('_old_input.edit', true);
 				Session::flash('titulo', 'Editar');
 			
-				return Redirect::to('especialista/agregar')->withInput()->with('message', 'Especialidad editada exitosamente');
+				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialidad editada exitosamente');
 			
 			}else{
 				try {
-					//$specialist->save();
-
+					$specialist->save();
 					//relacionamos las especialidades
 					$array = Array();
 					foreach($request->input() as $key=>$value){
@@ -180,18 +187,65 @@ class SpecialistController extends Controller {
 							$vector=explode('_',$key);
 							$n=count($vector);
 							$id_bne = end($vector);
-							//$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);							
+							$array[$id_bne][$vector[1]] = $value;
+						}
+					}					
+					foreach($array as $key => $vector){
+						$speciallistspecialty = new SpecialistSpecialty;
+
+						$speciallistspecialty->rate_particular= $vector['precioparticular'];
+						$speciallistspecialty->rate_suscriptor= $vector['preciosuscriptor'];
+						$speciallistspecialty->tiempo= $vector['duracion'];
+						$speciallistspecialty->specialist_id = $specialist->id;//especialista
+						$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
+						try {
+							$speciallistspecialty->save();					
+						}catch (\Illuminate\Database\QueryException $e) {										
+							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+						}
+					}
+
+					$array = Array();
+					foreach($request->input() as $key=>$value){
+						if(strpos($key,'dispo_') !== false){
+							$vector=explode('_',$key);
+							$n=count($vector);
+							$id_bne = end($vector);
 							$array[$id_bne][$vector[1]] = $value;
 						}
 					}
-					dd($array);
 
-					$speciallistspecialty = new SpecialistSpecialty;
+					foreach($array as $key => $vector){
+						$available = new Available;
+						$available->day = $vector['dia'];
+						$available->hour_start = $vector['horainicio'];
+						$available->hour_end = $vector['horafin'];
+						$available->specialist_id = $specialist->id;
+						try {
+							$available->save();					
+						}catch (\Illuminate\Database\QueryException $e) {										
+							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+						}
 
-					$speciallistspecialty->specialist_id = $specialist->id;
-					$speciallistspecialty->specialty_id = $specialist->id;
+						//agregamos las especialidades a la disponibilidad
+						$subentyties=explode(',',$vector['especialidades']);
+						foreach($subentyties as $key => $subentidad){
+							
+							$availablespecialty = new AvailableSpecialty;
+							$availablespecialty->available_id = $available->id;
+							$availablespecialty->specialty_id = intval($subentidad);
+							try {
+								$availablespecialty->save();					
+							}catch (\Illuminate\Database\QueryException $e) {
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
 
-					return Redirect::to('especialista/agregar')->withInput()->with('message', 'Especialista agregado exitosamente');
+						}
+						
+					}					
+					
+					return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialista agregado exitosamente');
+
 				}catch (\Illuminate\Database\QueryException $e) {
 					$message = 'El especialista no se logro agregar';
 					return Redirect::to('especialista/agregar')->with('error', $e->getMessage())->withInput();
