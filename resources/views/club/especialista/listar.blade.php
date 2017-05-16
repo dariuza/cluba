@@ -166,10 +166,28 @@
 				<div class = "alerts-module"></div>				
 							
 				<div class="modal-body">
-					<div class="row ">
-						<div class="col-md-12 col-md-offset-0 row_izq">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#tab1" data-toggle="tab">ESPECIALISTA</a></li>
+						<li role="presentation"><a href="#tab2" data-toggle="tab">ESPECIALIDADES</a></li>
+						<li role="presentation"><a href="#tab3" data-toggle="tab">DISPONIBILIDAD</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab1"></div>						
+							</div>
 						</div>
-					</div>
+						<div class="tab-pane fade " id="tab2">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab2"></div>						
+							</div>
+						</div>
+						<div class="tab-pane fade " id="tab3">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 tab3"></div>						
+							</div>
+						</div>
+					</div>					
 				</div>
 				<div class="modal-footer">		         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  

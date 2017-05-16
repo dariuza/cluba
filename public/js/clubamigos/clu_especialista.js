@@ -31,7 +31,7 @@ clu_especialista.prototype.opt_select = function(controlador,metodo) {
 	if(clu_especialista.table.rows('.selected').data().length){		
 		window.location=metodo + "/" + clu_especialista.table.rows('.selected').data()[0]['id'];
 	}else{
-		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong>Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong>Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
 	}
 };
 
@@ -41,17 +41,17 @@ clu_especialista.prototype.opt_ver = function() {
   		datos['id'] = clu_especialista.table.rows('.selected').data()[0].id;  		
   		seg_ajaxobject.peticionajax($('#form_ver').attr('action'),datos,"clu_especialista.verRespuesta");
 	}else{
-		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
 	}   
 	
 };
 
 clu_especialista.prototype.verRespuesta = function(result) {
-	$("#especialidad_ver_modal .modal-body .row_izq").html('');
-	$("#especialidad_ver_modal .modal-body .row_izq").html('<div class="col-md-12" >Especialidad: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
-	$("#especialidad_ver_modal .modal-body .row_izq").html($("#especialidad_ver_modal .modal-body .row_izq").html()+'<div class="col-md-12" >Descripción: '+clu_especialista.table.rows('.selected').data()[0].description+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html('');
+	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-12" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
+	//$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
 	
-	$("#especialidad_ver_modal").modal();
+	$("#especialista_ver_modal").modal();
 };
 
 clu_especialista.prototype.opt_agregar = function() {
