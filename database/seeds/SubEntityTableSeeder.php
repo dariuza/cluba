@@ -12,6 +12,7 @@ class SubEntityTableSeeder extends Illuminate\Database\Seeder {
 			'phone2_contact'=>'4200010',
 			'email_contact'=>'sepulvedadavid@odontocenter.com',
 			'description'=>'Organización dedicada a la labor dental',
+			'city'=>'Medellin',
 			'entity_id'=>1,
 			)
 		);
@@ -22,6 +23,7 @@ class SubEntityTableSeeder extends Illuminate\Database\Seeder {
 			'phone2_contact'=>'4200010',
 			'email_contact'=>'sepulvedadavid@odontocenter.com',
 			'description'=>'Organización dedicada a la labor dental',
+			'city'=>'Envigado',
 			'entity_id'=>1,
 			)
 		);
@@ -32,6 +34,7 @@ class SubEntityTableSeeder extends Illuminate\Database\Seeder {
 			'phone2_contact'=>'2713345',
 			'email_contact'=>'restreporonald@opengim.com',
 			'description'=>'Organización dedicada al cuidado del cuerpo',
+			'city'=>'Bello',
 			'entity_id'=>2,
 			)
 		);

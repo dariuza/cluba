@@ -394,7 +394,7 @@ clu_entidad.prototype.add_subent = function(add) {
 	subnodo_1.appendChild(input_1);
 
 	var subnodo_2 = document.createElement("div")	
-	subnodo_2.setAttribute("class", "col-md-3");
+	subnodo_2.setAttribute("class", "col-md-2");
 	var label_2 = document.createElement("label");
 	var input_2 = document.createElement("input");
 	label_2.setAttribute("class", "col-md-12 control-label");
@@ -433,7 +433,7 @@ clu_entidad.prototype.add_subent = function(add) {
 	subnodo_4.appendChild(input_4);
 
 	var subnodo_5 = document.createElement("div")	
-	subnodo_5.setAttribute("class", "col-md-3");
+	subnodo_5.setAttribute("class", "col-md-2");
 	var label_5 = document.createElement("label");
 	var input_5 = document.createElement("input");
 	label_5.setAttribute("class", "col-md-12 control-label");
@@ -445,11 +445,25 @@ clu_entidad.prototype.add_subent = function(add) {
 	subnodo_5.appendChild(label_5);
 	subnodo_5.appendChild(input_5);
 
+	var subnodo_6 = document.createElement("div")	
+	subnodo_6.setAttribute("class", "col-md-2");
+	var label_6 = document.createElement("label");
+	var input_6 = document.createElement("input");
+	label_6.setAttribute("class", "col-md-12 control-label");
+	label_6.setAttribute("for", "subent_municipio_"+n);
+	label_6.textContent = "Municipio";
+	input_6.setAttribute("class", "form-control");
+	input_6.setAttribute("name", "subent_municipio_"+n);	
+	input_6.setAttribute("placeholder", "Municipio de Sucursal");
+	subnodo_6.appendChild(label_6);
+	subnodo_6.appendChild(input_6);
+
 	nodo.appendChild(subnodo_1);//Nombre de sucursal
 	nodo.appendChild(subnodo_2);//Dirección de sucursal
 	nodo.appendChild(subnodo_3);//Telefono 1 sucursal
 	nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 	nodo.appendChild(subnodo_5);//Email sucursal
+	nodo.appendChild(subnodo_6);//Municipio sucursal
 
 	document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 

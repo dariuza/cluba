@@ -261,7 +261,7 @@
 											{!! Form::label('subent_nombre_1', 'Nombre', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::text('subent_nombre_1', old('subent_nombre_1'), array('class' => 'form-control','placeholder'=>'Nombre de Sucursal'))!!}
 										</div>	
-										<div class="col-md-3">
+										<div class="col-md-2">
 											{!! Form::label('subent_direccion_1', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::text('subent_direccion_1', old('subent_direccion_1'), array('class' => 'form-control','placeholder'=>'Dirección de Sucursal'))!!}
 										</div>	
@@ -273,9 +273,13 @@
 											{!! Form::label('subent_telefonodos_1', 'Telefono 2', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::text('subent_telefonodos_1', old('subent_telefonodos_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Segundo Teléfono Sucursal'))!!}
 										</div>	
-										<div class="col-md-3">
+										<div class="col-md-2">
 											{!! Form::label('subent_email_1', 'Correo', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::text('subent_email_1', old('subent_email_1'), array('class' => 'form-control','placeholder'=>'Correo de Sucursal'))!!}
+										</div>
+										<div class="col-md-2">
+											{!! Form::label('subent_municipio_1', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('subent_municipio_1', old('subent_municipio_1'), array('class' => 'form-control','placeholder'=>'Municipio de Sucursal'))!!}
 										</div>
 									</div>									
 								</div>

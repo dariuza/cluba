@@ -11,7 +11,7 @@ class Subentity extends Model
      */
 	protected $table = 'clu_subentity';
 	
-	protected $fillable =['id','sucursal_name','adress','phone1_contact','phone2_contact','email_contact','description','entity_id','active'];
+	protected $fillable =['id','sucursal_name','adress','phone1_contact','phone2_contact','email_contact','description','city','entity_id','active'];
 			
 }
 

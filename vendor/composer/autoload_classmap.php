@@ -13,6 +13,7 @@ return array(
     'CluStateTableSeeder' => $baseDir . '/database/seeds/CluStateTableSeeder .php',
     'CluSuscriptionTableSeeder' => $baseDir . '/database/seeds/CluSuscriptionTableSeeder.php',
     'Cpdf' => $vendorDir . '/dompdf/dompdf/lib/Cpdf.php',
+    'CreateCitaTable' => $baseDir . '/database/migrations/2017_05_23_100744_create_cita_table.php',
     'CreateCliSuscriptionTable' => $baseDir . '/database/migrations/2016_09_23_202242_create_cli_suscription_table.php',
     'CreateCluAvailableTable' => $baseDir . '/database/migrations/2017_01_26_134143_create_clu_available_table.php',
     'CreateCluAvailableXSpecialtyTable' => $baseDir . '/database/migrations/2017_01_27_134143_create_clu_available_x_specialty_table.php',

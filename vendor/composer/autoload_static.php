@@ -351,6 +351,7 @@ class ComposerStaticInit9a0708d95003efc2b3be1d131a74dd39
         'CluStateTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CluStateTableSeeder .php',
         'CluSuscriptionTableSeeder' => __DIR__ . '/../..' . '/database/seeds/CluSuscriptionTableSeeder.php',
         'Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
+        'CreateCitaTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_23_100744_create_cita_table.php',
         'CreateCliSuscriptionTable' => __DIR__ . '/../..' . '/database/migrations/2016_09_23_202242_create_cli_suscription_table.php',
         'CreateCluAvailableTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_26_134143_create_clu_available_table.php',
         'CreateCluAvailableXSpecialtyTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_27_134143_create_clu_available_x_specialty_table.php',
