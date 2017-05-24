@@ -181,6 +181,7 @@ class EntityController extends Controller {
 					$subentidad->phone1_contact = $vector['telefonouno'];
 					$subentidad->phone2_contact = $vector['telefonodos'];
 					$subentidad->email_contact = $vector['email'];
+					$subentidad->city = $vector['municipio'];
 					$subentidad->entity_id =$entidad->id;
 					try {
 						$subentidad->save();					
@@ -219,6 +220,12 @@ class EntityController extends Controller {
 		
 		$array['sucursales'] = $sucursales;
 
+		$citys= \DB::table('clu_city')->get();
+		foreach ($citys as $municipio){
+			$municipios[$municipio->city] = $municipio->city;
+		}
+		$array['municipios'] = $municipios;
+
 		if(count($entidad)){
 			return response()->json(['respuesta'=>true,'data'=>$array]);
 		}
@@ -234,7 +241,13 @@ class EntityController extends Controller {
 	//ajax para consultar la preinformacion de la entidad nueva
 	public function postNuevo(Request $request){
 		//consultas necesarias
-		return response()->json(['respuesta'=>true,'data'=>null]);
+		//consultamos los municipios		
+		$citys= \DB::table('clu_city')->get();
+		foreach ($citys as $municipio){
+			$municipios[$municipio->city] = $municipio->city;
+		}
+		$municipios;
+		return response()->json(['respuesta'=>true,'data'=>$municipios]);
 	}
 
 	public function getEspecialidades($id_app=null,$categoria=null,$id_mod=null){	

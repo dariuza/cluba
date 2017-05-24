@@ -59,9 +59,9 @@ clu_entidad.prototype.verRespuesta = function(result) {
 	$("#entidad_ver_modal .modal-body .tab2").html('');
 	if(result.respuesta){
 		if(result.data.sucursales){
-			$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Nombre</div> <div class="col-md-2">Direcciòn</div> <div class="col-md-2">Telèfonos</div> <div class="col-md-5">Email</div> <b> </div>');
+			$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Nombre</div> <div class="col-md-2">Direcciòn</div> <div class="col-md-2">Telèfonos</div> <div class="col-md-3">Email</div> <div class="col-md-2">Municipio</div> <b> </div>');
 			for(var i = 0; i < result.data.sucursales.length; i++){
-				$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" > <div class="col-md-1">'+(i+1)+'</div> <div class="col-md-2">'+result.data.sucursales[i].sucursal_name+'</div> <div class="col-md-2">'+result.data.sucursales[i].adress+'</div> <div class="col-md-2">'+result.data.sucursales[i].phone1_contact+' - '+result.data.sucursales[i].phone2_contact+'</div> <div class="col-md-5">'+result.data.sucursales[i].email_contact+'</div> </div>');
+				$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" > <div class="col-md-1">'+(i+1)+'</div> <div class="col-md-2">'+result.data.sucursales[i].sucursal_name+'</div> <div class="col-md-2">'+result.data.sucursales[i].adress+'</div> <div class="col-md-2">'+result.data.sucursales[i].phone1_contact+' - '+result.data.sucursales[i].phone2_contact+'</div> <div class="col-md-3">'+result.data.sucursales[i].email_contact+'</div> <div class="col-md-2">'+result.data.sucursales[i].city+'</div> </div>');
 			}
 		}
 	}
@@ -84,6 +84,7 @@ clu_entidad.prototype.nuevoRespuesta = function(result) {
 	$('#contancto_rlegal').val("");
 	$('#descripcion').val("");
 
+	//borrado del tag para rehacerlo, para evitar trueqye de informacion entre entidades	
 	document.getElementsByClassName('tab_entidad2')[0].textContent="";
 	var n = 1;
 	var nodo = document.createElement("div");
@@ -103,7 +104,7 @@ clu_entidad.prototype.nuevoRespuesta = function(result) {
 	subnodo_1.appendChild(input_1);
 
 	var subnodo_2 = document.createElement("div")	
-	subnodo_2.setAttribute("class", "col-md-3");
+	subnodo_2.setAttribute("class", "col-md-2");
 	var label_2 = document.createElement("label");
 	var input_2 = document.createElement("input");
 	label_2.setAttribute("class", "col-md-12 control-label");
@@ -142,7 +143,7 @@ clu_entidad.prototype.nuevoRespuesta = function(result) {
 	subnodo_4.appendChild(input_4);
 
 	var subnodo_5 = document.createElement("div")	
-	subnodo_5.setAttribute("class", "col-md-3");
+	subnodo_5.setAttribute("class", "col-md-2");
 	var label_5 = document.createElement("label");
 	var input_5 = document.createElement("input");
 	label_5.setAttribute("class", "col-md-12 control-label");
@@ -154,11 +155,38 @@ clu_entidad.prototype.nuevoRespuesta = function(result) {
 	subnodo_5.appendChild(label_5);
 	subnodo_5.appendChild(input_5);
 
+	var municipios = [];
+	$.each(result.data, function(i,n) {
+    	municipios.push(n);
+    });
+
+	var subnodo_6 = document.createElement("div")	
+	subnodo_6.setAttribute("class", "col-md-2");
+	var label_6 = document.createElement("label");
+	label_6.setAttribute("class", "col-md-12 control-label");
+	label_6.setAttribute("for", "subent_municipio_"+n);
+	label_6.textContent = "Municipio";
+	var select_6 = document.createElement('select');
+	select_6.setAttribute("class", "form-control");
+	select_6.setAttribute("name", "subent_municipio_"+n);	
+	var opt6 = document.createElement('option');
+	opt6.innerHTML = 'Selecciona un Municipio';
+	select_6.appendChild(opt6);
+	for(var i=0;i<municipios.length;i++){
+		var opt6 = document.createElement('option');
+		opt6.value = municipios[i];
+		opt6.innerHTML = municipios[i];
+		select_6.appendChild(opt6);
+	}	
+	subnodo_6.appendChild(label_6);
+	subnodo_6.appendChild(select_6);
+
 	nodo.appendChild(subnodo_1);//Nombre de sucursal
 	nodo.appendChild(subnodo_2);//Dirección de sucursal
 	nodo.appendChild(subnodo_3);//Telefono 1 sucursal
 	nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 	nodo.appendChild(subnodo_5);//Email sucursal
+	nodo.appendChild(subnodo_6);//Email sucursal
 
 	document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 
@@ -196,7 +224,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 		//borramos la sucursal en blanco		
 		for(var i =0; i<result.data.sucursales.length;i++){
 			
-			var n = i;
+			var n = i+1;
 			var nodo = document.createElement("div");
 			nodo.setAttribute("class", "form-group");
 
@@ -222,7 +250,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 			subnodo_1.appendChild(input_1);
 
 			var subnodo_2 = document.createElement("div")	
-			subnodo_2.setAttribute("class", "col-md-3");
+			subnodo_2.setAttribute("class", "col-md-2");
 			var label_2 = document.createElement("label");
 			var input_2 = document.createElement("input");
 			label_2.setAttribute("class", "col-md-12 control-label");
@@ -264,7 +292,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 			subnodo_4.appendChild(input_4);
 
 			var subnodo_5 = document.createElement("div")	
-			subnodo_5.setAttribute("class", "col-md-3");
+			subnodo_5.setAttribute("class", "col-md-2");
 			var label_5 = document.createElement("label");
 			var input_5 = document.createElement("input");
 			label_5.setAttribute("class", "col-md-12 control-label");
@@ -277,12 +305,41 @@ clu_entidad.prototype.editRespuesta = function(result) {
 			subnodo_5.appendChild(label_5);
 			subnodo_5.appendChild(input_5);
 
+			var municipios = [];
+			$.each(result.data.municipios, function(i,n) {
+		    	municipios.push(n);
+		    });
+			var subnodo_6 = document.createElement("div")	
+			subnodo_6.setAttribute("class", "col-md-2");
+			var label_6 = document.createElement("label");
+			label_6.setAttribute("class", "col-md-12 control-label");
+			label_6.setAttribute("for", "subent_municipio_"+n);
+			label_6.textContent = "Municipio";
+			var select_6 = document.createElement('select');
+			select_6.setAttribute("class", "form-control");
+			select_6.setAttribute("name", "subent_municipio_"+n);	
+			var opt6 = document.createElement('option');
+			opt6.innerHTML = 'Selecciona un Municipio';
+			select_6.appendChild(opt6);
+			for(var j=0;j<municipios.length;j++){
+				var opt6 = document.createElement('option');
+				opt6.value = municipios[j];
+				opt6.innerHTML = municipios[j];
+				if(result.data.sucursales[i].city == municipios[j]){
+					opt6.setAttribute("selected", "selected");
+				}
+				select_6.appendChild(opt6);
+			}	
+			subnodo_6.appendChild(label_6);
+			subnodo_6.appendChild(select_6);
+
 			nodo.appendChild(input_0);//Nombre de sucursal
 			nodo.appendChild(subnodo_1);//Nombre de sucursal
 			nodo.appendChild(subnodo_2);//Dirección de sucursal
 			nodo.appendChild(subnodo_3);//Telefono 1 sucursal
 			nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 			nodo.appendChild(subnodo_5);//Email sucursal
+			nodo.appendChild(subnodo_6);//Municipio sucursal
 
 			document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 
@@ -307,7 +364,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 		subnodo_1.appendChild(input_1);
 
 		var subnodo_2 = document.createElement("div")	
-		subnodo_2.setAttribute("class", "col-md-3");
+		subnodo_2.setAttribute("class", "col-md-2");
 		var label_2 = document.createElement("label");
 		var input_2 = document.createElement("input");
 		label_2.setAttribute("class", "col-md-12 control-label");
@@ -346,7 +403,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 		subnodo_4.appendChild(input_4);
 
 		var subnodo_5 = document.createElement("div")	
-		subnodo_5.setAttribute("class", "col-md-3");
+		subnodo_5.setAttribute("class", "col-md-2");
 		var label_5 = document.createElement("label");
 		var input_5 = document.createElement("input");
 		label_5.setAttribute("class", "col-md-12 control-label");
@@ -358,11 +415,37 @@ clu_entidad.prototype.editRespuesta = function(result) {
 		subnodo_5.appendChild(label_5);
 		subnodo_5.appendChild(input_5);
 
+		var municipios = [];
+		$.each(result.data.municipios, function(i,n) {
+	    	municipios.push(n);
+	    });
+		var subnodo_6 = document.createElement("div")	
+		subnodo_6.setAttribute("class", "col-md-2");
+		var label_6 = document.createElement("label");
+		label_6.setAttribute("class", "col-md-12 control-label");
+		label_6.setAttribute("for", "subent_municipio_"+n);
+		label_6.textContent = "Municipio";
+		var select_6 = document.createElement('select');
+		select_6.setAttribute("class", "form-control");
+		select_6.setAttribute("name", "subent_municipio_"+n);	
+		var opt6 = document.createElement('option');
+		opt6.innerHTML = 'Selecciona un Municipio';
+		select_6.appendChild(opt6);
+		for(var i=0;i<municipios.length;i++){
+			var opt6 = document.createElement('option');
+			opt6.value = municipios[i];
+			opt6.innerHTML = municipios[i];
+			select_6.appendChild(opt6);
+		}	
+		subnodo_6.appendChild(label_6);
+		subnodo_6.appendChild(select_6);
+
 		nodo.appendChild(subnodo_1);//Nombre de sucursal
 		nodo.appendChild(subnodo_2);//Dirección de sucursal
 		nodo.appendChild(subnodo_3);//Telefono 1 sucursal
 		nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 		nodo.appendChild(subnodo_5);//Email sucursal
+		nodo.appendChild(subnodo_6);//Municipio sucursal
 
 		document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 	}
@@ -448,15 +531,23 @@ clu_entidad.prototype.add_subent = function(add) {
 	var subnodo_6 = document.createElement("div")	
 	subnodo_6.setAttribute("class", "col-md-2");
 	var label_6 = document.createElement("label");
-	var input_6 = document.createElement("input");
 	label_6.setAttribute("class", "col-md-12 control-label");
 	label_6.setAttribute("for", "subent_municipio_"+n);
 	label_6.textContent = "Municipio";
-	input_6.setAttribute("class", "form-control");
-	input_6.setAttribute("name", "subent_municipio_"+n);	
-	input_6.setAttribute("placeholder", "Municipio de Sucursal");
+	var select_6 = document.createElement('select');
+	select_6.setAttribute("class", "form-control");
+	select_6.setAttribute("name", "subent_municipio_"+n);	
+	var opt6 = document.createElement('option');
+	opt6.innerHTML = 'Selecciona un Municipio';
+	select_6.appendChild(opt6);
+	for(var i=0;i<$('[name=subent_municipio_1]').children().length;i++){
+		var opt6 = document.createElement('option');
+		opt6.value = $('[name=subent_municipio_1]').children()[i].innerText;
+		opt6.innerHTML = $('[name=subent_municipio_1]').children()[i].innerText;
+		select_6.appendChild(opt6);
+	}	
 	subnodo_6.appendChild(label_6);
-	subnodo_6.appendChild(input_6);
+	subnodo_6.appendChild(select_6);
 
 	nodo.appendChild(subnodo_1);//Nombre de sucursal
 	nodo.appendChild(subnodo_2);//Dirección de sucursal
