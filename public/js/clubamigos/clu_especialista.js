@@ -49,7 +49,7 @@ clu_especialista.prototype.opt_ver = function() {
 clu_especialista.prototype.verRespuesta = function(result) {
 	$("#especialista_ver_modal .modal-body .tab1").html('');
 	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-12" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
-	//$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
 	
 	$("#especialista_ver_modal").modal();
 };
