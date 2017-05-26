@@ -48,9 +48,14 @@ clu_especialista.prototype.opt_ver = function() {
 
 clu_especialista.prototype.verRespuesta = function(result) {
 	$("#especialista_ver_modal .modal-body .tab1").html('');
-	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-12" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
-	
+	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-6" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Telefono 1: '+clu_especialista.table.rows('.selected').data()[0].phone1+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Telefono 2: '+clu_especialista.table.rows('.selected').data()[0].phone2+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Email: '+clu_especialista.table.rows('.selected').data()[0].email+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Nombre Asistente: '+clu_especialista.table.rows('.selected').data()[0].name_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Telefono 1 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone1_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Telefono 2 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone2_assistant+'</div>');	
 	$("#especialista_ver_modal").modal();
 };
 

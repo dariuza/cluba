@@ -154,6 +154,7 @@ class SpecialistController extends Controller {
 			$specialist->phone2_assistant = $request->input()['telefono_dos_asistente'];
 			$specialist->email_assistant = $request->input()['correo_electronico_asistente'];			
 			$specialist->description = $request->input()['descripcion'];
+			$specialist->enity_id = $request->input()['entidad'];
 					
 			if($request->input()['edit']){
 				//se pretende actualizar el rol
