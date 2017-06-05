@@ -77,7 +77,8 @@ Route::controllers([
 	'beneficiario' => 'Club\BeneficiaryController',
 	'entidad' => 'Club\EntityController',
 	'especialidad' => 'Club\SpecialtyController',
-	'especialista' => 'Club\SpecialistController'
+	'especialista' => 'Club\SpecialistController',
+	'servicio' => 'Club\ServiceController'
 	// 'password' => 'Auth\PasswordController',
 	
 ]);

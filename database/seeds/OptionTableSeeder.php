@@ -145,6 +145,13 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 				'active'=>1
 				)
 		);
+		\DB::table('seg_option')->insert(array(
+				'option'=>'RenovarSuscripcion',
+				'action'=>'renovarsuscripcion',
+				'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-repeat"}',
+				'active'=>1
+				)
+		);
 		
 		
 	}

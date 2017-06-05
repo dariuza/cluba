@@ -47,6 +47,7 @@ class SpecialistController extends Controller {
 		return Redirect::to('especialista/listar');
 	}
 	public function getListar(){
+		
 		//las siguientes dos lineas solo son utiles cuando se refresca la pagina, ya que al refrescar no se pasa por el controlador
 		$moduledata['fillable'] = ['Nombre','Identificación','Teléfono 1','Teléfono 2','Correo Electrónico'];
 		//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
@@ -154,7 +155,7 @@ class SpecialistController extends Controller {
 			$specialist->phone2_assistant = $request->input()['telefono_dos_asistente'];
 			$specialist->email_assistant = $request->input()['correo_electronico_asistente'];			
 			$specialist->description = $request->input()['descripcion'];
-			$specialist->enity_id = $request->input()['entidad'];
+			$specialist->entity_id = $request->input()['entidad'];
 					
 			if($request->input()['edit']){
 				//se pretende actualizar el rol
@@ -289,7 +290,31 @@ class SpecialistController extends Controller {
 	}
 	
 	public function postVer(Request $request){
-		return response()->json(['respuesta'=>true,'data'=>null]);	
+		//consulta de elementos
+		//entidad de especialista
+		$entity =
+		Entity::
+		where('clu_entity.id', $request->input('entity_id'))
+		->get()
+		->toArray();
+
+		//especialidades del especialista
+		$especialtys = \DB::table('clu_specialist_x_specialty')
+		->where('clu_specialist_x_specialty.specialist_id', $request->input('id'))
+		->leftjoin('clu_specialty', 'clu_specialist_x_specialty.specialty_id', '=', 'clu_specialty.id')			
+		->get();
+
+		//disponibilidadades
+		$dispos = \DB::table('clu_available_x_specialty')		
+		->leftjoin('clu_specialty', 'clu_available_x_specialty.specialty_id', '=', 'clu_specialty.id')			
+		->leftjoin('clu_available', 'clu_available_x_specialty.available_id', '=', 'clu_available.id')			
+		->where('clu_available.specialist_id', $request->input('id'))
+		->get();
+
+		if(count($entity)){
+			return response()->json(['respuesta'=>true,'data'=>$entity,'specialidades'=>$especialtys,'dispos'=>$dispos]);	
+		}
+		return response()->json(['respuesta'=>true,'data'=>null]);			
 	}
 	
 	public function postNuevo(Request $request){

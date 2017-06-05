@@ -77,7 +77,7 @@ class UserController extends Controller {
 			'min' => 'La :attribute deberia tener almenos :min. caracteres',
 			'max' => 'La :attribute no debe tener maximo :max. caracteres',
 			'numeric' => 'El :attribute  debe ser un número',
-			'before' => "El :attribute  debe menor a: $fecha",
+			'before' => "El :attribute  debe ser menor a: $fecha",
 			'date' => 'El :attribute  No es una fecha valida',
 		];
 		

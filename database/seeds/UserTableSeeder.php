@@ -42,7 +42,7 @@ class UserTableSeeder extends Illuminate\Database\Seeder {
 			'active'=>1,
 			'login'=>0,
 			'ip'=>'0',
-			'rol_id'=>4
+			'rol_id'=>9
 		)
 		);
 		\DB::table('seg_user')->insert(array(

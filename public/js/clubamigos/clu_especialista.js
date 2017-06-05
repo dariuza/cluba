@@ -39,6 +39,7 @@ clu_especialista.prototype.opt_ver = function() {
 	if(clu_especialista.table.rows('.selected').data().length){		
 		var datos = new Array();
   		datos['id'] = clu_especialista.table.rows('.selected').data()[0].id;  		
+  		datos['entity_id'] = clu_especialista.table.rows('.selected').data()[0].entity_id;  		
   		seg_ajaxobject.peticionajax($('#form_ver').attr('action'),datos,"clu_especialista.verRespuesta");
 	}else{
 		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
@@ -47,15 +48,49 @@ clu_especialista.prototype.opt_ver = function() {
 };
 
 clu_especialista.prototype.verRespuesta = function(result) {
+
 	$("#especialista_ver_modal .modal-body .tab1").html('');
-	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-6" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Telefono 1: '+clu_especialista.table.rows('.selected').data()[0].phone1+'</div>');
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Telefono 2: '+clu_especialista.table.rows('.selected').data()[0].phone2+'</div>');	
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-4" >Email: '+clu_especialista.table.rows('.selected').data()[0].email+'</div>');	
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Nombre Asistente: '+clu_especialista.table.rows('.selected').data()[0].name_assistant+'</div>');	
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Telefono 1 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone1_assistant+'</div>');	
-	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Telefono 2 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone2_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html('<div class="col-md-12" > Especialista: '+clu_especialista.table.rows('.selected').data()[0].name+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Identificación: '+clu_especialista.table.rows('.selected').data()[0].identification+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Email: '+clu_especialista.table.rows('.selected').data()[0].email+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Teléfono 1: '+clu_especialista.table.rows('.selected').data()[0].phone1+'</div>');
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Teléfono 2: '+clu_especialista.table.rows('.selected').data()[0].phone2+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" ><hr size="1"/></div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Datos de Asistente</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Nombre Asistente: '+clu_especialista.table.rows('.selected').data()[0].name_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Email Asistente: '+clu_especialista.table.rows('.selected').data()[0].email_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Teléfono 1 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone1_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-6" >Teléfono 2 Asistente: '+clu_especialista.table.rows('.selected').data()[0].phone2_assistant+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" ><hr size="1"/></div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Datos de Entidad</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Entidad: '+result.data[0].business_name+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Nit: '+result.data[0].nit+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Representante: '+result.data[0].legal_representative+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Contacto: '+result.data[0].contact_representative+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Email Contacto: '+result.data[0].email_contact+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Teléfono 1: '+result.data[0].phone1_contact+'</div>');	
+	$("#especialista_ver_modal .modal-body .tab1").html($("#especialista_ver_modal .modal-body .tab1").html()+'<div class="col-md-12" >Teléfono 2: '+result.data[0].phone2_contact+'</div>');	
+
+	$("#especialista_ver_modal .modal-body .tab2").html('');
+	if(result.respuesta){
+		if(result.specialidades){
+			$("#especialista_ver_modal .modal-body .tab2").html($("#especialista_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Especialidad</div> <div class="col-md-3">Precio Particular</div> <div class="col-md-4">Precio Suscripción</div> <div class="col-md-2">Duración</div> </b> </div>');
+			for(var i = 0; i < result.specialidades.length; i++){				
+				$("#especialista_ver_modal .modal-body .tab2").html($("#especialista_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><div class="col-md-1">'+(i+1)+'</div> <div class="col-md-2">'+result.specialidades[i].name+'</div> <div class="col-md-3">'+result.specialidades[i].rate_particular+'</div> <div class="col-md-4">'+result.specialidades[i].rate_suscriptor+'</div> <div class="col-md-2">'+result.specialidades[i].tiempo+'</div> </div>');
+			}
+		}
+	}
+
+	$("#especialista_ver_modal .modal-body .tab3").html('');
+	if(result.respuesta){
+		if(result.dispos){
+			$("#especialista_ver_modal .modal-body .tab3").html($("#especialista_ver_modal .modal-body .tab3").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-3">Especialidad</div> <div class="col-md-2">Día</div> <div class="col-md-3">Hora Inicio</div> <div class="col-md-3">Hora Fin</div> </b> </div>');
+			for(var i = 0; i < result.dispos.length; i++){				
+				$("#especialista_ver_modal .modal-body .tab3").html($("#especialista_ver_modal .modal-body .tab3").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><div class="col-md-1">'+(i+1)+'</div> <div class="col-md-3">'+result.dispos[i].name+'</div> <div class="col-md-2">'+result.dispos[i].day+'</div> <div class="col-md-3">'+result.dispos[i].hour_start+'</div> <div class="col-md-3">'+result.dispos[i].hour_end+'</div> </div>');
+			}
+		}
+	}
+
 	$("#especialista_ver_modal").modal();
 };
 

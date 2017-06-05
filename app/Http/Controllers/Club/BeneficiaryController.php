@@ -100,7 +100,7 @@ class BeneficiaryController extends Controller {
 			
 			Session::flash('search', $request->input('search')['value']);
 			
-			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2){
+			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
 				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
@@ -228,7 +228,7 @@ class BeneficiaryController extends Controller {
 			$moduledata['filtro'] = count($moduledata['beneficiarios']);
 			
 		}else{	
-			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2){
+			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				//el administrador tien acceso total
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
 				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')

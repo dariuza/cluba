@@ -149,7 +149,7 @@ class SuscriptionController extends Controller {
 			Session::flash('search', $request->input('search')['value']);
 			
 			//condición para rol administrador y super administrador
-			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2){
+			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				//es supeadministrador
 				$moduledata['suscripciones']= \DB::table('clu_suscription')
 				->select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state','clu_state.alert')
@@ -291,7 +291,7 @@ class SuscriptionController extends Controller {
 			
 		}else{
 			
-			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2){
+			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				//es un administrador,muestra todas las suscripciones
 				$moduledata['suscripciones'] =\DB::table('clu_suscription')
 				->select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state','clu_state.alert')

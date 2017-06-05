@@ -7,11 +7,11 @@ class CluSuscriptionTableSeeder extends Illuminate\Database\Seeder {
 	public function run(){
 		\DB::table('clu_suscription')->insert(array(
 			'code'=>1001,
-			'date_suscription'=>'2016/10/25',
-			'date_expiration'=>'2017/05/25',
+			'date_suscription'=>'2017/10/25',
+			'date_expiration'=>'2018/05/25',
 			'price'=>130000,
 			'waytopay'=>'Efectivo',
-			'pay_interval'=>'2016/11/25',
+			'pay_interval'=>'2017/11/25',
 			'fee'=>4,
 			'reason'=>'Ser amigo del club',
 			'observation'=>'Suscripción exitosa',
@@ -37,11 +37,11 @@ class CluSuscriptionTableSeeder extends Illuminate\Database\Seeder {
 		);
 		\DB::table('clu_suscription')->insert(array(
 			'code'=>1003,
-			'date_suscription'=>'2015/11/25',
-			'date_expiration'=>'2016/11/25',
+			'date_suscription'=>'2016/11/25',
+			'date_expiration'=>'2017/11/25',
 			'price'=>130000,
 			'waytopay'=>'Efectivo',
-			'pay_interval'=>'2016/10/25',
+			'pay_interval'=>'2017/10/25',
 			'fee'=>6,
 			'reason'=>'Ser amigo del club',
 			'observation'=>'Suscripción exitosa',

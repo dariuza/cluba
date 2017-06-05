@@ -108,7 +108,7 @@ seg_user.prototype.iniciarPie= function(contenedor_id,titulo,datos,colores){
                 cursor: 'pointer',                              
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f}% - [{point.y}]',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'                      
                     

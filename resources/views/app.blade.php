@@ -16,8 +16,7 @@
 	{{ Html::style('css/lib/jquery-ui.css')}}	
 	{{ Html::style('css/lib/datatables.min.css')}}
 	{{ Html::style('css/lib/datatables.tabletools.css')}}	
-	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}
-	
+	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}	
 			
 </head>
 <body class="nav-md">

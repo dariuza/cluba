@@ -2,6 +2,8 @@ function clu_suscripcion() {
 	this.table = '';
 	this.datos_pie = [];
 	this.datos_bar = [];
+	this.datos_pie_down = [];
+	this.datos_bar_down = [];
 	this.colores_pie = [];
 	this.datos_advisers = [];
 	this.datos_pie_asesor = [];

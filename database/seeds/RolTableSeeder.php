@@ -45,5 +45,10 @@ class RolTableSeeder extends Illuminate\Database\Seeder {
 			'description'=>'Recolecta las solicitudes de suscripcion'
 			)
 		);
+		\DB::table('seg_rol')->insert(array(
+			'rol'=>'SuperAsesor',
+			'description'=>'Puede ver todas las suscripcines'
+			)
+		);
 	}
 }

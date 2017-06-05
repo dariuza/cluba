@@ -369,6 +369,7 @@ class ComposerStaticInit9a0708d95003efc2b3be1d131a74dd39
         'CreateCluSpecialtyTable' => __DIR__ . '/../..' . '/database/migrations/2017_01_14_134143_create_clu_specialty_table.php',
         'CreateCluStateTable' => __DIR__ . '/../..' . '/database/migrations/2016_09_22_094807_create_clu_state_table.php',
         'CreateCluSubentityTable' => __DIR__ . '/../..' . '/database/migrations/2017_02_28_112922_create_clu_subentity_table.php',
+        'CreateQuoteTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_28_184818_create_quote_table.php',
         'CreateSegAppTable' => __DIR__ . '/../..' . '/database/migrations/2016_01_11_115659_create_seg_app_table.php',
         'CreateSegAppXUserTable' => __DIR__ . '/../..' . '/database/migrations/2016_01_11_120127_create_seg_app_x_user_table.php',
         'CreateSegModuleTable' => __DIR__ . '/../..' . '/database/migrations/2016_01_11_115913_create_seg_module_table.php',

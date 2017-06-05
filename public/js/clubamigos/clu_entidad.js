@@ -59,7 +59,7 @@ clu_entidad.prototype.verRespuesta = function(result) {
 	$("#entidad_ver_modal .modal-body .tab2").html('');
 	if(result.respuesta){
 		if(result.data.sucursales){
-			$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Nombre</div> <div class="col-md-2">Direcciòn</div> <div class="col-md-2">Telèfonos</div> <div class="col-md-3">Email</div> <div class="col-md-2">Municipio</div> <b> </div>');
+			$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" ><b> <div class="col-md-1">Nº</div> <div class="col-md-2">Nombre</div> <div class="col-md-2">Direcciòn</div> <div class="col-md-2">Telèfonos</div> <div class="col-md-3">Email</div> <div class="col-md-2">Municipio</div> </b> </div>');
 			for(var i = 0; i < result.data.sucursales.length; i++){
 				$("#entidad_ver_modal .modal-body .tab2").html($("#entidad_ver_modal .modal-body .tab2").html()+' <div class="col-md-12" style = "border-bottom: 1px solid black;" > <div class="col-md-1">'+(i+1)+'</div> <div class="col-md-2">'+result.data.sucursales[i].sucursal_name+'</div> <div class="col-md-2">'+result.data.sucursales[i].adress+'</div> <div class="col-md-2">'+result.data.sucursales[i].phone1_contact+' - '+result.data.sucursales[i].phone2_contact+'</div> <div class="col-md-3">'+result.data.sucursales[i].email_contact+'</div> <div class="col-md-2">'+result.data.sucursales[i].city+'</div> </div>');
 			}

@@ -51,8 +51,8 @@
 								<br><div> <font>  La actualización d ela misma está</font> </div>
 								<div> <font>  condiciaonada por el acuerdo con la</font> </div>
 								<div><b> <font>  Revista Club de Amigos</font> </b> </div></br>
-								<br><div> <font>  Calle 51 N° 48 - 78 int 201</font> </div>
-								<div> <font>  Frente del almacén Agaval</font> </div>
+								<br><div> <font>  Calle 51 N° 50-66 int 506</font> </div>
+								<div> <font>  Edificio Plaza Parque Itagui</font> </div>
 								<div><b> <font>  Itagui - Antioquia</font> </b> </div></br>
 								<div class = "foot_info" >
 									<span>PBX: 4449258 . Cel: 313 877 3347 &nbsp;&nbsp; </span>
