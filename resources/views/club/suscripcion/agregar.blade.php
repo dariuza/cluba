@@ -89,7 +89,7 @@
 							<li role="presentation" class="active"><a href="#tab1" data-toggle="tab">SUSCRIPTOR</a></li>
 							<li role="presentation"><a href="#tab2" data-toggle="tab">SUSCRIPCIÓN</a></li>
 							<li role="presentation"><a href="#tab3" data-toggle="tab">BENEFICIARIOS</a></li>							
-							@if(old('edit'))
+							@if(old('edit') == 'true')
 								@if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2)
 									<!-- solo para administradores -->									
 									<li role="presentation"><a href="#tab4" data-toggle="tab">ABONOS</a></li>
@@ -181,7 +181,7 @@
 								
 								<div class="form-group input-grp">									
 									<div class="col-md-4">
-										@if(!old('edit'))
+										@if(!old('edit') == 'true')
 											@if(old('city'))
 												{!! Form::label('city', 'Ciudad', array('class' => 'col-md-12 control-label')) !!}
 												{!! Form::select('city',Session::get('modulo.ciudades'),old('city'), array('class' => 'form-control','placeholder'=>'Ingresa la ciudad de recidencia')) !!}
@@ -247,7 +247,7 @@
 									</div>
 								</div>
 								
-								@if(old('edit'))
+								@if(old('edit') == 'true')
 									{!! Form::hidden('user_id', old('user_id')) !!}
 									{!! Form::hidden('name', old('name')) !!}
 									{!! Form::hidden('numer_b', old('nb')) !!}
@@ -294,7 +294,7 @@
 								</div>
 								@endif
 								
-								@if(!old('edit'))
+								@if(!old('edit') == 'true')
 								<div class="form-group input-grp">									
 									<div class="col-md-2">
 										{!! Form::label('code', 'N° Contrato', array('class' => 'col-md-12 control-label')) !!}
@@ -379,7 +379,7 @@
 									</div>
 								@endif
 								
-								@if(old('edit'))
+								@if(old('edit') == 'true')
 								<div class="form-group">								
 									<div class="col-md-12">
 										{!! Form::label('state', 'Estado', array('class' => 'col-md-12 control-label')) !!}
@@ -390,7 +390,7 @@
 								
 							</div>							
 							
-							@if(old('edit'))
+							@if(old('edit') == 'true')
 								<div class="tab-pane fade" id="tab3">
 								
 								<ul class="nav nav-tabs" style="margin-top:8px">
@@ -828,6 +828,7 @@
 					</div>
 					{!! Form::hidden('mod_id', old('modulo_id')) !!}
 					{!! Form::hidden('edit', old('edit')) !!}
+					{!! Form::hidden('renovar', old('renovar')) !!}
 					{!! Form::hidden('suscription_id', old('suscription_id')) !!}
 					<div class="form-group">
 						<div class="col-md-1 col-md-offset-0">

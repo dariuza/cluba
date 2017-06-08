@@ -622,14 +622,57 @@ clu_suscripcion.prototype.add_pay = function() {
 	$('.fecha_pago').datetimepicker({
 		dateFormat: "yy-mm-dd",
 		timeFormat: "hh:mm:ss",		
-	});
-	
+	});	
 };
-
+/*
 clu_suscripcion.prototype.renovarRespuesta = function(result) {
 	alert('Opción en construcción');	
 };
 
+clu_suscripcion.prototype.renovarsuscripcionRespuesta = function(result) {
+	//borrado del tag para rehacerlo, para evitar trueqye de informacion entre entidades	
+	document.getElementById('renovar_tab1').textContent="";
+	document.getElementById('renovar_tab2').textContent="";
+	document.getElementById('renovar_tab3').textContent="";
+	document.getElementById('renovar_tab4').textContent="";
+
+	var nodo1 = document.createElement("div");
+	nodo1.setAttribute("class", "form-group");
+
+	var subnodo1_1 = document.createElement("div")	
+	subnodo1_1.setAttribute("class", "col-md-4");
+	var label1_1 = document.createElement("label");
+	var input1_1 = document.createElement("input");
+	label1_1.setAttribute("class", "col-md-12 control-label");
+	label1_1.setAttribute("for", "suscripcion_nombres");
+	label1_1.textContent = "Nombres";
+	input1_1.setAttribute("class", "form-control");
+	input1_1.setAttribute("name", "suscripcion_nombres");	
+	input1_1.setAttribute("placeholder", "Ingresa los nombres");
+	subnodo1_1.appendChild(label1_1);
+	subnodo1_1.appendChild(input1_1);
+
+	var subnodo1_2 = document.createElement("div")	
+	subnodo1_2.setAttribute("class", "col-md-4");
+	var label1_2 = document.createElement("label");
+	var input1_2 = document.createElement("input");
+	label1_2.setAttribute("class", "col-md-12 control-label");
+	label1_2.setAttribute("for", "suscripcion_apellidos");
+	label1_2.textContent = "Apellidos";
+	input1_2.setAttribute("class", "form-control");
+	input1_2.setAttribute("name", "suscripcion_apellidos");	
+	input1_2.setAttribute("placeholder", "Ingresa los apellidos");
+	subnodo1_2.appendChild(label1_2);
+	subnodo1_2.appendChild(input1_2);
+
+	nodo1.appendChild(subnodo1_1);//Nombre de sucursal
+	nodo1.appendChild(subnodo1_2);//Nombre de sucursal
+
+	document.getElementById('renovar_tab1').appendChild(nodo1);
+
+	$("#renovar_suscripcion_modal").modal();	
+};
+*/
 clu_suscripcion.prototype.carnetRespuesta = function(result) {
 	if(result.respuesta){
 		if(result.data){			

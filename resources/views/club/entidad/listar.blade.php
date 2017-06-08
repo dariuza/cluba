@@ -220,7 +220,7 @@
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('telefono1', 'Telefono 1', array('class' => 'col-md-12 control-label ')) !!}
-												{!! Form::text('telefono1', old('telefono1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa un número telefonico'))!!}
+												{!! Form::text('telefono1', old('telefono1'), array('class' => 'form-control ','placeholder'=>'Ingresa un número telefonico'))!!}
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('correo', 'Correo de Contacto', array('class' => 'col-md-12 control-label')) !!}
@@ -238,7 +238,7 @@
 											</div>
 											<div class="col-md-12">
 												{!! Form::label('telefono2', 'Telefono 2', array('class' => 'col-md-12 control-label')) !!}
-												{!! Form::text('telefono2', old('telefono2'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa un número telefonico'))!!}
+												{!! Form::text('telefono2', old('telefono2'), array('class' => 'form-control ','placeholder'=>'Ingresa un número telefonico'))!!}
 											</div>
 										</div>
 										<div class="row col-md-12">
@@ -267,11 +267,11 @@
 										</div>	
 										<div class="col-md-2">
 											{!! Form::label('subent_telefonouno_1', 'Telefono 1', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::text('subent_telefonouno_1', old('subent_telefonouno_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Primer Teléfono Sucursal'))!!}
+											{!! Form::text('subent_telefonouno_1', old('subent_telefonouno_1'), array('class' => 'form-control ','placeholder'=>'Primer Teléfono Sucursal'))!!}
 										</div>
 										<div class="col-md-2">
 											{!! Form::label('subent_telefonodos_1', 'Telefono 2', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::text('subent_telefonodos_1', old('subent_telefonodos_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Segundo Teléfono Sucursal'))!!}
+											{!! Form::text('subent_telefonodos_1', old('subent_telefonodos_1'), array('class' => 'form-control ','placeholder'=>'Segundo Teléfono Sucursal'))!!}
 										</div>	
 										<div class="col-md-2">
 											{!! Form::label('subent_email_1', 'Correo', array('class' => 'col-md-12 control-label')) !!}

@@ -109,8 +109,7 @@
 		            		@elseif($opc['accion'] == 'abonar')
 	            				<div class="col-md-1 bnt_abonar" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="#" class="site_title site_title2" style = "text-decoration: none; ">
-			            				<i class="{{$opc['icono']}}"></i>	            				           				
-			            				<!--  <span >{{$opc[$key]}}</span> -->	            				
+			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
 		            			</div>	        				
 	            			@elseif($opc['accion'] == 'botar')
@@ -130,15 +129,13 @@
 	            			@elseif($opc['accion'] == 'renovar')
 	            				<div class="col-md-1 bnt_renovar" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="#" class="site_title site_title2" style = "text-decoration: none; ">
-			            				<i class="{{$opc['icono']}}"></i>	            				           				
-			            				<!--  <span >{{$opc[$key]}}</span> -->	            				
+			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
 		            			</div>	
 	            			@elseif($opc['accion'] == 'carnet')
 	            				<div class="col-md-1 bnt_carnet" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="#" class="site_title site_title2" style = "text-decoration: none; ">
-			            				<i class="{{$opc['icono']}}"></i>	            				           				
-			            				<!--  <span >{{$opc[$key]}}</span> -->	            				
+			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
 		            			</div>
 
@@ -147,7 +144,14 @@
 		            				<a href="javascript:clu_suscripcion.opt_cargarsus()" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
-		            			</div>			
+		            			</div>
+		            		
+		            		@elseif($opc['accion'] == 'renovarsuscripcion')
+	            				<div class="col-md-1 bnt_renovarsuscripcion" data-toggle="tooltip" title = "{{$opc[$key]}}">
+		            				<a href="#" class="site_title site_title2" style = "text-decoration: none; ">
+			            				<i class="{{$opc['icono']}}"></i>
+			            			</a>
+		            			</div>	        						
 	            			@else
 	            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
 		            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
@@ -246,10 +250,13 @@
     {!! Form::close() !!}
     {!! Form::open(array('id'=>'form_renovar','url' => 'suscripcion/renovar')) !!}
     {!! Form::close() !!} 
+    {!! Form::open(array('id'=>'from_renovarsuscripcion','url' => 'suscripcion/renovarsuscripcion')) !!}    
+    {!! Form::close() !!} 
     {!! Form::open(array('id'=>'form_carnet','url' => 'suscripcion/carnet')) !!}
     {!! Form::close() !!}     
     {!! Form::open(array('id'=>'form_carnetreprint','url' => 'suscripcion/carnetreprint')) !!}
-    {!! Form::close() !!}    
+    {!! Form::close() !!} 
+      
 	</div>		
 @endsection
 
@@ -356,6 +363,44 @@
 	      </div>
       </div>
 	</div>
+
+	<!--
+	<div class="modal fade" id="renovar_suscripcion_modal" role="dialog" data-backdrop="false">
+	    <div class="modal-dialog modal-lg">	
+	    	<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Renovación de Suscripción</h4>
+				</div>
+				<div class = "alerts-module"></div>
+				{!! Form::open(array('url' => 'suscripcion/renovarsuscripcionform', 'id'=>'form_renovar_suscripcion','onsubmit'=>'javascript:return clu_suscripcion.validateRenovarSuscripcion()')) !!}	
+				<div class="modal-body">
+					<ul class="nav nav-tabs">
+						<li role="presentation" class="active"><a href="#renovar_tab1" data-toggle="tab">SUSCRIPCIÓN</a></li>
+						<li role="presentation"><a href="#renovar_tab2" data-toggle="tab">SUSCRIPTOR</a></li>
+						<li role="presentation"><a href="#renovar_tab3" data-toggle="tab">BENEFICIARIOS</a></li>	
+						<li role="presentation"><a href="#renovar_tab4" data-toggle="tab">ABONOS</a></li>	
+					</ul>
+					<div class="tab-content">
+						<div class="row ">
+							<div class="col-md-12 col-md-offset-0">
+								<div class="tab-pane fade in active" id="renovar_tab1"></div>
+								<div class="tab-pane fade in active" id="renovar_tab2"></div>
+								<div class="tab-pane fade in active" id="renovar_tab3"></div>
+								<div class="tab-pane fade in active" id="renovar_tab4"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{!! Form::close() !!}
+				<div class="modal-footer">
+					<button type="submit" form = "form_renovar_suscripcion" class="btn btn-default" id="form_entidad_button" >Renovar Suscripción</button>	         
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
+		        </div>
+			</div>   
+	    </div>
+    </div>
+    -->
 	
 	<div class="modal fade" id="suscripcion_carnet_modal" role="dialog" data-backdrop="false">
 	    <div class="modal-dialog">	    
@@ -721,6 +766,7 @@
 	  		}  	  		
   		});
 
+  		//seleccionar todos los carets del modal para impr
 	    $('#sell_all').click(function(e){
 		    if($('#sell_all').html() == 'Seleccionar Todo'){
 			    $( "input[type=checkbox]" ).prop( "checked", true );
@@ -738,6 +784,21 @@
   	  		datos['id'] = clu_suscripcion.table.rows('.selected').data()[0].id;
   	  		seg_ajaxobject.peticionajax($('#form_carnetreprint').attr('action'),datos,"clu_suscripcion.carnetReprintRespuesta");
 		});
+
+		//suscripcion con modal para editar
+		
+  		$('.bnt_renovarsuscripcion').click(function(e){
+  			if(clu_suscripcion.table.rows('.selected').data().length){
+  				var datos = new Array();
+	  	  		datos['id'] = clu_suscripcion.table.rows('.selected').data()[0].id;	  	  		
+  	  			//seg_ajaxobject.peticionajax($('#from_renovarsuscripcion').attr('action'),datos,"clu_suscripcion.renovarsuscripcionRespuesta");
+  	  			window.location = "renovarsuscripcion/"+datos['id'];  	  		
+  	  			clu_suscripcion.table.$('tr.selected').removeClass('selected');
+  			}else{
+	  			$('.alerts').html('<div class="alert alert-info fade in alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+	  		}  	 
+  		});
+  		
   		
 	</script>
 @endsection
