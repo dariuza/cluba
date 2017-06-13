@@ -511,10 +511,10 @@
 		    "responsive": true,
 		    "processing": true,
 		    "bLengthChange": false,
-		    "serverSide": true,	        
+		    "serverSide": true,			          
 		    "ajax": "{{url('suscripcion/listarajax')}}",
 		    "iDisplayLength": 50,     	       
-		    "columns": [				   
+		    "columns": [		    			   
 				{ "data": "code"},
 				{ "data": "names_fr" },		        
 				{ "data": "identificacion_fr" },  	    
@@ -571,7 +571,8 @@
 		    "responsive": true,
 		    "processing": true,
 		    "bLengthChange": false,
-		    "serverSide": true,	        
+		    "serverSide": true,	 		     
+
 		    "ajax": "{{url('suscripcion/listarajax')}}",
 		    "iDisplayLength": 50,	       
 		    "columns": [				   
@@ -579,13 +580,18 @@
 				{ "data": "names_fr" },
 				{ "data": "city" },
 		        { "data": "names_ad" },
-		        { "data": "mora"},
-		        { "data": "pagos"},
+		        { "data": "mora","orderable": false},
+		        { "data": "pagos","orderable": false},
 		        { "data": "state"},
 		        { "data": "next_pay" },
 		        { "data": "date_expiration"}
 		                   
-		    ],	       
+		    ],
+		    "columnDefs": [
+    	         { responsivePriority: 1, targets: 0 },
+                 { responsivePriority: 2, targets: -2 }
+                
+             ],       	       
 		    "language": {
 		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		    },
