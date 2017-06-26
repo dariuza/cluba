@@ -796,9 +796,10 @@
   		$('.bnt_renovarsuscripcion').click(function(e){
   			if(clu_suscripcion.table.rows('.selected').data().length){
   				var datos = new Array();
-	  	  		datos['id'] = clu_suscripcion.table.rows('.selected').data()[0].id;	  	  		
+	  	  		datos['id'] = clu_suscripcion.table.rows('.selected').data()[0].id;	
+	  	  		datos['mora'] = clu_suscripcion.table.rows('.selected').data()[0].mora;		  	  		  		
   	  			//seg_ajaxobject.peticionajax($('#from_renovarsuscripcion').attr('action'),datos,"clu_suscripcion.renovarsuscripcionRespuesta");
-  	  			window.location = "renovarsuscripcion/"+datos['id'];  	  		
+  	  			window.location = "renovarsuscripcion/"+datos['id']+"/"+datos['mora'];  	  		
   	  			clu_suscripcion.table.$('tr.selected').removeClass('selected');
   			}else{
 	  			$('.alerts').html('<div class="alert alert-info fade in alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');

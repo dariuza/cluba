@@ -78,6 +78,15 @@
 							</ul>
 					</div>                
 				@endif	
+				@if(Session::has('alert'))			   		
+					<div class="alert alert-warning">
+						<strong>¡Algo no va bien!</strong> Alerta en este proceso.<br><br>
+							<ul>								
+								<li>{{ Session::get('alert') }}</li>								
+							</ul>
+					</div>                
+				@endif	
+
 				<!-- Datos para autocomplete inicial -->				
 				@foreach (Session::get('modulo.asesores') as $asesor)				
 					<script type="text/javascript">  clu_suscripcion.datos_advisers.push("{{$asesor}}"); </script>					
@@ -821,6 +830,10 @@
 															
 							</div>							
 							<script type="text/javascript">  clu_suscripcion.benes = 1;</script>	
+							@endif
+
+							@if(old('renovar') == 'true')
+								{!! Form::hidden('mora', old('mora')) !!}
 							@endif
 													
 						</div>	<!-- Cierre de content tab -->					

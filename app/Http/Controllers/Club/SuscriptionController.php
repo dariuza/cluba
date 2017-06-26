@@ -653,6 +653,7 @@ class SuscriptionController extends Controller {
 			
 		return Redirect::to('suscripcion/agregar')->with('modulo',$moduledata);
 	}
+
 	public function getAgregar(){	
 		
 		return view('club.suscripcion.agregar');
@@ -1183,9 +1184,7 @@ class SuscriptionController extends Controller {
 					where('clu_license.suscription_id', $request->input()['suscription_id'])
 					->get()
 					->toArray();
-
-					//dd($cnts);
-					
+									
 					$bandera_cnt = true;//para permitir solo un carnet con cero beneficiarios				
 					foreach( $cnts as $cnt){
 						
@@ -1282,6 +1281,11 @@ class SuscriptionController extends Controller {
 				}
 
 				if($request->input()['renovar'] == 'TRUE'){
+
+					//cambiamos el estado de la suscripciòn
+					dd($request->input());
+					//Creamos la nueva suscripciòn y agregamos el saldo en mora al precio
+
 					return 'renovar suscripcion';
 				}
 				
@@ -1957,8 +1961,7 @@ class SuscriptionController extends Controller {
 		}catch (\Illuminate\Database\QueryException $e) {
 			Session::flash('error', 'El abono no ha sido agregado en la suscripción. ');
 			return Redirect::to('suscripcion/listar');	
-		}
-		
+		}		
 	}
 	
 	public function getRenovar($suscription_id = null){
@@ -2102,8 +2105,9 @@ class SuscriptionController extends Controller {
 	}
 	*/
 
-	public function getRenovarsuscripcion($suscription_id = null){	
-		
+	//renovar con actualizaciòn
+	public function getRenovarsuscripcion($suscription_id = null,$suscription_mora = null){			
+
 		//preparación de datos
 		$adviser = \DB::table('seg_user')
 		->join('seg_rol', 'seg_user.rol_id', '=', 'seg_rol.id')
@@ -2111,7 +2115,8 @@ class SuscriptionController extends Controller {
 		->where('rol_id', '=', 4)
 		->where('seg_user.active', '=', 1)
 		->get();
-			
+
+		//miramos su tiene saldo en mora			
 		foreach ($adviser as $ad){			
 			$advisers[$ad->user_id] = $ad->names.' '.$ad->surnames.' ['.$ad->code_adviser.'] '.$ad->identificacion;
 		}		
@@ -2241,6 +2246,12 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.edit', 'false');
 		Session::flash('_old_input.renovar', 'true');
 		Session::flash('titulo', 'Renovar');
+		Session::flash('_old_input.mora', $suscription_mora);
+
+		if(intval($suscription_mora)>0){
+			Session::flash('alert', 'La Suscripciòn tiene saldo en mora, si se renueva el saldo en mora se abonara al precio de la renovación. Saldo en mora: '.$suscription_mora);
+		}
+
 		
 		return Redirect::to('suscripcion/agregar')->with('modulo',$moduledata);		
 	}
