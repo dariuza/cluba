@@ -819,24 +819,29 @@ class SuscriptionController extends Controller {
 			
 			if($request->input()['suscription_id']){
 
+				
 				if($request->input()['renovar'] == 'TRUE'){
 
 					//creamos el abono y abonamos el saldo en mora - cambiamos el estado de la suscripciòn
-					$payment_obj = new Payment();					
-					$payment_obj->date_payment = date("Y-m-d H:i:s");//Fecha  de abono de suscripción, HOY
-					$payment_obj->payment =$request->input()['mora'];
-					$payment_obj->n_receipt = 'SR'.date("YmdHis");//no puede ser NUll
-					$payment_obj->suscription_id = $request->input()['suscription_id'];
+					if(intval($request->input()['mora']) > 0){
 
-					//guardamos el abono
-					try {
-						//el abono debe ser menor o igual a la mora						
-						$payment_obj->save();						
-				
-					}catch (\Illuminate\Database\QueryException $e) {
-						Session::flash('error', 'El abono no ha sido agregado en la suscripción anterior.');
-						return Redirect::to('suscripcion/listar');	
-					}
+						$payment_obj = new Payment();					
+						$payment_obj->date_payment = date("Y-m-d H:i:s");//Fecha  de abono de suscripción, HOY
+						$payment_obj->payment =$request->input()['mora'];
+						$payment_obj->n_receipt = 'SR'.date("YmdHis");//no puede ser NUll
+						$payment_obj->suscription_id = $request->input()['suscription_id'];
+
+						//guardamos el abono
+						try {
+							//el abono debe ser menor o igual a la mora						
+							$payment_obj->save();						
+					
+						}catch (\Illuminate\Database\QueryException $e) {
+							Session::flash('error', 'El abono no ha sido agregado en la suscripción anterior.');
+							return Redirect::to('suscripcion/listar');	
+						}
+
+					}				
 					
 					//cambiamos el estado de la suscripcion
 					$SuscripctionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array('state_id' => 6));
@@ -844,13 +849,14 @@ class SuscriptionController extends Controller {
 					$old_suscriptcion=Suscription::
 					where('clu_suscription.id', $request->input()['suscription_id'])
 					->get()
-					->toArray();
+					->toArray();					
 
 					//Creamos la nueva suscripciòn y agregamos el saldo en mora al precio
 					//consultamos el amigo y el asesor
 					try {
 						$suscription_renovation = new Suscription();
-						$suscription_renovation->code = $old_suscriptcion[0]['code'];
+						//$suscription_renovation->code = $old_suscriptcion[0]['code'];
+						$suscription_renovation->code = $request->input()['code'];
 						$suscription_renovation->date_suscription = date("Y-m-d H:i:s");
 						
 						//calculo de proxima fecha de expiración
@@ -875,11 +881,13 @@ class SuscriptionController extends Controller {
 
 					//editamos los datos					
 					$request->merge(['suscription_id' =>$suscription_renovation->id]);
-					$request->merge(['edit' => 'TRUE']);
+					//$request->merge(['edit' => 'TRUE']);
 					$request->merge(['state_id' => 8]);	
-					$request->merge(['price' => $suscription_renovation->price]);					
+					$request->merge(['price' => $suscription_renovation->price]);
+
+					//editamos los beneficiarios y los carnets
 					
-					//return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
+					return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
 				}
 
 				if($request->input()['edit'] == 'TRUE'){
@@ -968,7 +976,8 @@ class SuscriptionController extends Controller {
 					*/
 					
 					//verificamos que el codigo no este en base
-					//primero consultamos la suscripcion				
+					//primero consultamos la suscripcion					
+						
 					$old_suscription = \DB::table('clu_suscription')->where('id', $request->input()['suscription_id'])->get()[0];
 					if($old_suscription->code != $request->input()['code']){					
 						if(count(\DB::table('clu_suscription')->where('code', $request->input()['code'])->get())){
@@ -982,101 +991,100 @@ class SuscriptionController extends Controller {
 					
 					if(!empty($request->input()['date_suscription'])){ $suscription->date_suscription = $request->input()['date_suscription'];}
 					$suscription->date_expiration = date ( 'Y-m-j' , strtotime ( '+1 year' , strtotime ( date('Y-m-j'))));
-					if(!empty($request->input()['date_expiration'])){ $suscription->date_expiration = $request->input()['date_expiration'];}
+					if(!empty($request->input()['date_expiration'])){ $suscription->date_expiration = $request->input()['date_expiration'];}					
+				
+					//si no hay renovación entonces editamos la suscripción
+					$suscription->price = $request->input()['price'];
+					$suscription->waytopay = $request->input()['waytopay'];				
 					
-					if(empty($suscription_renovation)){
-						//si no hay renovación entonces editamos la suscripción
-						$suscription->price = $request->input()['price'];
-						$suscription->waytopay = $request->input()['waytopay'];				
-						
-						$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
-						if(!empty($request->input()['pay_interval'])){ $suscription->pay_interval = $request->input()['pay_interval'];}
-										
-						//$suscription->reason = $request->input()['reason'];
-						$suscription->observation = $request->input()['observation'];
-						$suscription->reason = $request->input()['provisional'];
-						$suscription->state_id = $request->input()['state_id'];
-						//vamos por el asesor
-						$array = explode(" ",$request->input()['adviser']);
-						$identification = end($array);
-						$id_adviser = UserProfile::select('user_id')
-						->where('identificacion','=',$identification)
-						->get()->toarray()[0]['user_id'];				
-						$suscription->adviser_id= $id_adviser;
-						
-						try {
-							$suscriptionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array(
-							'code' => $suscription->code,
-							'date_suscription' => $suscription->date_suscription,
-							'date_expiration' => $suscription->date_expiration,
-							'price' => $suscription->price,
-							'waytopay' => $suscription->waytopay,
-							'pay_interval' => $suscription->pay_interval,
-							'reason' => $suscription->reason,
-							'observation' => $suscription->observation,
-							'adviser_id' => $suscription->adviser_id,
-							'state_id' => $suscription->state_id));
-						}catch (\Illuminate\Database\QueryException $e) {
-							return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-						}					
+					$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
+					if(!empty($request->input()['pay_interval'])){ $suscription->pay_interval = $request->input()['pay_interval'];}
+									
+					//$suscription->reason = $request->input()['reason'];
+					$suscription->observation = $request->input()['observation'];
+					$suscription->reason = $request->input()['provisional'];
+					$suscription->state_id = $request->input()['state_id'];
+					//vamos por el asesor
+					$array = explode(" ",$request->input()['adviser']);
+					$identification = end($array);
+					$id_adviser = UserProfile::select('user_id')
+					->where('identificacion','=',$identification)
+					->get()->toarray()[0]['user_id'];				
+					$suscription->adviser_id= $id_adviser;
 					
-						//actualización de abonos
-						$ids_pago = Array();
-						$fechas_pagos = Array();
-						$pagos = Array();
-						$recibos = Array();
-						
-						foreach($request->input() as $key=>$value){
-							if(strpos($key,'fecha_pago_') !== false){						
-								$array=explode('_',$key);
-								$id_abono = end($array);
-								$fechas_pagos[$id_abono] = $value;
-							}
-							if(strpos($key,'pago_abono_') !== false){
-								$array=explode('_',$key);
-								$id_abono = end($array);
-								$pagos[$id_abono] = $value;
-							}
-
-							if(strpos($key,'n_receipt_') !== false){
-								$array=explode('_',$key);
-								$id_abono = end($array);
-								$recibos[$id_abono] = $value;
-							}
-						}				
-						//abonos				
-						$i=0;
-						//borrado de todos los abonos
-						Payment::where('suscription_id', (int) $request->input()['suscription_id'])->delete();
-						//creación de todos los abonos
-						foreach($pagos as $key=>$value){
-							//if(!empty($fechas_pagos[$key]) && !empty($value)){
-								try{						
-									$payment = new Payment();
-									$payment->date_payment = $fechas_pagos[$key];
-									$payment->payment = $value;
-									$payment->n_receipt = $recibos[$key];
-									$payment->suscription_id = $request->input()['suscription_id'];
-									$payment->save();
-									/*
-									 $paymentAffectedRows = Payment::where('id',$key)->update(array(
-									 'date_payment' => $fechas_pagos[$key],
-									 'payment' => $value));
-									 */
-								}catch (\Illuminate\Database\QueryException $e) {
-									return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-								}
-								
-								//datos para interfaz grafica de abonos
-								$moduledata['pagos'][$i]['id']=$key;
-								$moduledata['pagos'][$i]['payment']=$value;
-								$moduledata['pagos'][$i]['date_payment']=$fechas_pagos[$key];
-								$moduledata['pagos'][$i]['n_receipt']=$recibos[$key];
-								$i++;							
-							//}
+					try {
+						$suscriptionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array(
+						'code' => $suscription->code,
+						'date_suscription' => $suscription->date_suscription,
+						'date_expiration' => $suscription->date_expiration,
+						'price' => $suscription->price,
+						'waytopay' => $suscription->waytopay,
+						'pay_interval' => $suscription->pay_interval,
+						'reason' => $suscription->reason,
+						'observation' => $suscription->observation,
+						'adviser_id' => $suscription->adviser_id,
+						'state_id' => $suscription->state_id));
+					}catch (\Illuminate\Database\QueryException $e) {
+						return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+					}					
+				
+					//actualización de abonos
+					$ids_pago = Array();
+					$fechas_pagos = Array();
+					$pagos = Array();
+					$recibos = Array();
+					
+					foreach($request->input() as $key=>$value){
+						if(strpos($key,'fecha_pago_') !== false){						
+							$array=explode('_',$key);
+							$id_abono = end($array);
+							$fechas_pagos[$id_abono] = $value;
 						}
+						if(strpos($key,'pago_abono_') !== false){
+							$array=explode('_',$key);
+							$id_abono = end($array);
+							$pagos[$id_abono] = $value;
+						}
+
+						if(strpos($key,'n_receipt_') !== false){
+							$array=explode('_',$key);
+							$id_abono = end($array);
+							$recibos[$id_abono] = $value;
+						}
+					}				
+					//abonos				
+					$i=0;
+					//borrado de todos los abonos
+					Payment::where('suscription_id', (int) $request->input()['suscription_id'])->delete();
+					//creación de todos los abonos
+					foreach($pagos as $key=>$value){
+						//if(!empty($fechas_pagos[$key]) && !empty($value)){
+							try{						
+								$payment = new Payment();
+								$payment->date_payment = $fechas_pagos[$key];
+								$payment->payment = $value;
+								$payment->n_receipt = $recibos[$key];
+								$payment->suscription_id = $request->input()['suscription_id'];
+								$payment->save();
+								/*
+								 $paymentAffectedRows = Payment::where('id',$key)->update(array(
+								 'date_payment' => $fechas_pagos[$key],
+								 'payment' => $value));
+								 */
+							}catch (\Illuminate\Database\QueryException $e) {
+								return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+							}
+							
+							//datos para interfaz grafica de abonos
+							$moduledata['pagos'][$i]['id']=$key;
+							$moduledata['pagos'][$i]['payment']=$value;
+							$moduledata['pagos'][$i]['date_payment']=$fechas_pagos[$key];
+							$moduledata['pagos'][$i]['n_receipt']=$recibos[$key];
+							$i++;							
+						//}
 					}
-					
+				
+
 					/**Actualizar Beneficiarios**/
 					
 					//beneficiarios por suscripción
@@ -1345,12 +1353,7 @@ class SuscriptionController extends Controller {
 					
 					Session::flash('_old_input.modulo_id', $request->input()['mod_id']);
 					Session::flash('_old_input.edit', 'true');
-					Session::flash('titulo', 'Editar');	
-
-					if(!empty($suscription_renovation)){
-						return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción renovada exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
-
-					}			
+					Session::flash('titulo', 'Editar');							
 					
 					return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción editada exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
 				}
@@ -1457,9 +1460,7 @@ class SuscriptionController extends Controller {
 					//eliminamos el usuario					
 					User::destroy($user->id);
 					return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-				}
-				
-				/**crear el abono**/
+				}			
 				
 				//array de carnets
 				$array = Array();
@@ -1482,8 +1483,9 @@ class SuscriptionController extends Controller {
 						$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
 					}
 				}
-				$addbenes = count($array);				
-				
+				$addbenes = count($array);
+
+				/**crear el abono**/				
 				$payment->date_payment = date("Y-m-d H:i:s");
 				$payment->payment = $request->input()['payment'];
 				$payment->n_receipt = $request->input()['n_receipt'];
