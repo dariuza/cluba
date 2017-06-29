@@ -274,70 +274,70 @@
 								
 								
 								@if(old('edit'))
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('code', 'N° Contrato', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('code',old('code'), array('class' => 'form-control','placeholder'=>'Ingresa el N° de Contrato')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('code', 'N° Contrato', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('code',old('code'), array('class' => 'form-control','placeholder'=>'Ingresa el N° de Contrato')) !!}
+										</div>
 									</div>
-								</div>
-																
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('waytopay', 'Forma de pago', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::select('waytopay',array('EFECTIVO' => 'EFECTIVO', 'TRANSFERENCIA' => 'TRANSFERENCIA', 'PAGO ELECTRONICO' => 'PAGO ELECTRONICO'),old('waytopay'), array('class' => 'form-control','placeholder'=>'Elije la forma de pago')) !!}
+																	
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('waytopay', 'Forma de pago', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('waytopay',array('EFECTIVO' => 'EFECTIVO', 'TRANSFERENCIA' => 'TRANSFERENCIA', 'PAGO ELECTRONICO' => 'PAGO ELECTRONICO'),old('waytopay'), array('class' => 'form-control','placeholder'=>'Elije la forma de pago')) !!}
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('price', 'Precio', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('price',old('price'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el precio de la suscripción')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('price', 'Precio', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('price',old('price'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el precio de la suscripción')) !!}
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('pay_interval', 'Proximo pago', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('pay_interval',old('pay_interval'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('pay_interval', 'Proximo pago', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('pay_interval',old('pay_interval'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
+										</div>
 									</div>
-								</div>
 								@endif
 								
 								@if(!old('edit') == 'true')
-								<div class="form-group input-grp">									
-									<div class="col-md-2">
-										{!! Form::label('code', 'N° Contrato', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('code',old('code'), array('class' => 'form-control','placeholder'=>'Ingresa el N° de Contrato')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-2">
+											{!! Form::label('code', 'N° Contrato', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('code',old('code'), array('class' => 'form-control','placeholder'=>'Ingresa el N° de Contrato')) !!}
+										</div>
 									</div>
-								</div>
-																
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('waytopay', 'Forma de pago', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::select('waytopay',array('EFECTIVO' => 'EFECTIVO', 'TRANSFERENCIA' => 'TRANSFERENCIA', 'PAGO ELECTRONICO' => 'PAGO ELECTRONICO'),old('waytopay'), array('class' => 'form-control','placeholder'=>'Elije la forma de pago')) !!}
+																	
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('waytopay', 'Forma de pago', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::select('waytopay',array('EFECTIVO' => 'EFECTIVO', 'TRANSFERENCIA' => 'TRANSFERENCIA', 'PAGO ELECTRONICO' => 'PAGO ELECTRONICO'),old('waytopay'), array('class' => 'form-control','placeholder'=>'Elije la forma de pago')) !!}
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group input-grp">									
-									<div class="col-md-2">
-										{!! Form::label('payment', 'Couta inicial', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('payment',old('payment'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el primer pago')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-2">
+											{!! Form::label('payment', 'Couta inicial', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('payment',old('payment'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el primer pago')) !!}
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group input-grp">									
-									<div class="col-md-2">
-										{!! Form::label('n_receipt', 'N° Recibo', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('n_receipt',old('n_receipt'), array('class' => 'form-control','placeholder'=>'Ingresa el número de recibo')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-2">
+											{!! Form::label('n_receipt', 'N° Recibo', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('n_receipt',old('n_receipt'), array('class' => 'form-control','placeholder'=>'Ingresa el número de recibo')) !!}
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group input-grp">									
-									<div class="col-md-3">
-										{!! Form::label('pay_interval', 'Proximo pago', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::text('pay_interval',old('pay_interval'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
+									<div class="form-group input-grp">									
+										<div class="col-md-3">
+											{!! Form::label('pay_interval', 'Proximo pago', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('pay_interval',old('pay_interval'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
+										</div>
 									</div>
-								</div>
 								@endif
 								
 								
@@ -399,7 +399,7 @@
 								
 							</div>							
 							
-							@if(old('edit') == 'true')
+							@if(old('edit') == 'true' || old('renovar') == 'true')
 								<div class="tab-pane fade" id="tab3">
 								
 								<ul class="nav nav-tabs" style="margin-top:8px">
@@ -842,6 +842,7 @@
 					{!! Form::hidden('mod_id', old('modulo_id')) !!}
 					{!! Form::hidden('edit', old('edit')) !!}
 					{!! Form::hidden('renovar', old('renovar')) !!}
+					{!! Form::hidden('user_id', old('user_id')) !!}
 					{!! Form::hidden('suscription_id', old('suscription_id')) !!}
 					<div class="form-group">
 						<div class="col-md-1 col-md-offset-0">
