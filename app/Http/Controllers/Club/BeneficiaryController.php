@@ -118,7 +118,7 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('clu_suscription.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -142,7 +142,7 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('clu_suscription.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -166,7 +166,7 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('clu_suscription.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -211,7 +211,7 @@ class BeneficiaryController extends Controller {
 						->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 						->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')	
 						->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-						->orWhere('clu_suscription.date_suscription', 'like', '%'.Session::get('search').'%');
+						->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
 					})
 					->orderBy($order_column, $order_dir)
 					->skip($request->input('start'))->take($request->input('length'))
@@ -222,10 +222,9 @@ class BeneficiaryController extends Controller {
 					$moduledata['beneficiarios'];
 				}
 				
-			}
+			}			
 			
-			
-			$moduledata['filtro'] = count($moduledata['beneficiarios']);
+			$moduledata['filtro'] = count($moduledata['beneficiarios']);			
 			
 		}else{	
 			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){

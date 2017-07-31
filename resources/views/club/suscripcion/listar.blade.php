@@ -513,7 +513,7 @@
 		    "bLengthChange": false,
 		    "serverSide": true,			          
 		    "ajax": "{{url('suscripcion/listarajax')}}",
-		    "iDisplayLength": 50,     	       
+		    "iDisplayLength": 25,
 		    "columns": [		    			   
 				{ "data": "code"},
 				{ "data": "names_fr" },		        
@@ -571,10 +571,9 @@
 		    "responsive": true,
 		    "processing": true,
 		    "bLengthChange": false,
-		    "serverSide": true,	 		     
-
+		    "serverSide": true,
 		    "ajax": "{{url('suscripcion/listarajax')}}",
-		    "iDisplayLength": 50,	       
+		    "iDisplayLength": 25,	       
 		    "columns": [				   
 				{ "data": "code"},  	    
 				{ "data": "names_fr" },

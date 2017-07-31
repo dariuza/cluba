@@ -399,7 +399,7 @@
 								
 							</div>							
 							
-							@if(old('edit') == 'true' || old('renovar') == 'true')
+							@if(old('edit') == 'true')
 								<div class="tab-pane fade" id="tab3">
 								
 								<ul class="nav nav-tabs" style="margin-top:8px">
