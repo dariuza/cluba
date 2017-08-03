@@ -160,13 +160,33 @@
 															@if($llave_modulo == 11)
 															<!-- No pinta el modulo de especialistas -->
 															@else
-																@foreach ($modulo['opciones'] as $llave_opcion => $opcion)										
-																	@if($opcion['lugar'] == Session::get('opaplus.usuario.lugar.lugar'))
-																		@if($opcion['vista'] != 'listar')
-																			<li><a href="{{ url(json_decode($modulo['preferencias'])->controlador)}}/{{($opcion['accion'])}}/{{$llave_permiso}}/{{$llave_categoria}}/{{$llave_modulo}}" ><i class="{{json_decode($modulo['preferencias'])->icono}}"></i> {{$modulo['modulo']}} </a></li>
-																		@endif
-																	@endif											
-																@endforeach
+
+																@if($llave_modulo == 13)
+																<!-- No pinta el modulo de reportes -->
+																	<li>
+																		<a><i class = "{{json_decode($modulo['preferencias'])->icono}}"></i> {{$modulo['modulo']}}  <span class="fa fa-chevron-down"></span></a>
+																		<ul class="nav child_menu">												
+																		@foreach ($modulo['opciones'] as $llave_opcion => $opcion)										
+																			@if($opcion['lugar'] == Session::get('opaplus.usuario.lugar.lugar'))
+																				@if($opcion['vista'] != 'listar')													
+																					<li><a href="{{ url(json_decode($modulo['preferencias'])->controlador)}}/{{($opcion['accion'])}}/{{$llave_permiso}}/{{$llave_categoria}}/{{$llave_modulo}}" ></i> {{$opcion[$llave_opcion]}} </a> </li>           			
+																				@endif
+																			@endif											
+																		@endforeach
+																		</ul>
+																	</li>
+																@else
+
+																	@foreach ($modulo['opciones'] as $llave_opcion => $opcion)
+																		@if($opcion['lugar'] == Session::get('opaplus.usuario.lugar.lugar'))
+																			@if($opcion['vista'] != 'listar')
+																				<li><a href="{{ url(json_decode($modulo['preferencias'])->controlador)}}/{{($opcion['accion'])}}/{{$llave_permiso}}/{{$llave_categoria}}/{{$llave_modulo}}" ><i class="{{json_decode($modulo['preferencias'])->icono}}"></i> {{$modulo['modulo']}} </a></li>
+																			@endif
+																		@endif											
+																	@endforeach
+																@endif
+
+																
 															@endif
 															
 														@endif

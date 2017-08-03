@@ -152,6 +152,20 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 				'active'=>1
 				)
 		);
+		\DB::table('seg_option')->insert(array(
+				'option'=>'Suscripciones',
+				'action'=>'reportesuscripciones',
+				'preference'=>'{"lugar":"escritorio","vista":"none","icono":"fa fa-money"}',
+				'active'=>1
+				)
+		);
+		\DB::table('seg_option')->insert(array(
+				'option'=>'Facturacion',
+				'action'=>'reportefacturacion',
+				'preference'=>'{"lugar":"escritorio","vista":"none","icono":"fa fa-money"}',
+				'active'=>1
+				)
+		);
 		
 		
 	}
