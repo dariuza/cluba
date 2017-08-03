@@ -241,7 +241,16 @@
             		@endforeach
             	@endif               
             </tr>
-        </thead>              
+        </thead> 
+         <tfoot>
+            <tr>
+                @if(Session::has('modulo.fillable'))
+            		@foreach (Session::get('modulo.fillable') as $col)
+            			<th>{{$col}}</th>
+            		@endforeach
+            	@endif    
+            </tr>
+        </tfoot>            
     </table> 
     <!-- Form en blanco para capturar la url editar y eliminar-->
     {!! Form::open(array('id'=>'form_abonar','url' => 'suscripcion/abonar')) !!}
@@ -567,7 +576,7 @@
 		    
 		});
 	@else
-		javascript:clu_suscripcion.table = $('#example').DataTable( {
+		javascript:clu_suscripcion.table = $('#example').DataTable( {			
 		    "responsive": true,
 		    "processing": true,
 		    "bLengthChange": false,
@@ -594,6 +603,7 @@
 		    "language": {
 		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 		    },
+
 		    /*
 		    "sDom": 'T<"clear">lfrtip',            
 		    "oTableTools": {
@@ -621,7 +631,8 @@
 		                "sTitle": "{{Session::get('modulo.modulo')}}"                        
 		            }                    
 		        ]
-		    },*/
+		    },
+		    */
 		    "fnRowCallback": function( nRow, aData ) {
 		        //pintar el fondo de la fila
 		        //$('td', nRow).css('background-color', aData.alert);
@@ -629,7 +640,31 @@
 		        //	$(nRow).children()[5].style.backgroundColor = aData.next_alert;
 		        		        
 		        
-            }
+            },
+          
+            /*
+            initComplete: function () {
+	            this.api().columns().every( function () {
+	                var column = this;
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo( $(column.footer()).empty() )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	 
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	 
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	            } );
+	        },
+	        */
+
 		    
 		});
 	@endif	

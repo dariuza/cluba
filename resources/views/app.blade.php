@@ -16,7 +16,8 @@
 	{{ Html::style('css/lib/jquery-ui.css')}}	
 	{{ Html::style('css/lib/datatables.min.css')}}
 	{{ Html::style('css/lib/datatables.tabletools.css')}}	
-	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}	
+	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}
+
 			
 </head>
 <body class="nav-md">
@@ -255,15 +256,12 @@
 	{{ Html::script('js/lib/highcharts.js') }}	
 	{{ Html::script('js/lib/exporting.js') }}	
 	{{ Html::script('js/lib/datatables.min.js') }}	
-	{{ Html::script('js/lib/datatables.tabletools.js') }}
 	{{ Html::script('js/lib/datatables.responsive.min.js') }}	
 	{{ Html::script('js/lib/bootstrap-datepicker.min.js') }}
 	{{ Html::script('js/lib/locales/bootstrap-datepicker.es.min.js') }}
 				
 	{{ Html::script('js/seguridad/seg_user.js') }}
-	{{ Html::script('js/seguridad/seg_ajaxobject.js') }}
-	
-	
+	{{ Html::script('js/seguridad/seg_ajaxobject.js') }}	
 	
 	@yield('script')
 	

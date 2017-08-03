@@ -145,7 +145,7 @@ class SuscriptionController extends Controller {
 				$order_column = $request->input('columns')[0]['data'];
 			}
 		}		
-		
+		Session::flash('buscador', $request->input());
 		//realizamos la consulta
 		if(!empty($request->input('search')['value'])){
 			Session::flash('search', $request->input('search')['value']);
