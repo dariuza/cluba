@@ -78,8 +78,9 @@ Route::controllers([
 	'entidad' => 'Club\EntityController',
 	'especialidad' => 'Club\SpecialtyController',
 	'especialista' => 'Club\SpecialistController',
-	'servicio' => 'Club\ServiceController'
-	// 'password' => 'Auth\PasswordController',
+	'servicio' => 'Club\ServiceController',
+	'reporte' => 'Club\ReportController'
+	//'password' => 'Auth\PasswordController',
 	
 ]);
 
