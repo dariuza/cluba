@@ -87,7 +87,7 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 				'action'=>'abonar',
 				'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-money"}',
 				'active'=>1
-				)
+			)
 		);
 		\DB::table('seg_option')->insert(array(
 				'option'=>'Suscriptores',
@@ -143,30 +143,37 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 				'action'=>'cargasus',
 				'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"glyphicon glyphicon-book"}',
 				'active'=>1
-				)
+			)
 		);
 		\DB::table('seg_option')->insert(array(
 				'option'=>'RenovarSuscripcion',
 				'action'=>'renovarsuscripcion',
 				'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-repeat"}',
 				'active'=>1
-				)
+			)
 		);
 		\DB::table('seg_option')->insert(array(
 				'option'=>'Suscripciones',
 				'action'=>'reportesuscripciones',
 				'preference'=>'{"lugar":"escritorio","vista":"none","icono":"fa fa-money"}',
 				'active'=>1
-				)
+			)
 		);
 		\DB::table('seg_option')->insert(array(
-				'option'=>'Facturacion',
-				'action'=>'reportefacturacion',
-				'preference'=>'{"lugar":"escritorio","vista":"none","icono":"fa fa-money"}',
-				'active'=>1
-				)
+			'option'=>'Facturacion',
+			'action'=>'reportefacturacion',
+			'preference'=>'{"lugar":"escritorio","vista":"none","icono":"fa fa-money"}',
+			'active'=>1
+			)
 		);
-		
+		\DB::table('seg_option')->insert(array(
+			'option'=>'ReportGeneral',
+			'action'=>'reportegeneral',
+			'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-building-o"}',
+			'active'=>1
+			)
+		);	
+			
 		
 	}
 }

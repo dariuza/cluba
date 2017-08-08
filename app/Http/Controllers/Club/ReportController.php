@@ -33,6 +33,13 @@ class ReportController extends Controller {
 
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se debe alcanzar por url, solo es valido desde las opciones del menú');
 
+		$moduledata['id_mod']=$id_mod;
+		$moduledata['modulo']='Reportes Suscripción';
+		$moduledata['description']='Reportes del modulo de Suscripciones';
+		$moduledata['id_app']=$id_app;
+		$moduledata['categoria']=$categoria;
+
+		Session::flash('modulo', $moduledata);
 		return view('club.reporte.suscripciones');
 
 	}
