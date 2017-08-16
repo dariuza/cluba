@@ -656,7 +656,8 @@ class SuscriptionController extends Controller {
 		$adviser = \DB::table('seg_user')
 		->join('seg_rol', 'seg_user.rol_id', '=', 'seg_rol.id')
 		->join('seg_user_profile','seg_user.id','=','seg_user_profile.user_id')
-		->where('rol_id', '=', 4)
+		->orwhere('rol_id', '=', 4)
+		->orwhere('rol_id', '=', 9)
 		->where('seg_user.active', '=', 1)
 		->get();			
 		foreach ($adviser as $ad){			

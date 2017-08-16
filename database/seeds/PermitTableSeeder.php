@@ -403,20 +403,7 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'module_id'=>12,
 			'option_id'=>3
 			)
-		);
-		
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>1,
-			'module_id'=>13,
-			'option_id'=>1
-			)
-		);
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>1,
-			'module_id'=>13,
-			'option_id'=>2
-			)
-		);
+		);		
 		\DB::table('seg_permit')->insert(array(
 			'rol_id'=>1,
 			'module_id'=>13,

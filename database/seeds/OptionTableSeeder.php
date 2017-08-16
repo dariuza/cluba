@@ -167,7 +167,7 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 			)
 		);
 		\DB::table('seg_option')->insert(array(
-			'option'=>'ReportGeneral',
+			'option'=>'ReporteGeneral',
 			'action'=>'reportegeneral',
 			'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-building-o"}',
 			'active'=>1
