@@ -1,7 +1,11 @@
 <?php namespace App\Http\Controllers\Club;
 
 use Validator;
+use DateTime;
 use App\Core\Club\Suscription;
+use App\Core\Club\License;
+use App\Core\Club\LicensePrint;
+use App\Core\Club\Beneficiary;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -67,32 +71,19 @@ class ReportController extends Controller {
 		foreach ($states as $st){			
 			$stateses[$st->id] = $st->state;
 		}
-		$moduledata['estados']=$stateses;
+		$moduledata['estados']=$stateses;		
 		
-		//dd($moduledata);
 		Session::flash('modulo', $moduledata);
 		return view('club.reporte.suscripciones');
 
 	}
 
-	public function postReportegeneral(Request $request){
-		
-		//se quieren consultar todos
-		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
-			$export=Suscription::
-			select('clu_suscription.*','ufr.*','fr.*','fr.state as department','ad.names as names_ad','ad.surnames as surnames_ad','ad.identificacion as identificacion_ad','clu_state.state')
-			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
-			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
-			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
-			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
-			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
-			->get();			
-		}
+	public function postReportegeneral(Request $request){		
 
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -105,7 +96,7 @@ class ReportController extends Controller {
 		//se quieren consultar una fecha final			
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') != "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -118,7 +109,7 @@ class ReportController extends Controller {
 		//se quieren consultar desde una fecha inicial hasta una fecha final
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') != "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){						
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -131,7 +122,7 @@ class ReportController extends Controller {
 		//se quieren consultar solo un estado	
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') == ""){					
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -144,7 +135,7 @@ class ReportController extends Controller {
 		//se quieren consultar desde una fecha inicial y el estado
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') == ""){						
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -158,7 +149,7 @@ class ReportController extends Controller {
 		//se quieren consultar desde una fecha final y el estado
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') != "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') == ""){						
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -172,7 +163,7 @@ class ReportController extends Controller {
 		//se quieren consultar desde una fecha inicial, fecha final y el estado
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') != "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') == ""){						
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -189,7 +180,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -205,7 +196,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -222,7 +213,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -239,7 +230,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -256,7 +247,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -275,7 +266,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -293,7 +284,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -309,7 +300,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -323,7 +314,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -338,7 +329,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') != "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -353,7 +344,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -370,7 +361,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -385,7 +376,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') != "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -400,7 +391,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -418,7 +409,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -434,7 +425,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') != "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -452,7 +443,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -470,7 +461,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -486,7 +477,7 @@ class ReportController extends Controller {
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') != "" && $request->input('state') != "" && $request->input('adviser') == "" && $request->input('city') != ""){		
 			
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -504,7 +495,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -522,7 +513,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -541,7 +532,7 @@ class ReportController extends Controller {
 			$identificacion = end($identificacion);
 
 			$export=Suscription::
-			select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone','ad.names as names_ad','ad.identificacion as identificacion_ad','ad.code_adviser as code_adviser_ad','clu_state.state')
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
@@ -554,8 +545,214 @@ class ReportController extends Controller {
 			->get();
 		}
 
+		//se quieren consultar todos
+		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
+			$export=Suscription::
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
+			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
+			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
+			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
+			->get();			
+		}
 
-		//dd($export);
+
+		foreach($export as $suscripcion){
+
+			//Suscriptor			
+			$suscripcion->Nombres_socio = $suscripcion->names_fr.' '.$suscripcion->surnames_fr;
+			$suscripcion->Nombres_asesor = $suscripcion->names_ad.' ['.$suscripcion->Codigo_asesor.']';
+			//proximo pago			
+						
+			$suscripcion->pagos = 0;
+			//consultamos los pagos de cada suscripcion, solo para suscripciones con estado diferente de 1
+			//lo siguinete es para la mora y para el estado
+			
+			if($suscripcion->state_id != 5 && $suscripcion->state_id != 6){
+				//para pago  en mora y para pago pendiente
+
+				$pagos = \DB::table('clu_payment')
+				->select(\DB::raw('SUM(payment) as total_payment'))
+				->groupBy('suscription_id')
+				->where('suscription_id',$suscripcion->id)
+				->get();
+
+				$total_pagos = \DB::table('clu_payment')
+				->select(\DB::raw('count(*) as total'))
+				->where('suscription_id',$suscripcion->id)
+				->get()[0]->total;
+
+				
+				//consultamos los costos por carnet				
+				$suscripcion->precio_carnets = \DB::table('clu_license')
+				->select(\DB::raw('SUM(price) as total_price'))
+				->groupBy('suscription_id')
+				->where('suscription_id',$suscripcion->id)
+				->get();			
+				
+				if(!empty($suscripcion->precio_carnets)){
+					$suscripcion->precio_carnets = $suscripcion->precio_carnets[0]->total_price;
+				}else{
+					$suscripcion->precio_carnets = 0;
+				}
+				
+				//consultamos los costos por beneficiarios adicionales
+				$cnts =
+				License::
+				where('clu_license.suscription_id', $suscripcion->id)
+				->get()
+				->toArray();
+								
+				$costo_bnes = \DB::table('clu_beneficiary')
+				->select(\DB::raw('SUM(price) as total_price'))
+				->groupBy('license_id')
+				->where(function ($query) use ($cnts){
+					foreach($cnts as $key => $value){
+						$query->orwhere('clu_beneficiary.license_id', $value['id']);
+					}
+				})
+				->get();
+				
+				//consultamos costos por reimpresion
+				$suscripcion->precio_carnets_reimpresion = \DB::table('clu_license_print')
+				->select(\DB::raw('SUM(price) as total_price'))
+				->groupBy('suscription_id')
+				->where('suscription_id',$suscripcion->id)
+				->get();
+				if(!empty($suscripcion->precio_carnets_reimpresion)){
+					$suscripcion->precio_carnets_reimpresion = $suscripcion->precio_carnets_reimpresion[0]->total_price;
+				}else{
+					$suscripcion->precio_carnets_reimpresion = 0;
+				}
+				
+				//pueden ser varios carnets
+				$suscripcion->precio_beneficiarios_adicionales = 0;
+				foreach($costo_bnes as $cb){
+					$suscripcion->precio_beneficiarios_adicionales = $suscripcion->precio_beneficiarios_adicionales + $cb->total_price;
+				}
+				
+				$hoy = new DateTime();
+				$diff = $hoy->diff(new DateTime($suscripcion->next_pay), true)->days + 1;
+				$suscripcion->edad = $hoy->diff(new DateTime($suscripcion->Fecha_nacimiento), true)->y;
+				
+				//actualización de estado y mora
+				$bandera_pago = false;
+				
+				if(count($pagos)){					
+					$suscripcion->pagos = $pagos[0]->total_payment;
+					$suscripcion->mora = ($suscripcion->precio + $suscripcion->precio_carnets + $suscripcion->precio_beneficiarios_adicionales + $suscripcion->precio_carnets_reimpresion) - ($pagos[0]->total_payment);					
+					if(!$suscripcion->mora){						
+						//si la mora es cero
+						//se cambia el estado de las suscripción a 1, que es el estado de pago
+						try {
+							$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 1));
+							$suscripcion->state = "Cancelado";
+																					
+							$bandera_pago = true;
+						}catch (\Illuminate\Database\QueryException $e) {
+							$message = 'La Suscripción no se logro editar';
+							return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+						}
+					}else{
+						//hay uno o varios pagos
+						if($pagos[0]->total_payment < 55000){
+							try {
+								$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 2));
+								$suscripcion->state = "Pago pendiente";
+								
+							}catch (\Illuminate\Database\QueryException $e) {
+								$message = 'La Suscripción no se logro editar';
+								return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+							}
+						}else{
+							try {
+								$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 7));
+								$suscripcion->state = "Activa";
+								
+							}catch (\Illuminate\Database\QueryException $e) {
+								$message = 'La Suscripción no se logro editar';
+								return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+							}
+						}
+						
+					}
+				}else{
+					//no tienen ningun pago
+					//mora total
+					$suscripcion->mora = $suscripcion->precio + $suscripcion->precio_carnets + $suscripcion->precio_beneficiarios_adicionales + $suscripcion->precio_carnets_reimpresion;
+					try {
+						$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 8));
+						$suscripcion->state = "Prospecto";
+						
+					}catch (\Illuminate\Database\QueryException $e) {
+						$message = 'La Suscripción no se logro editar';
+						return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+					}
+					
+					
+				}
+				//las que tiene cuotas retrasadas
+				if(!$bandera_pago){					
+					if($diff < 0){
+						//para los que estan en pago en mora
+						try {
+							$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 3));
+							$suscripcion->state = "Pago en mora";
+							
+						}catch (\Illuminate\Database\QueryException $e) {
+							$message = 'La Suscripción no se logro editar';
+							return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+						}
+					}					
+				}
+				
+				//las suscripciones vencidas
+				$fecha_ex = date_create($suscripcion->fecha_expiracion);//fecha de creacion de suscripción
+				//$fecha_ex = $fecha_ex->format('Y-m-d');
+				//$fecha_ex = date_create($fecha_ex);
+				$diff_ex = $hoy->diff(new DateTime($suscripcion->fecha_expiracion), true)->days;
+					
+				if($hoy > $fecha_ex){
+					try {
+						$SuscripctionAffectedRows = Suscription::where('id', $suscripcion->id)->update(array('state_id' => 4));
+						$suscripcion->state = "Suscripcion vencida";						
+					}catch (\Illuminate\Database\QueryException $e) {
+						$message = 'La Suscripción no se logro editar';
+						return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+					}
+				}elseif($diff_ex < 30){
+					$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion. ' ['.$diff_ex.']';
+						
+				}
+				
+			}
+			else{
+				//pago realizado
+				$suscripcion->mora = 0;
+								
+				$pagos = \DB::table('clu_payment')
+				->select(\DB::raw('SUM(payment) as total_payment'))
+				->groupBy('suscription_id')
+				->where('suscription_id',$suscripcion->id)
+				->get();
+				if(count($pagos)){
+					$suscripcion->pagos = $pagos[0]->total_payment;
+				}
+				
+			}
+			unset($suscripcion->id);
+			unset($suscripcion->adviser_id);			
+			unset($suscripcion->friend_id);
+			unset($suscripcion->state_id);
+			unset($suscripcion->pay_interval);
+			unset($suscripcion->names_fr);
+			unset($suscripcion->names_ad);
+			unset($suscripcion->surnames_fr);
+			unset($suscripcion->identificacion_fr);
+					
+		}
+		
         \Excel::create('ReporteGeneral',function($excel) use ($export){
             $excel->sheet('Sheet 1',function($sheet) use ($export){
                 $sheet->fromArray($export);
