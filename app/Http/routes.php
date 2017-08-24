@@ -80,6 +80,7 @@ Route::controllers([
 	'especialista' => 'Club\SpecialistController',
 	'servicio' => 'Club\ServiceController',
 	'reporte' => 'Club\ReportController'
+	
 	//'password' => 'Auth\PasswordController',
 	
 ]);

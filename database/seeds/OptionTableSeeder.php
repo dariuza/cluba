@@ -173,6 +173,13 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 			'active'=>1
 			)
 		);	
+		\DB::table('seg_option')->insert(array(
+			'option'=>'FacturacionGeneral',
+			'action'=>'facturaciongeneral',
+			'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-building-o"}',
+			'active'=>1
+			)
+		);	
 			
 		
 	}

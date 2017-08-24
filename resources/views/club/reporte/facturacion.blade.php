@@ -151,13 +151,14 @@
 		            					<span class="{{$opc['icono']}}" aria-hidden="true" style = "margin-right:5px; color:#666699;" ></span>{{$opc[$key]}}
 		            				</div>
 		            			@elseif($opc['accion'] == 'reportegeneral')
+		            				<!--No se pinta nada-->
+			            		@elseif($opc['accion'] == 'facturaciongeneral')
+		            				
 		            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
-				            			<a href="javascript:clu_reporte.opt_report_general()" class="site_title site_title2" style = "text-decoration: none; ">
+				            			<a href="javascript:clu_reporte.opt_factura_general()" class="site_title site_title2" style = "text-decoration: none; ">
 				            				<i class="{{$opc['icono']}}"></i>				            				
 				            			</a>
 			            			</div>
-			            		@elseif($opc['accion'] == 'facturaciongeneral')
-		            				<!--No se pinta nada-->
 		            			@else
 		            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
 			            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
@@ -266,7 +267,7 @@
 				</div>
 				<div class = "alerts-module"></div>
 
-				{!! Form::open(array('url' => 'reporte/reportegeneral')) !!}
+				{!! Form::open(array('url' => 'reporte/facturaciongeneral')) !!}
 				<div class="modal-body">
 					<div class="row ">
 						<div class="col-md-12 col-md-offset-0 row_izq">

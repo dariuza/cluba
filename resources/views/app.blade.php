@@ -161,8 +161,7 @@
 															<!-- No pinta el modulo de especialistas -->
 															@else
 
-																@if($llave_modulo == 13)
-																<!-- No pinta el modulo de reportes -->
+																@if($llave_modulo == 13)														
 																	<li>
 																		<a><i class = "{{json_decode($modulo['preferencias'])->icono}}"></i> {{$modulo['modulo']}}  <span class="fa fa-chevron-down"></span></a>
 																		<ul class="nav child_menu">												

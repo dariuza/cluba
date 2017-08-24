@@ -79,7 +79,7 @@ class ReportController extends Controller {
 	}
 
 	public function postReportegeneral(Request $request){		
-
+		
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
 			$export=Suscription::
@@ -89,7 +89,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )])
 			->get();
 		}
 
@@ -102,7 +102,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -115,7 +115,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -142,7 +142,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
 			->where('clu_state.state',$request->input('state'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )])
 			->get();
 		}
 
@@ -156,7 +156,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
 			->where('clu_state.state',$request->input('state'))
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -170,7 +170,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
 			->where('clu_state.state',$request->input('state'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -203,7 +203,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )])		
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )])		
 			->get();
 		}
 
@@ -220,7 +220,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -237,7 +237,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])
 			->get();
 		}
 
@@ -254,7 +254,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])
 			->where('clu_state.state',$request->input('state'))
 			->get();
 		}
@@ -273,7 +273,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )])
 			->where('clu_state.state',$request->input('state'))		
 			->get();
 		}
@@ -291,7 +291,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('ad.identificacion',$identificacion)
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])
 			->where('clu_state.state',$request->input('state'))
 			->get();
 		}
@@ -321,7 +321,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )]	)	
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )]	)	
 			->get();
 		}
 
@@ -336,7 +336,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])				
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])				
 			->get();
 		}
 
@@ -383,7 +383,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])		
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])		
 			->get();
 		}
 
@@ -398,7 +398,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )]	)		
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )]	)		
 			->where('clu_state.state',$request->input('state'))
 			->get();
 		}
@@ -416,7 +416,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )])	
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )])	
 			->where('ad.identificacion',$identificacion)		
 			->get();
 		}
@@ -432,7 +432,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])		
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])		
 			->where('clu_state.state',$request->input('state'))	
 			->get();
 		}
@@ -450,7 +450,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg')])			
+			->whereBetween('date_suscription', ['0000-00-00', $request->input('fin_rsg').' 23:59:59'])			
 			->where('ad.identificacion',$identificacion)
 			->get();
 		}
@@ -484,7 +484,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])		
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])		
 			->where('clu_state.state',$request->input('state'))
 			->get();
 		}
@@ -502,7 +502,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))			
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])	
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])	
 			->where('ad.identificacion',$identificacion)
 			->get();
 		}
@@ -520,7 +520,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))			
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), date( 'Y-m-j' )]	)
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', date( 'Y-m-j' )]	)
 			->where('clu_state.state',$request->input('state'))
 			->where('ad.identificacion',$identificacion)
 			->get();
@@ -539,7 +539,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->where('fr.city',$request->input('city'))			
-			->whereBetween('date_suscription', [$request->input('inicio_rsg'), $request->input('fin_rsg')])
+			->whereBetween('date_suscription', [$request->input('inicio_rsg').' 00:00:00', $request->input('fin_rsg').' 23:59:59'])
 			->where('clu_state.state',$request->input('state'))
 			->where('ad.identificacion',$identificacion)
 			->get();
@@ -759,6 +759,52 @@ class ReportController extends Controller {
             });
         })->export('xlsx');
 
+	}
+
+	public function getReportefacturacion($id_app=null,$categoria=null,$id_mod=null){
+		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se debe alcanzar por url, solo es valido desde las opciones del menú');
+
+		$moduledata['id_mod']=$id_mod;
+		$moduledata['modulo']='Facturación Suscripción';
+		$moduledata['description']='Facturción del modulo de Suscripciones';
+		$moduledata['id_app']=$id_app;
+		$moduledata['categoria']=$categoria;
+
+		//para el campo de asesor, como autocomplete
+		$adviser = \DB::table('seg_user')
+		->join('seg_rol', 'seg_user.rol_id', '=', 'seg_rol.id')
+		->join('seg_user_profile','seg_user.id','=','seg_user_profile.user_id')
+		->orwhere('rol_id', '=', 4)
+		->orwhere('rol_id', '=', 9)
+		->where('seg_user.active', '=', 1)
+		->get();			
+		foreach ($adviser as $ad){			
+			$advisers[$ad->user_id] = $ad->names.' '.$ad->surnames.' ['.$ad->code_adviser.'] '.$ad->identificacion;
+		}
+		$moduledata['asesores']=$advisers;
+
+		//para el campo de municipio, como autocomplete
+		$citys = \DB::table('clu_city')		
+		->get();			
+		foreach ($citys as $ct){			
+			$cityes[$ct->id] = $ct->city;
+		}
+		$moduledata['ciudades']=$cityes;
+
+		//para el campo de estado, como autocomplete
+		$states = \DB::table('clu_state')		
+		->get();			
+		foreach ($states as $st){			
+			$stateses[$st->id] = $st->state;
+		}
+		$moduledata['estados']=$stateses;		
+		
+		Session::flash('modulo', $moduledata);
+		return view('club.reporte.facturacion');
+	}
+
+	public function postFacturaciongeneral(Request $request){
+		return 'Opcion en desarrollo';
 	}
 		
 	
