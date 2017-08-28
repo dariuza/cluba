@@ -1,0 +1,102 @@
+.conteiner{
+	width: 100%;
+	/*font-size: 11px;*/
+	/*text-align: center;*/
+}
+.suscription{
+	margin: auto;
+	margin-top: 0px;
+    margin-bottom: 1px;
+	background-image: url("factura.png");
+	background-repeat: no-repeat;
+    background-size: 100% 100%;
+    /*width: 652px;*/
+    height: 472px;
+    padding: 0px;    
+}
+.cabecera_conteiner{
+	width: 70%;
+	float: right;
+	/*
+	border-width:1px;  
+    border-style:solid;    
+    border-color: black;
+    */
+
+}
+
+.cab_cab{
+	text-align: center;
+	height: 60px;
+}
+.cab_into{
+	width: 70%;
+	font-size: 12px;
+	float: left;	
+}
+.cab_info{
+	width: 30%;
+	font-size: 12px;
+	float: right;	
+}
+.nro_invoice{
+	border-width:1px;  
+    border-style:solid;    
+    border-color: black;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.cab_pie{
+	text-align: center;
+}
+.cab_pie_into{
+	width: 45%;
+	font-size: 10px;
+	float: left;	
+}
+.cab_pie_fecha1{
+	width: 27%;
+	font-size: 12px;
+	float: right;	
+	margin-right: 29%; 
+}
+.cab_pie_fecha2{
+	width: 27%;
+	font-size: 12px;
+	float: right;	
+}
+.fecha{
+	border-width:1px;  
+    border-bottom-style: solid;    
+    border-left-style: solid;    
+    border-right-style: solid;    
+    border-color: black;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+.info_cabecera{
+	margin-top: 100px;
+	font-size: 12px;
+	border-width:1px;  
+    border-style: solid;    
+    border-color: black;
+    border-radius: 6px;
+    padding: 6px;	
+}
+.cuerpo{
+	margin-top: 2px;
+	height: 272px;
+	font-size: 12px;
+	border-width:1px;  
+    border-style: solid;    
+    border-color: black;
+    border-radius: 6px;
+    padding: 6px;	
+
+}
+.pie{
+	font-size: 9px;
+	text-align: center;
+}
