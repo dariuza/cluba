@@ -37,9 +37,9 @@ class RedirectIfAuthenticated
         	/*
         	 * Asignamos nombre de aplicación
         	 */
-        	Session::put('app', env('APP_NAME','OLIN'));        	
-        	Session::put('copy', env('APP_RIGTH','OlivosIntegrador'));
-        	Session::put('mail', env('MAIL_USERNAME','daruiza@gmail.com'));
+        	Session::put('app', env('APP_NAME','clubDamigos'));        	
+        	Session::put('copy', env('APP_RIGTH','Club_de_Amigos'));
+        	Session::put('mail', env('MAIL_USERNAME','info.clubDamigos@gmail.com'));
         	Session::put('icon', env('APP_ICON','icon.png'));
         	//return redirect()->route('login');//esto es una ruta		
         	return redirect()->to('auth/login');//esto es una direccion,return redirect()->to('ingreso'); 

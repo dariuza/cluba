@@ -89,14 +89,65 @@
 	margin-top: 2px;
 	height: 272px;
 	font-size: 12px;
-	border-width:1px;  
-    border-style: solid;    
-    border-color: black;
-    border-radius: 6px;
-    padding: 6px;	
+	text-align: center;
+
 
 }
 .pie{
 	font-size: 9px;
 	text-align: center;
+	
 }
+.tabla_encabezado{
+	
+	height: 18px;	
+	border-width:1px;  
+    border-top-style: solid;    
+    border-bottom-style: solid; 
+    border-right-style: solid;    
+    border-left-style: solid;    
+    border-color: black;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    background-color: gainsboro; 
+    
+}
+.tabla_fila{
+	
+	height: 18px;	
+	border-width:1px;    
+    border-bottom-style: solid; 
+    border-right-style: solid;    
+    border-left-style: solid;    
+    border-color: black;
+}
+.celda_cantidad{
+	float: left;	
+	width: 150px;
+	height: 18px;	
+	border-width:1px;  
+	border-right-style: solid;
+    
+}
+.celda_descripcion{
+	float: left;	
+	width: 270px;
+	height: 18px;
+	border-width:1px;  
+	border-right-style: solid;
+    
+}
+.celda_unitario{
+	float: left;	
+	width: 150px;
+	height: 18px;	
+	border-width:1px;  
+	border-right-style: solid;
+}
+.celda_total{
+	float: left;	
+	width: 150px;
+	height: 18px;	
+	
+}
+

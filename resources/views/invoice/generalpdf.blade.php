@@ -49,7 +49,48 @@
 					
 				</div>
 				<!--Cuerpo-->
-				<div class="cuerpo"></div>
+				<div class="cuerpo">
+					<div class = "tabla_encabezado" >
+						<div class="celda_cantidad">CANTIDAD</div>
+						<div class="celda_descripcion" >DESCRIPCIÓN</div>
+						<div class="celda_unitario" >VR. UNITARIO</div>
+						<div class="celda_total" >VR. TOTAL</div>
+					</div>
+					<div class = "tabla_fila" >
+						<div class="celda_cantidad">1</div>
+						<div class="celda_descripcion" >Suscripción Club de Amigos</div>
+						<div class="celda_unitario" > ${{$sct['precio']}}</div>
+						<div class="celda_total" >${{$sct['precio']}}</div>
+					</div>
+					@if($sct['precio_beneficiarios_adicionales'])
+					<div class = "tabla_fila" >
+						<div class="celda_cantidad">{{$sct['precio_beneficiarios_adicionales']/env('PRICE_BENEFICIARY')}}</div>
+						<div class="celda_descripcion" >Beneficiarios adicionales</div>
+						<div class="celda_unitario" > ${{env('PRICE_BENEFICIARY')}}</div>
+						<div class="celda_total" >${{$sct['precio_beneficiarios_adicionales']}}</div>
+					</div>
+					@endif
+					@if($sct['precio_carnets_reimpresion'])
+					<div class = "tabla_fila" >
+						<div class="celda_cantidad">{{$sct['precio_carnets_reimpresion']/env('PRICE_LICENSE')}}</div>
+						<div class="celda_descripcion" >Reimpresión de Carnet</div>
+						<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
+						<div class="celda_total" >${{$sct['precio_carnets_reimpresion']}}</div>
+					</div>
+					@endif
+					@if($sct['precio_carnets'])
+					<div class = "tabla_fila" >
+						<div class="celda_cantidad">{{$sct['precio_carnets']/env('PRICE_LICENSE')}}</div>
+						<div class="celda_descripcion" >Carnet adicionales</div>
+						<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
+						<div class="celda_total" >${{$sct['precio_carnets']}}</div>
+					</div>
+					@endif
+
+
+					
+
+				</div>
 
 				<!--Div de pie -->
 				<div class = "pie">

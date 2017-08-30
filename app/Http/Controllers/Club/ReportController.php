@@ -1485,7 +1485,7 @@ class ReportController extends Controller {
 		}
 
 		$array['suscripciones']=$export->toArray();
-
+		//dd($array['suscripciones']);
 		//return view('invoice.generalpdf')->with('array',$array);
 		
 		//exportamos a pdf
