@@ -7,7 +7,7 @@
 	margin: auto;
 	margin-top: 0px;
     margin-bottom: 1px;
-	background-image: url("factura.png");
+	/*background-image: url("factura.png");*/
 	background-repeat: no-repeat;
     background-size: 100% 100%;
     /*width: 652px;*/
@@ -90,13 +90,10 @@
 	height: 272px;
 	font-size: 12px;
 	text-align: center;
-
-
 }
 .pie{
 	font-size: 9px;
 	text-align: center;
-	
 }
 .tabla_encabezado{
 	
@@ -151,3 +148,6 @@
 	
 }
 
+.margen{
+	height: 472px;
+}

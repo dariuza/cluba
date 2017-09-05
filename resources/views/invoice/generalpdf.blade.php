@@ -97,6 +97,7 @@
 					Esta Factura de venta se asimila en sus efectos a la Letra de Cambio Art. 774 del código de comercio en caso de atraso en el pago, causará intereses momentarios a la venta maxima permitida por la ley
 				</div>
 			</div>
+			<div class ="margen"></div>
 
 			@endforeach
 
