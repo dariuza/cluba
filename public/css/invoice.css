@@ -118,6 +118,23 @@
     border-left-style: solid;    
     border-color: black;
 }
+.tabla_fila_final_1{	
+	height: 27px;	
+	border-width:1px;    
+    border-right-style: solid;    
+    border-left-style: solid;    
+    border-color: black;    
+}
+.tabla_fila_final_2{	
+	height: 27px;	
+	border-width:1px;      
+    border-bottom-style: solid; 
+    border-right-style: solid;    
+    border-left-style: solid;    
+    border-color: black;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
 .celda_cantidad{
 	float: left;	
 	width: 150px;
@@ -146,6 +163,64 @@
 	width: 150px;
 	height: 18px;	
 	
+}
+.celda_cantidad_iva{
+	float: left;	
+	width: 421px;
+	height: 18px;
+	border-width:1px;  
+	border-right-style: solid;	
+}
+
+.celda_cantidad_final_1{
+	float: left;	
+	width: 421px;
+	height: 27px;
+	border-width:1px;  
+	border-right-style: solid;	
+}
+
+.celda_unitario_final_1{
+	float: left;	
+	width: 150px;
+	height: 27px;
+	border-width:1px;  
+	border-right-style: solid;	
+	border-bottom-style: solid; 
+}
+.celda_total_final_1{
+	float: left;	
+	width: 150px;
+	height: 27px;
+	border-width:1px; 
+	border-bottom-style: solid;	
+	background-color: 	red;
+}
+
+.celda_cantidad_final_2{
+	float: left;	
+	width: 421px;
+	height: 27px;
+	border-width:1px;
+	border-right-style: solid;	
+	background-color: 	red;
+	
+}
+
+.celda_unitario_final_2{
+	float: left;	
+	width: 150px;
+	height: 27px;
+	border-width:1px;  
+	border-right-style: solid;
+	 
+}
+.celda_total_final_2{
+	float: left;	
+	width: 150px;
+	height: 26px;
+	border-width:1px; 
+		
 }
 
 .margen{

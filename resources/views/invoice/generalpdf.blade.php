@@ -61,34 +61,69 @@
 						<div class="celda_descripcion" >Suscripción Club de Amigos</div>
 						<div class="celda_unitario" > ${{$sct['precio']}}</div>
 						<div class="celda_total" >${{$sct['precio']}}</div>
+						@php($total=$sct['precio'])
 					</div>
+					@php($add=0)
 					@if($sct['precio_beneficiarios_adicionales'])
-					<div class = "tabla_fila" >
-						<div class="celda_cantidad">{{$sct['precio_beneficiarios_adicionales']/env('PRICE_BENEFICIARY')}}</div>
-						<div class="celda_descripcion" >Beneficiarios adicionales</div>
-						<div class="celda_unitario" > ${{env('PRICE_BENEFICIARY')}}</div>
-						<div class="celda_total" >${{$sct['precio_beneficiarios_adicionales']}}</div>
-					</div>
+						<div class = "tabla_fila" >
+							<div class="celda_cantidad">{{$sct['precio_beneficiarios_adicionales']/env('PRICE_BENEFICIARY')}}</div>
+							<div class="celda_descripcion" >Beneficiarios adicionales</div>
+							<div class="celda_unitario" > ${{env('PRICE_BENEFICIARY')}}</div>
+							<div class="celda_total" >${{$sct['precio_beneficiarios_adicionales']}}</div>
+							@php($total=$total+$sct['precio_beneficiarios_adicionales'])
+						</div>
+						@php($add++)
 					@endif
 					@if($sct['precio_carnets_reimpresion'])
-					<div class = "tabla_fila" >
-						<div class="celda_cantidad">{{$sct['precio_carnets_reimpresion']/env('PRICE_LICENSE')}}</div>
-						<div class="celda_descripcion" >Reimpresión de Carnet</div>
-						<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
-						<div class="celda_total" >${{$sct['precio_carnets_reimpresion']}}</div>
-					</div>
+						<div class = "tabla_fila" >
+							<div class="celda_cantidad">{{$sct['precio_carnets_reimpresion']/env('PRICE_LICENSE')}}</div>
+							<div class="celda_descripcion" >Reimpresión de Carnet</div>
+							<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
+							<div class="celda_total" >${{$sct['precio_carnets_reimpresion']}}</div>
+							@php($total=$total+$sct['precio_carnets_reimpresion'])
+						</div>
+						@php($add++)
 					@endif
 					@if($sct['precio_carnets'])
-					<div class = "tabla_fila" >
-						<div class="celda_cantidad">{{$sct['precio_carnets']/env('PRICE_LICENSE')}}</div>
-						<div class="celda_descripcion" >Carnet adicionales</div>
-						<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
-						<div class="celda_total" >${{$sct['precio_carnets']}}</div>
-					</div>
+						<div class = "tabla_fila" >
+							<div class="celda_cantidad">{{$sct['precio_carnets']/env('PRICE_LICENSE')}}</div>
+							<div class="celda_descripcion" >Carnet adicionales</div>
+							<div class="celda_unitario" > ${{env('PRICE_LICENSE')}}</div>
+							<div class="celda_total" >${{$sct['precio_carnets']}}</div>
+							@php($total=$total+$sct['precio_carnets'])
+						</div>
+						@php($add++)
 					@endif
 
-
+					<!--Dependiendo del $add se crean las siguientes celdas-->
+					@for($i=5;$i>$add;$i--)
+						<div class = "tabla_fila" >
+							<div class="celda_cantidad"></div>
+							<div class="celda_descripcion" ></div>
+							<div class="celda_unitario" > </div>
+							<div class="celda_total" ></div>
+						</div>
+					@endfor
 					
+					<div class = "tabla_fila" >
+						<div class="celda_cantidad_iva">Valor en letras: </div>							
+						<div class="celda_unitario" > IVA:</div>
+						<div class="celda_total" >${{$total*env('PRICE_IVA',0.19)}}</div>
+					</div>
+
+					<div class = "tabla_fila_final_1" >
+						<div class="celda_cantidad_final_1"> </div>
+						<div class="celda_unitario_final_1"> </div>							
+						<div class="celda_total_final_1"> </div>										
+					</div>
+
+					<div class = "tabla_fila_final_2" >
+						<div class="celda_cantidad_final_2">1 </div>
+						<div class="celda_unitario_final_2"> h</div>							
+						<div class="celda_total_final_2"> o</div>										
+					</div>
+
+
 
 				</div>
 
