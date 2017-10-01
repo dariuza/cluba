@@ -11,7 +11,7 @@
 	background-repeat: no-repeat;
     background-size: 100% 100%;
     /*width: 652px;*/
-    height: 472px;
+    /*height: 472px;*/
     padding: 0px;    
 }
 .cabecera_conteiner{
@@ -87,7 +87,7 @@
 }
 .cuerpo{
 	margin-top: 2px;
-	height: 272px;
+	/*height: 272px;*/
 	font-size: 12px;
 	text-align: center;
 }
@@ -118,23 +118,7 @@
     border-left-style: solid;    
     border-color: black;
 }
-.tabla_fila_final_1{	
-	height: 27px;	
-	border-width:1px;    
-    border-right-style: solid;    
-    border-left-style: solid;    
-    border-color: black;    
-}
-.tabla_fila_final_2{	
-	height: 27px;	
-	border-width:1px;      
-    border-bottom-style: solid; 
-    border-right-style: solid;    
-    border-left-style: solid;    
-    border-color: black;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
+
 .celda_cantidad{
 	float: left;	
 	width: 150px;
@@ -172,57 +156,17 @@
 	border-right-style: solid;	
 }
 
-.celda_cantidad_final_1{
-	float: left;	
-	width: 421px;
-	height: 27px;
-	border-width:1px;  
-	border-right-style: solid;	
-}
-
-.celda_unitario_final_1{
-	float: left;	
-	width: 150px;
-	height: 27px;
-	border-width:1px;  
-	border-right-style: solid;	
-	border-bottom-style: solid; 
-}
-.celda_total_final_1{
-	float: left;	
-	width: 150px;
-	height: 27px;
-	border-width:1px; 
-	border-bottom-style: solid;	
-	background-color: 	red;
-}
-
-.celda_cantidad_final_2{
-	float: left;	
-	width: 421px;
-	height: 27px;
-	border-width:1px;
-	border-right-style: solid;	
-	background-color: 	red;
+.tabla_pie1{
 	
+    height: 27px;
 }
 
-.celda_unitario_final_2{
-	float: left;	
-	width: 150px;
-	height: 27px;
-	border-width:1px;  
-	border-right-style: solid;
-	 
-}
-.celda_total_final_2{
-	float: left;	
-	width: 150px;
-	height: 26px;
-	border-width:1px; 
-		
+.tabla_pie2{
+	border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;    
+    height: 27px;
 }
 
 .margen{
-	height: 472px;
+	height: 372px;
 }

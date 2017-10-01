@@ -111,19 +111,19 @@
 						<div class="celda_total" >${{$total*env('PRICE_IVA',0.19)}}</div>
 					</div>
 
-					<div class = "tabla_fila_final_1" >
-						<div class="celda_cantidad_final_1"> </div>
-						<div class="celda_unitario_final_1"> </div>							
-						<div class="celda_total_final_1"> </div>										
+					<div class = "tabla_fila tabla_pie1" >
+						<div class="celda_cantidad_iva" style="height: 27px;"></div>							
+						<div class="celda_unitario" style="height: 27px;" > </div>
+						<div class="celda_total" style="height: 27px;"></div>
+					</div>
+					<div class = "tabla_fila tabla_pie2" >
+						<div class="celda_cantidad_iva" style="height: 27px;"></div>							
+						<div class="celda_unitario" style="height: 27px;"> </div>
+						<div class="celda_total" style="height: 27px;"></div>
 					</div>
 
-					<div class = "tabla_fila_final_2" >
-						<div class="celda_cantidad_final_2">1 </div>
-						<div class="celda_unitario_final_2"> h</div>							
-						<div class="celda_total_final_2"> o</div>										
-					</div>
 
-
+					
 
 				</div>
 
