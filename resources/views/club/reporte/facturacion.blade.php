@@ -298,6 +298,11 @@
 									{!! Form::text('city',old('city'),array('class' => 'form-control','placeholder'=>'Ingresa una ciudad')) !!}
 								</div>
 
+								<div class = "col-md-6">
+									{!! Form::label('code', 'Nº CONTRATO', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('code',old('code'),array('class' => 'form-control','placeholder'=>'Ingresa el Nº de contrato')) !!}
+								</div>
+
 							</div>
 						</div>						
 					</div>

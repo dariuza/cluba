@@ -649,7 +649,7 @@ class SuscriptionController extends Controller {
 
 	//Función para la opción: agregar
 	public function getCrear($id_app=null,$categoria=null,$id_mod=null){	
-		//Modo de evitar que otros roles ingresen por la url
+		//Modo de evitar que otros roles ingresen por la url		
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 		
 		//para el campo de asesor, como autocomplete
@@ -704,7 +704,7 @@ class SuscriptionController extends Controller {
 			}
 		}
 		$request->replace($array_input);	
-		
+
 		//preparación de datos
 		$adviser = \DB::table('seg_user')
 		->join('seg_rol', 'seg_user.rol_id', '=', 'seg_rol.id')
@@ -717,7 +717,7 @@ class SuscriptionController extends Controller {
 			$advisers[$ad->user_id] = $ad->names.' '.$ad->surnames.' '.$ad->identificacion;
 		}
 		$moduledata['asesores']=$advisers;
-		
+
 		$hoy = new DateTime();
 		$hoy = $hoy->format('Y-m-d H:i:s');		
 		Session::flash('_old_input.date_suscription', $hoy);
@@ -730,7 +730,7 @@ class SuscriptionController extends Controller {
 			$departamentos[$department->id] = $department->department;
 		}
 		$moduledata['departamentos']=$departamentos;
-		
+
 		//consultamos las ciudades
 		$citys = \DB::table('clu_city')->get();
 		foreach ($citys as $city){
@@ -745,28 +745,7 @@ class SuscriptionController extends Controller {
 		foreach ($moduledata['estados'] as $estado){
 			$estados[$estado->id] = $estado->state;
 		}
-		$moduledata['estados']=$estados;
-		
-		//datos para interfaz grafica
-		//beneficiarios
-		$cnts =
-		License::
-		where('clu_license.suscription_id', $request->input()['suscription_id'])
-		->get()
-		->toArray();
-		
-		$moduledata['cnts'] = $cnts;
-		
-		$moduledata['bnes'] =
-		Beneficiary::
-		where(function ($query) use ($cnts){
-			foreach($cnts as $key => $value){
-				$query->orwhere('clu_beneficiary.license_id', $value['id']);
-			}
-		})
-		->orderBy('license_id', 'asc')
-		->get()
-		->toArray();
+		$moduledata['estados']=$estados;		
 		
 		//Proceso de validación
 		$hoy = date('Y-m-j');
@@ -808,8 +787,7 @@ class SuscriptionController extends Controller {
 		$validator = Validator::make($request->input(), $rules, $messages);
 		if ($validator->fails()) {			
 			return Redirect::back()->withErrors($validator)->withInput()->with('modulo',$moduledata);
-		}else{
-			
+		}else{			
 			$user = new User();			
 			$userprofile = new UserProfile();
 			$suscription = new Suscription();
@@ -837,13 +815,12 @@ class SuscriptionController extends Controller {
 			
 			//preparacion de datos
 			//ciudades
-			/*
+			
 			$citys = \DB::table('clu_city')->get();
 			foreach ($citys as $ciudad){
 				$ciudades[$ciudad->id] = $ciudad->city;
 			}
-			$moduledata['ciudades']=$ciudades;
-			*/	
+			$moduledata['ciudades']=$ciudades;				
 			
 			if($request->input()['suscription_id']){
 				
@@ -1321,8 +1298,7 @@ class SuscriptionController extends Controller {
 						}					
 					}				
 					
-					//datos para interfaz grafica
-										
+					//datos para interfaz grafica										
 					$cnts =
 					License::
 					where('clu_license.suscription_id', $request->input()['suscription_id'])
@@ -1396,6 +1372,9 @@ class SuscriptionController extends Controller {
 					
 					return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción editada exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
 				}
+
+				//para preparar los datos para interfaz grafica
+				$suscription_id = $request->input()['suscription_id'];
 				
 			}else{
 				
@@ -1442,7 +1421,7 @@ class SuscriptionController extends Controller {
 					User::destroy($user->id);						
 					return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);					
 				}
-							
+					
 				/**crear la suscripcion**/
 				
 				//verificación de unicidad del N° de contrato.
@@ -1499,7 +1478,8 @@ class SuscriptionController extends Controller {
 					//eliminamos el usuario					
 					User::destroy($user->id);
 					return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-				}			
+				}
+				$suscription_id = $suscription->id;		
 				
 				//array de carnets
 				$array = Array();
@@ -1629,7 +1609,7 @@ class SuscriptionController extends Controller {
 						}
 					}					
 				}
-				
+
 				//beneficiarios adicionales, cada uno tiene un carnet
 				$array = Array();
 				foreach($request->input() as $key=>$value){
@@ -1689,7 +1669,7 @@ class SuscriptionController extends Controller {
 				//limpiar carnet en blanco
 				$cnts =
 				License::
-				where('clu_license.suscription_id', $request->input()['suscription_id'])
+				where('clu_license.suscription_id', $suscription_id)
 				->get()
 				->toArray();
 				
@@ -1713,11 +1693,10 @@ class SuscriptionController extends Controller {
 				}
 				
 				//datos para interfaz grafica
-				//beneficiarios
-				
+				//beneficiarios				
 				$cnts =
 				License::
-				where('clu_license.suscription_id', $request->input()['suscription_id'])
+				where('clu_license.suscription_id', $suscription_id)
 				->get()
 				->toArray();
 				

@@ -78,7 +78,8 @@ class ReportController extends Controller {
 
 	}
 
-	public function postReportegeneral(Request $request){		
+	public function postReportegeneral(Request $request){
+
 		
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
@@ -805,7 +806,8 @@ class ReportController extends Controller {
 
 	public function postFacturaciongeneral(Request $request){
 		//consultamos las facturas
-		$array = array();
+		$array = array();	
+
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
 			$export=Suscription::
@@ -1271,8 +1273,21 @@ class ReportController extends Controller {
 			->get();
 		}
 
+		//se quieren consultar con codigo			
+		if($request->input('code') != ""){			
+			$export=Suscription::
+			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','clu_suscription.reason as n_provisional','clu_suscription.waytopay as forma_pago','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')		
+			->leftjoin('seg_user as uad', 'clu_suscription.adviser_id', '=', 'uad.id')
+			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
+			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
+			->where('clu_suscription.code','like', '%'. $request->input('code').'%')
+			->get();
+		}
+
 		//se quieren consultar todos
-		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
+		if($request->input('inicio_rsg') == "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == "" && $request->input('code') == ""){			
 			$export=Suscription::
 			select('clu_suscription.id','clu_suscription.code','clu_suscription.date_suscription as fecha_suscipcion','clu_suscription.date_expiration as fecha_expiracion','clu_suscription.price as precio','clu_suscription.pay_interval','clu_suscription.adviser_id','clu_suscription.observation as Observaciones','clu_suscription.reason as n_provisional','clu_suscription.waytopay as forma_pago','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as Correo','fr.movil_number as Celular','fr.fix_number as Fijo','fr.birthdate as Fecha_nacimiento','fr.birthplace as Lugar_nacimiento','fr.sex as Genero','fr.adress as Direccion','fr.state as Departamento','fr.city as Municipio','fr.paymentadress as Dir_pago','fr.reference as Referencia','fr.reference_phone as Tel_referencia','ad.names as names_ad','ad.identificacion as identificacion_asesor','ad.code_adviser as Codigo_asesor','clu_state.state')
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
@@ -1281,8 +1296,7 @@ class ReportController extends Controller {
 			->leftjoin('seg_user_profile as ad', 'uad.id', '=', 'ad.user_id')
 			->leftjoin('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
 			->get();			
-		}
-
+		}	
 
 		foreach($export as $suscripcion){
 
@@ -1481,7 +1495,13 @@ class ReportController extends Controller {
 			unset($suscripcion->names_ad);
 			unset($suscripcion->surnames_fr);
 			//unset($suscripcion->identificacion_fr);
-					
+			$suscripcion->annos=date('Y',strtotime($suscripcion->fecha_suscipcion));
+			$suscripcion->mess=date('m',strtotime($suscripcion->fecha_suscipcion));
+			$suscripcion->dias=date('d',strtotime($suscripcion->fecha_suscipcion));
+			$suscripcion->annoe=date('Y',strtotime($suscripcion->fecha_expiracion));
+			$suscripcion->mese=date('m',strtotime($suscripcion->fecha_expiracion));
+			$suscripcion->diae=date('d',strtotime($suscripcion->fecha_expiracion));
+			
 		}
 
 		$array['suscripciones']=$export->toArray();
@@ -1489,6 +1509,7 @@ class ReportController extends Controller {
 		//return view('invoice.generalpdf')->with('array',$array);
 		
 		//exportamos a pdf
+		
 		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 		$pdf = \PDF::loadView('invoice.generalpdf',$array);
 		return $pdf->download(''.'facturacion'.'.pdf');		

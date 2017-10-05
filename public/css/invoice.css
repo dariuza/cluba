@@ -1,172 +1,63 @@
 .conteiner{
-	width: 100%;
-	/*font-size: 11px;*/
-	/*text-align: center;*/
+	width: 100%;	
 }
 .suscription{
-	margin: auto;
-	margin-top: 0px;
-    margin-bottom: 1px;
-	/*background-image: url("factura.png");*/
-	background-repeat: no-repeat;
-    background-size: 100% 100%;
-    /*width: 652px;*/
-    /*height: 472px;*/
-    padding: 0px;    
-}
-.cabecera_conteiner{
-	width: 70%;
-	float: right;
-	/*
-	border-width:1px;  
-    border-style:solid;    
-    border-color: black;
-    */
-
-}
-
-.cab_cab{
-	text-align: center;
-	height: 60px;
-}
-.cab_into{
-	width: 70%;
-	font-size: 12px;
-	float: left;	
-}
-.cab_info{
-	width: 30%;
-	font-size: 12px;
-	float: right;	
-}
-.nro_invoice{
-	border-width:1px;  
-    border-style:solid;    
-    border-color: black;
-    border-radius: 6px;
-    padding: 4px;
-}
-
-.cab_pie{
-	text-align: center;
-}
-.cab_pie_into{
-	width: 45%;
-	font-size: 10px;
-	float: left;	
-}
-.cab_pie_fecha1{
-	width: 27%;
-	font-size: 12px;
-	float: right;	
-	margin-right: 29%; 
-}
-.cab_pie_fecha2{
-	width: 27%;
-	font-size: 12px;
-	float: right;	
+	height: 946px;	
 }
 .fecha{
-	border-width:1px;  
-    border-bottom-style: solid;    
-    border-left-style: solid;    
-    border-right-style: solid;    
-    border-color: black;
-    border-radius: 6px;
-    padding: 4px;
+	margin-top: 32px;	
 }
-
-.info_cabecera{
-	margin-top: 100px;
-	font-size: 12px;
-	border-width:1px;  
-    border-style: solid;    
-    border-color: black;
-    border-radius: 6px;
-    padding: 6px;	
+.spanfecha1{
+	margin-left: 468px;
 }
-.cuerpo{
-	margin-top: 2px;
-	/*height: 272px;*/
-	font-size: 12px;
-	text-align: center;
+.spanfecha2{
+	margin-left: 36px;
 }
-.pie{
-	font-size: 9px;
-	text-align: center;
+.nombre{
+	margin-top: 14px;	
 }
-.tabla_encabezado{
-	
-	height: 18px;	
-	border-width:1px;  
-    border-top-style: solid;    
-    border-bottom-style: solid; 
-    border-right-style: solid;    
-    border-left-style: solid;    
-    border-color: black;
-    border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    background-color: gainsboro; 
-    
+.spannombre{
+	margin-left: 57px;
 }
-.tabla_fila{
-	
-	height: 18px;	
-	border-width:1px;    
-    border-bottom-style: solid; 
-    border-right-style: solid;    
-    border-left-style: solid;    
-    border-color: black;
+.nit{
+	margin-top: 3px;
 }
-
-.celda_cantidad{
-	float: left;	
-	width: 150px;
-	height: 18px;	
-	border-width:1px;  
-	border-right-style: solid;
-    
+.spannit{
+	margin-left: 57px;	
 }
-.celda_descripcion{
-	float: left;	
-	width: 270px;
-	height: 18px;
-	border-width:1px;  
-	border-right-style: solid;
-    
+.spandir{
+	margin-left: 157px;
 }
-.celda_unitario{
-	float: left;	
-	width: 150px;
-	height: 18px;	
-	border-width:1px;  
-	border-right-style: solid;
+.tel{
+	margin-top: 1px;	
+	width: 100%;		
 }
-.celda_total{
-	float: left;	
-	width: 150px;
-	height: 18px;	
+.spantel{	
+	margin-left: 17px;
+	font-size: 14px;
+}
+.spanforma{		
 	
 }
-.celda_cantidad_iva{
-	float: left;	
-	width: 421px;
-	height: 18px;
-	border-width:1px;  
-	border-right-style: solid;	
-}
-
-.tabla_pie1{
+.spanemail{		
 	
-    height: 27px;
 }
-
-.tabla_pie2{
-	border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;    
-    height: 27px;
+.suscripcion{
+	margin-top: 38px;
+	margin-left: 17px;
+	font-size: 15px;
 }
-
-.margen{
-	height: 372px;
+.fila{
+	font-size: 15px;
+	margin-top: 7px;
+}
+.cantidad{}
+.descripcion{
+	margin-left: 157px;
+}
+.valorunitario{
+	margin-left: 207px;
+}
+.total{
+	margin-left: 37px;	
 }
