@@ -17,7 +17,7 @@
 	    	border-radius: 4px;
 	    	margin-top: 10px;
 	    	/*padding: 3% 3% 3% 5%;*/
-	    	background-color: #5A738E;
+	    	background-color: #007BC1;
 		}
 		.message_mod{
 			cursor:pointer;

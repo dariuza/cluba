@@ -827,6 +827,7 @@ class SuscriptionController extends Controller {
 				if($request->input()['renovar'] == 'TRUE'){
 
 					//creamos el abono y abonamos el saldo en mora - cambiamos el estado de la suscripciòn
+					//para la suscripcion antes de renovar, castigo de cartera
 					if(intval($request->input()['mora']) > 0){
 
 						$payment_obj = new Payment();					
@@ -850,11 +851,12 @@ class SuscriptionController extends Controller {
 					//cambiamos el estado de la suscripcion
 					$SuscripctionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array('state_id' => 6));
 
+					//guardamos la suscripcion castigada en una variable
 					$old_suscriptcion=Suscription::
 					where('clu_suscription.id', $request->input()['suscription_id'])
 					->get()
 					->toArray();					
-
+					
 					//Creamos la nueva suscripciòn y agregamos el saldo en mora al precio
 					//consultamos el amigo y el asesor
 					try {
@@ -864,14 +866,14 @@ class SuscriptionController extends Controller {
 						$suscription_renovation->date_suscription = date("Y-m-d H:i:s");
 						
 						//calculo de proxima fecha de expiración
-						$fecha_expiracion = date_create($suscription->date_expiration);
+						$fecha_expiracion = date_create($old_suscriptcion[0]['date_expiration']);
 						$hoy = new DateTime();
 						if($hoy > $fecha_expiracion) { $fecha_expiracion = $hoy;}
 						$fecha_expiracion = $fecha_expiracion->format('Y-m-j');
 						
 						$suscription_renovation->date_expiration = date ( 'Y-m-j' , strtotime ( '+1 year' , strtotime ( $fecha_expiracion)));
 						$suscription_renovation->price = env('PRICE_SUSCRIPTION',135000) + $request->input()['mora'];
-						$suscription_renovation->waytopay = $suscription->waytopay;
+						$suscription_renovation->waytopay = $old_suscriptcion[0]['waytopay'];
 						$suscription_renovation->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime (date('Y-m-j'))));
 						$suscription_renovation->adviser_id = $old_suscriptcion[0]['adviser_id'];
 						$suscription_renovation->friend_id = $old_suscriptcion[0]['friend_id'];
@@ -883,26 +885,67 @@ class SuscriptionController extends Controller {
 						return Redirect::to('suscripcion/listar');	
 					}
 
-					
+					//no se crea el abono, no hay abono, 100% seguro de que no hay
 
-					//editamos los beneficiarios y los carnets
-					$cnts =	License::where('clu_license.suscription_id',$suscription_renovation->id)->get()->toArray();
-					if(!count($cnts)){
-						$cnt_renovation = new License();
-						$cnt_renovation->type = 'suscription';
-						$cnt_renovation->price = 0;
-						$cnt_renovation->date = date("Y-m-d H:i:s");	
-						$cnt_renovation->suscription_id = $suscription_renovation->id;
-						$cnt_renovation->save();
+					//agregamos todos los carnet y los beneficiarios de los mismos y los beneficiarios adicionales
+					//carnets
+					$c_rel = array();//relacion de carnets
+					$cnts =	License::where('clu_license.suscription_id',$old_suscriptcion[0]['id'])->get()->toArray();
+					foreach($cnts as $cnt){
+						try {
+							$cnt_renovation = new License();
+							$cnt_renovation->type = $cnt['type'];
+							$cnt_renovation->price = $cnt['price'];
+							$cnt_renovation->date = $cnt['date'];	
+							$cnt_renovation->suscription_id = $suscription_renovation->id;
+							$cnt_renovation->save();
+							$c_rel[$cnt['id']] = $cnt_renovation->id;					 
+						}catch (\Illuminate\Database\QueryException $e) {
+							Suscription::destroy($suscription_renovation->id);
+							Session::flash('error', 'La renovación no ha sido efectuada. ');
+							return Redirect::to('suscripcion/listar');
+						}
+					
 					}
-
-					//editamos los datos					
-					$request->merge(['suscription_id' =>$suscription_renovation->id]);
-					$request->merge(['edit' => 'TRUE']);
-					$request->merge(['state_id' => 8]);	
-					$request->merge(['price' => $suscription_renovation->price]);
 					
-					//return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
+					$bnes =
+					Beneficiary::
+					where(function ($query) use ($cnts){
+						foreach($cnts as $key => $value){
+							$query->orwhere('clu_beneficiary.license_id', $value['id']);
+						}
+					})
+					->orderBy('license_id', 'asc')
+					->get()
+					->toArray();
+					
+					//beneficiarios
+					foreach($bnes as $bne){
+						try {
+							$bne_renovation = new Beneficiary();
+							$bne_renovation->type_id = $bne['type_id'];
+							$bne_renovation->identification = $bne['identification'];
+							$bne_renovation->names = $bne['names'];
+							$bne_renovation->surnames = $bne['surnames'];
+							$bne_renovation->relationship = $bne['relationship'];
+							$bne_renovation->movil_number = $bne['movil_number'];
+							$bne_renovation->state = $bne['state'];
+							$bne_renovation->alert = $bne['alert'];
+							$bne_renovation->price = $bne['price'];
+							$bne_renovation->license_id = $c_rel[$bne['license_id']];
+							$bne_renovation->save();					
+						}catch (\Illuminate\Database\QueryException $e) {
+							Suscription::destroy($suscription_renovation->id);
+							Session::flash('error', 'La renovación no ha sido efectuada. ');
+							return Redirect::to('suscripcion/listar');
+						}
+					}
+					
+					//bneficiarios adicionales
+
+					
+					
+					return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
 				}
 				
 				if($request->input()['edit'] == 'TRUE'){
@@ -1098,9 +1141,6 @@ class SuscriptionController extends Controller {
 								$i++;							
 							//}
 						}
-								
-
-
 
 						/**Actualizar Beneficiarios**/					
 						//beneficiarios por suscripción
