@@ -885,6 +885,56 @@ class SuscriptionController extends Controller {
 						return Redirect::to('suscripcion/listar');	
 					}
 
+					//actualizamos los datos de usuario
+					//crear su perfil
+					$userprofile ->identificacion =  $request->input()['identification'];
+					$userprofile ->type_id =  $request->input()['type_id'];
+					$userprofile ->names =  $request->input()['names'];
+					$userprofile ->surnames =  $request->input()['surnames'];
+					$userprofile ->birthdate =  $request->input()['birthdate'];
+					$userprofile ->birthplace =  $request->input()['birthplace'];
+					$userprofile ->sex =  $request->input()['sex'];
+					$userprofile ->adress =  $request->input()['adress'];
+					$userprofile ->state =  $department;
+					$userprofile ->city =  $city;
+					$userprofile ->neighborhood =  $request->input()['neighborhood'];
+					$userprofile ->home =  $request->input()['home'];
+					$userprofile ->movil_number =  $request->input()['movil_number'];
+					$userprofile ->fix_number =  $request->input()['fix_number'];
+					$userprofile ->profession =  $request->input()['profession'];
+					$userprofile ->paymentadress =  $request->input()['paymentadress'];
+					$userprofile ->reference =  $request->input()['reference'];
+					$userprofile ->reference_phone =  $request->input()['reference_phone'];
+					$userprofile ->template =  'default';
+					$userprofile ->location =  57;
+					$userprofile ->avatar =  'default.png';
+					$userprofile ->user_id =  $request->input()['user_id'];//el usuario sigue siendo el mismo.
+						
+					try {					
+						$userProfileAffectedRows = UserProfile::where('user_id', $request->input()['user_id'])->update(array(
+						'identificacion' => $userprofile->identificacion,
+						'type_id' => $userprofile->type_id,
+						'names' => $userprofile->names,
+						'surnames' => $userprofile->surnames,
+						'birthdate' => $userprofile->birthdate,
+						'birthplace' => $userprofile->birthplace,
+						'sex' => $userprofile->sex,
+						'adress' => $userprofile->adress,
+						'state' => $userprofile->state,
+						'city' => $userprofile->city,
+						'neighborhood' => $userprofile->neighborhood,
+						'home' => $userprofile->home,					
+						'movil_number' => $userprofile->movil_number,
+						'fix_number' => $userprofile->fix_number,					
+						'profession' => $userprofile->profession,
+						'paymentadress' => $userprofile->paymentadress,
+						'reference' => $userprofile->reference,
+						'reference_phone' => $userprofile->reference_phone,					
+						'avatar' => $userprofile->avatar));
+					}catch (\Illuminate\Database\QueryException $e) {					
+						return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+					}
+
 					//no se crea el abono, no hay abono, 100% seguro de que no hay
 
 					//agregamos todos los carnet y los beneficiarios de los mismos y los beneficiarios adicionales
