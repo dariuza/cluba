@@ -3,6 +3,7 @@
 use Validator;
 use App\Core\Club\Specialist;
 use App\Core\Club\Entity;
+use App\Core\Club\Specialty;
 use App\Core\Club\Subentity;
 use App\Core\Club\SpecialistSpecialty;
 use App\Core\Club\Available;
@@ -111,7 +112,7 @@ class SpecialistController extends Controller {
 	
 	public function getAgregar(){
 	
-		return view('club.especialidad.agregar');
+		return view('club.especialista.agregar');
 	}
 	
 	//función para guardar usuarios con su perfil
@@ -167,7 +168,7 @@ class SpecialistController extends Controller {
 						
 				}catch (\Illuminate\Database\QueryException $e) {
 					$message = 'La especialidad o no se logro editar';
-					return Redirect::to('especialidad/agregar')->with('error', $message)->withInput();
+					return Redirect::to('especialista/agregar')->with('error', $message)->withInput();
 				}
 				
 				Session::flash('_old_input.nombre', $specialty->name);
@@ -258,20 +259,20 @@ class SpecialistController extends Controller {
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 		
-		$specialty =
-		Specialty::
-		where('clu_specialty.id', $id)
+		$specialist =
+		Specialist::
+		where('clu_specialist.id', $id)
 		->get()
 		->toArray();
-				
-		Session::flash('_old_input.especialidad', $specialty[0]['name']);
-		Session::flash('_old_input.codigo', $specialty[0]['code']);
-		Session::flash('_old_input.descripcion', $specialty[0]['description']);
-		Session::flash('_old_input.specialty_id', $id);
-		Session::flash('_old_input.edit', true);
-		Session::flash('titulo', 'Editar');
 		
-		return Redirect::to('especialidad/agregar');
+		//Session::flash('_old_input.especialidad', $specialty[0]['name']);
+		Session::flash('_old_input.nombres', $specialist[0]['name']);
+		//Session::flash('_old_input.codigo', $specialty[0]['code']);
+		//Session::flash('_old_input.descripcion', $specialty[0]['description']);
+		//Session::flash('_old_input.specialty_id', $id);
+		//Session::flash('_old_input.edit', true);
+		//Session::flash('titulo', 'Editar');		
+		return Redirect::to('especialista/agregar');
 	}
 	
 	public function postBuscar(Request $request){
@@ -289,7 +290,7 @@ class SpecialistController extends Controller {
 		
 	}
 	
-	public function postVer(Request $request){
+	public function postVer(Request $request){	
 		//consulta de elementos
 		//entidad de especialista
 		$entity =

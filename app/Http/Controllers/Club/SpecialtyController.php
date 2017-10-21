@@ -100,7 +100,8 @@ class SpecialtyController extends Controller {
 	}
 	
 	//función para guardar usuarios con su perfil
-	public function postSave(Request $request){		
+	public function postSave(Request $request){	
+
 		$array_input = array();
 		$array_input['_token'] = $request->input('_token');		
 		foreach($request->input() as $key=>$value){			

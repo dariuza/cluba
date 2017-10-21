@@ -119,7 +119,7 @@ clu_especialista.prototype.changeSelectEntidad = function(e) {
 	//hacemos la llamada asincrona para averiguar las sucursales de la entidad
 	var datos = new Array();	
 	datos['id_entity'] = e.selectedOptions[0].value;
-	seg_ajaxobject.peticionajax($('#form_select_entity').attr('action'),datos,"clu_especialista.selectEntidadRespuesta");	
+	seg_ajaxobject.peticionajax($('#form_select_specialista').attr('action'),datos,"clu_especialista.selectEntidadRespuesta");	
 }
 
 clu_especialista.prototype.selectEntidadRespuesta = function(result) {
