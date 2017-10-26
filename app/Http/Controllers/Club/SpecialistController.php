@@ -159,26 +159,29 @@ class SpecialistController extends Controller {
 			$specialist->entity_id = $request->input()['entidad'];
 					
 			if($request->input()['edit']){
-				//se pretende actualizar el rol
+				//se pretende actualizar el especialista
 				try {
-					$specialtyAffectedRows = Specialty::where('id', $request->input()['specialty_id'])->update(array(
-						'name' => $specialty->name,
-						'code' => $specialty->code,
-						'description' => $specialty->description));
+					$specialtyAffectedRows = Specialist::where('id', $request->input()['specialist_id'])
+						->update(array(
+							'name' => $specialist->name,
+							'name_assistant' => $specialist->name_assistant,
+							'specialty_id' => $specialist->entity_id));
 						
 				}catch (\Illuminate\Database\QueryException $e) {
 					$message = 'La especialidad o no se logro editar';
 					return Redirect::to('especialista/agregar')->with('error', $message)->withInput();
 				}
+
 				
-				Session::flash('_old_input.nombre', $specialty->name);
-				Session::flash('_old_input.codigo', $specialty->code);
-				Session::flash('_old_input.descripcion', $specialty->description);
-				Session::flash('_old_input.specialty_id', $request->input()['specialty_id']);
-				Session::flash('_old_input.edit', true);
-				Session::flash('titulo', 'Editar');
+				//Session::flash('_old_input.entidad', $specialist->entity_id);
+				//Session::flash('_old_input.nombres', $specialist->name);
+				//Session::flash('_old_input.nombres_asistente', $specialist->name_assistant);
+				
+				//Session::flash('_old_input.specialist_id', $specialist->$id);
+				//Session::flash('_old_input.edit', true);
+				//Session::flash('titulo', 'Editar');
 			
-				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialidad editada exitosamente');
+				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialista '.$specialist->name.' editado exitosamente');
 			
 			}else{
 				try {
@@ -258,21 +261,38 @@ class SpecialistController extends Controller {
 	}
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
-		
+
+		//preparación de datos		
 		$specialist =
 		Specialist::
 		where('clu_specialist.id', $id)
 		->get()
 		->toArray();
+
+		//entidad
+		$entity = \DB::table('clu_entity')->get();
 		
-		//Session::flash('_old_input.especialidad', $specialty[0]['name']);
+		foreach ($entity as $en){			
+			$entidades[$en->id] = $en->business_name;
+		}		
+		$moduledata['entidades']=$entidades;
+		
+		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);
-		//Session::flash('_old_input.codigo', $specialty[0]['code']);
-		//Session::flash('_old_input.descripcion', $specialty[0]['description']);
-		//Session::flash('_old_input.specialty_id', $id);
-		//Session::flash('_old_input.edit', true);
-		//Session::flash('titulo', 'Editar');		
-		return Redirect::to('especialista/agregar');
+		Session::flash('_old_input.nombres_asistente', $specialist[0]['name_assistant']);
+		Session::flash('_old_input.identificacion', $specialist[0]['identification']);
+		Session::flash('_old_input.telefono_uno_asistente', $specialist[0]['phone1_assistant']);
+		Session::flash('_old_input.telefono_uno', $specialist[0]['phone1']);
+		Session::flash('_old_input.telefono_dos_asistente', $specialist[0]['phone2_assistant']);
+		Session::flash('_old_input.telefono_dos', $specialist[0]['phone2']);
+		Session::flash('_old_input.correo_electronico_asistente', $specialist[0]['email_assistant']);
+		Session::flash('_old_input.correo_electronico', $specialist[0]['email']);
+		Session::flash('_old_input.descripcion', $specialist[0]['description']);
+		
+		Session::flash('_old_input.specialist_id', $id);
+		Session::flash('_old_input.edit', true);
+		Session::flash('titulo', 'Editar');		
+		return Redirect::to('especialista/agregar')->with('modulo',$moduledata);		;
 	}
 	
 	public function postBuscar(Request $request){

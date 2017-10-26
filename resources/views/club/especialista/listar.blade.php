@@ -148,8 +148,8 @@
     {!! Form::close() !!}
     {!! Form::open(array('id'=>'form_nuevo','url' => 'especialista/nuevo')) !!}
     {!! Form::close() !!}
-    {!! Form::open(array('id'=>'form_select_specialista','url' => 'especialista/actualizar')) !!}
-    {!! Form::close() !!}
+    {!! Form::open(array('id'=>'form_select_specialista','url' => 'especialista/selectentity')) !!}
+    {!! Form::close() !!}    
 	</div>
 @endsection
 
