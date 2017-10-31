@@ -43,8 +43,8 @@
 					<div class="fila">
 						<span class="cantidad">1</span>
 						<span class="descripcion">Suscripción Club de Amigos</span>
-						<span class="valorunitario">${{number_format(ceil($sct['precio']/(1+env('PRICE_IVA',0.19))))}}</span>
-						<span class="total">${{number_format(ceil($sct['precio']/(1+env('PRICE_IVA',0.19))))}}</span>
+						<span class="valorunitario">${{number_format(ceil($sct['precio']))}}</span>
+						<span class="total">${{number_format(ceil($sct['precio']))}}</span>
 						@php($totaliva=ceil($sct['precio']/(1+env('PRICE_IVA',0.19))))
 						@php($total=$sct['precio'])
 					</div>
@@ -54,9 +54,9 @@
 						<div class="fila">
 							<span class="cantidad">{{$sct['precio_beneficiarios_adicionales']/env('PRICE_BENEFICIARY')}}</span>
 							<span class="descripcion">Beneficiarios adicionales  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<span class="valorunitario">${{number_format(ceil(env('PRICE_BENEFICIARY')/(1+env('PRICE_IVA',0.19))))}} &nbsp;&nbsp;</span>
-							<span class="total">${{number_format(ceil($sct['precio_beneficiarios_adicionales']/(1+env('PRICE_IVA',0.19))))}}</span>
-							@php($totaliva=$totaliva+ceil($sct['precio_beneficiarios_adicionales']/(1+env('PRICE_IVA',0.19))))
+							<span class="valorunitario">${{number_format(ceil(env('PRICE_BENEFICIARY')))}} &nbsp;&nbsp;</span>
+							<span class="total">${{number_format(ceil($sct['precio_beneficiarios_adicionales']))}}</span>
+							@php($totaliva=$totaliva+ceil($sct['precio_beneficiarios_adicionales']))
 							@php($total=$total+$sct['precio_beneficiarios_adicionales'])	
 						</div>
 						@php($add++)
@@ -66,9 +66,9 @@
 						<div class = "fila" >
 							<span class="cantidad">{{$sct['precio_carnets_reimpresion']/env('PRICE_LICENSE')}}</span>
 							<span class="descripcion" >Reimpresión de Carnet &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<span class="valorunitario" > ${{number_format(ceil(env('PRICE_LICENSE')/(1+env('PRICE_IVA',0.19))))}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<span class="total" >${{number_format(ceil($sct['precio_carnets_reimpresion']/(1+env('PRICE_IVA',0.19))))}}</span>
-							@php($totaliva=$totaliva+ceil($sct['precio_carnets_reimpresion']/(1+env('PRICE_IVA',0.19))))
+							<span class="valorunitario" > ${{number_format(ceil(env('PRICE_LICENSE')))}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span class="total" >${{number_format(ceil($sct['precio_carnets_reimpresion']))}}</span>
+							@php($totaliva=$totaliva+ceil($sct['precio_carnets_reimpresion']))
 							@php($total=$total+$sct['precio_carnets_reimpresion'])
 						</div>
 						@php($add++)
@@ -78,9 +78,9 @@
 						<div class = "fila" >
 							<span class="cantidad">{{$sct['precio_carnets']/env('PRICE_LICENSE')}}</span>
 							<span class="descripcion" >Carnet adicionales &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<span class="valorunitario" > ${{number_format(ceil(env('PRICE_LICENSE')/(1+env('PRICE_IVA',0.19))))}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
-							<span class="total" >${{number_format(ceil($sct['precio_carnets']/(1+env('PRICE_IVA',0.19))))}}</span>
-							@php($totaliva=$totaliva+ceil($sct['precio_carnets']/(1+env('PRICE_IVA',0.19))))
+							<span class="valorunitario" > ${{number_format(ceil(env('PRICE_LICENSE')))}} &nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span class="total" >${{number_format(ceil($sct['precio_carnets']))}}</span>
+							@php($totaliva=$totaliva+ceil($sct['precio_carnets']))
 							@php($total=$total+$sct['precio_carnets'])
 						</div>
 						@php($add++)
@@ -100,7 +100,7 @@
 						<span class="cantidad"></span>
 						<span class="descripcion" ></span>
 						<span class="valorunitario" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
-						<span class="total">${{number_format($total-$totaliva)}}</span>
+						<span class="total"></span>
 					</div>
 					<div class = "fila" >
 						<span class="cantidad"></span>
