@@ -279,6 +279,13 @@ class SpecialistController extends Controller {
 		->get()
 		->toArray();
 
+		$clu_specialist_x_specialty =
+		SpecialistSpecialty::
+		where('clu_specialist_x_specialty.specialist_id', $id)
+		->get()
+		->toArray();
+		$moduledata['clu_specialist_x_specialty']=$clu_specialist_x_specialty;
+
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		
 		foreach ($entity as $en){			
@@ -293,8 +300,6 @@ class SpecialistController extends Controller {
 			$especialidades[$es->id] = $es->name;
 		}		
 		$moduledata['especialidades']=$especialidades;
-
-
 		
 		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);
@@ -311,7 +316,6 @@ class SpecialistController extends Controller {
 		Session::flash('_old_input.specialist_id', $id);
 		Session::flash('_old_input.edit', true);
 		Session::flash('titulo', 'Editar');
-		
 		
 		return Redirect::to('especialista/agregar')->with('modulo',$moduledata);		;
 	}

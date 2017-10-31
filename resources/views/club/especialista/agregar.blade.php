@@ -128,7 +128,20 @@
 						<div class="tab-pane fade " id="tab_dispo2">
 							<div class="row ">
 								<div class="col-md-12 col-md-offset-0 tab_dispo2">
-									hi
+									<!--Corremos el for de especialidades-->
+
+									@if(old('edit'))
+										@php ($i=1)	
+										@foreach (Session::get('modulo.especialidades') as $key => $especialidad)											
+											<div class="form-group">
+												<div class="col-md-3">
+													{!! Form::label('espe_especialidad_{{$i}}', 'Especialidad', array('class' => 'col-md-12 control-label')) !!}
+													{!! Form::select('espe_especialidad_{{$i}}',Session::get('modulo.especialidades'),$key, array('class' => 'form-control','placeholder'=>'Ingresa La Especialidad')) !!}
+												</div>
+											</div>
+											@php ($i++)	
+										@endforeach
+									@endif
 								</div>
 							</div>
 						</div>

@@ -441,7 +441,7 @@
 													@if($cnt['type'] == 'suscription' || $cnt['type'] == 'suscription_add')
 														<!-- Solo carnets de Suscripcion, hasta 8 beneficiarios -->
 														@if($i==1)	
-														<!-- $i = 1, para la primera tab activa -->													
+														<!-- $i = 1, para la primera tab activa -->
 														<div class="tab-pane fade in active" id="tab_c_{{$i}}">
 															<div class = "inputs_c_{{$cnt['id']}} inputs_c">
 																@if(Session::has('modulo.bnes'))																	
@@ -450,17 +450,17 @@
 																			<div class="form-group">
 																			{!! Form::hidden('bne_beneficiaryid_'.$cnt['id'].'_'.$bne['id'],$bne['id']) !!}
 																			
-																			<div class="col-md-3">									
+																			<div class="col-md-3">	
 																				{!! Form::label('names', 'Nombres', array('class' => 'col-md-12 control-label')) !!}
 																				{!! Form::text('bne_names_'.$cnt['id'].'_'.$bne['id'], $bne['names'], array('class' => 'form-control','placeholder'=>'Ingresa los Nombres'))!!}
 																			</div>
-																			<div class="col-md-3">									
+																			<div class="col-md-3">	
 																				{!! Form::label('surnames', 'Apellidos', array('class' => 'col-md-12 control-label')) !!}
 																				{!! Form::text('bne_surnames_'.$cnt['id'].'_'.$bne['id'], $bne['surnames'], array('class' => 'form-control','placeholder'=>'Ingresa los Apellidos'))!!}
 																			</div>
 																			
 																				<!-- Comentado por mal entindido con el usuario -->
-																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																				<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
 																							{!! Form::select('bne_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																						</div>
