@@ -874,8 +874,16 @@ class SuscriptionController extends Controller {
 						$suscription_renovation->date_expiration = date ( 'Y-m-j' , strtotime ( '+1 year' , strtotime ( $fecha_expiracion)));
 						$suscription_renovation->price = env('PRICE_SUSCRIPTION',135000) + $request->input()['mora'];
 						$suscription_renovation->waytopay = $old_suscriptcion[0]['waytopay'];
+						$suscription_renovation->reason = $request->input()['provisional'];
 						$suscription_renovation->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime (date('Y-m-j'))));
-						$suscription_renovation->adviser_id = $old_suscriptcion[0]['adviser_id'];
+						//$suscription_renovation->adviser_id = $old_suscriptcion[0]['adviser_id'];
+						//vamos por el asesor
+						$array = explode(" ",$request->input()['adviser']);
+						$identification = end($array);
+						$id_adviser = UserProfile::select('user_id')
+						->where('identificacion','=',$identification)
+						->get()->toarray()[0]['user_id'];				
+						$suscription_renovation->adviser_id= $id_adviser;
 						$suscription_renovation->friend_id = $old_suscriptcion[0]['friend_id'];
 						$suscription_renovation->state_id= 2;
 						

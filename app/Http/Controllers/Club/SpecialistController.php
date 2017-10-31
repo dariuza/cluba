@@ -160,15 +160,23 @@ class SpecialistController extends Controller {
 					
 			if($request->input()['edit']){
 				//se pretende actualizar el especialista
+				$specialist = Specialist::find($request->input('specialist_id'));
+				$specialist->name = $request->input()['nombres'];
+				$specialist->identification = $request->input()['identificacion'];
+				$specialist->phone1 = $request->input()['telefono_uno'];
+				$specialist->phone2 = $request->input()['telefono_dos'];
+				$specialist->email = $request->input()['correo_electronico'];
+				$specialist->name_assistant = $request->input()['nombres_asistente'];
+				$specialist->phone1_assistant = $request->input()['telefono_uno_asistente'];
+				$specialist->phone2_assistant = $request->input()['telefono_dos_asistente'];
+				$specialist->email_assistant = $request->input()['correo_electronico_asistente'];			
+				$specialist->description = $request->input()['descripcion'];
+				$specialist->entity_id = $request->input()['entidad'];
+
 				try {
-					$specialtyAffectedRows = Specialist::where('id', $request->input()['specialist_id'])
-						->update(array(
-							'name' => $specialist->name,
-							'name_assistant' => $specialist->name_assistant,
-							'specialty_id' => $specialist->entity_id));
-						
+					$specialist->save();						
 				}catch (\Illuminate\Database\QueryException $e) {
-					$message = 'La especialidad o no se logro editar';
+					$message = 'El especialista o no se logro editar';
 					return Redirect::to('especialista/agregar')->with('error', $message)->withInput();
 				}
 
@@ -184,6 +192,8 @@ class SpecialistController extends Controller {
 				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialista '.$specialist->name.' editado exitosamente');
 			
 			}else{
+
+				//especista nuevo
 				try {
 					$specialist->save();
 					//relacionamos las especialidades
@@ -269,13 +279,22 @@ class SpecialistController extends Controller {
 		->get()
 		->toArray();
 
-		//entidad
-		$entity = \DB::table('clu_entity')->get();
-		
+		//entidades
+		$entity = \DB::table('clu_entity')->get();		
 		foreach ($entity as $en){			
 			$entidades[$en->id] = $en->business_name;
 		}		
 		$moduledata['entidades']=$entidades;
+
+		//especialidades, 
+		//hay que llevarlas todas ya que no hay una relación de especialidad con entidad
+		$specialty = \DB::table('clu_specialty')->get();		
+		foreach ($specialty as $es){			
+			$especialidades[$es->id] = $es->name;
+		}		
+		$moduledata['especialidades']=$especialidades;
+
+
 		
 		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);
@@ -291,7 +310,9 @@ class SpecialistController extends Controller {
 		
 		Session::flash('_old_input.specialist_id', $id);
 		Session::flash('_old_input.edit', true);
-		Session::flash('titulo', 'Editar');		
+		Session::flash('titulo', 'Editar');
+		
+		
 		return Redirect::to('especialista/agregar')->with('modulo',$moduledata);		;
 	}
 	

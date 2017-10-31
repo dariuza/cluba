@@ -36,7 +36,7 @@
 							<span class="spanforma" style="margin-left: 217px">  {{$sct['forma_pago']}} </span>	
 						
 					@endif
-					<span class="spanemail" style="margin-left: 97px">  {{$sct['Correo']}} </span>					
+					<span class="spanemail" style="margin-left: 97px"> <!-- {{$sct['Correo']}} -->    </span>					
 				</div>
 
 				<div class="suscripcion">
