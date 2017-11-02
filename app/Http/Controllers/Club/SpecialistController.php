@@ -279,12 +279,23 @@ class SpecialistController extends Controller {
 		->get()
 		->toArray();
 
+		//especialidades por especialista
 		$clu_specialist_x_specialty =
 		SpecialistSpecialty::
 		where('clu_specialist_x_specialty.specialist_id', $id)
 		->get()
 		->toArray();
 		$moduledata['clu_specialist_x_specialty']=$clu_specialist_x_specialty;
+
+		//disponibilidades por especialista
+		$clu_available =
+		Available::
+		where('clu_available.specialist_id', $id)
+		->get()
+		->toArray();
+		$moduledata['clu_available']=$clu_available;
+
+		dd($moduledata);
 
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		
