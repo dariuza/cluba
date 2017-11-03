@@ -807,7 +807,7 @@ class ReportController extends Controller {
 	public function postFacturaciongeneral(Request $request){
 		//consultamos las facturas
 		$array = array();	
-
+z
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
 			$export=Suscription::
