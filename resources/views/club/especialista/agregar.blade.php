@@ -1,6 +1,9 @@
 @extends('app')
 
 @section('content')
+{{ Html::style('css/lib/bootstrap-timepicker.min.css')}}
+{{ Html::style('css/lib/chosen.css')}}
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
@@ -170,6 +173,45 @@
 							<div class="row ">
 								<div class="col-md-12 col-md-offset-0 tab_dispo3">
 									<!--Corremos el for de disponibilidades-->
+									@if(old('edit'))
+										@php ($i=1)	
+										@foreach (Session::get('modulo.clu_available') as $disponibilidad)
+											<div class="form-group">
+												<div class="col-md-12">
+												<div class="col-md-2">
+													{!! Form::label('dispo_dia_'.$i, 'Día', array('class' => 'col-md-12 control-label')) !!}
+													{!! Form::select('dispo_dia_'.$i,array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIERCOLES' => 'MIERCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SABADO' => 'SABADO', 'DOMINGO' => 'DOMINGO'),$disponibilidad['day'], array('class' => 'form-control','placeholder'=>'Elije Día')) !!}	
+												</div>
+												<div class="col-md-2">
+													{!! Form::label('dispo_horainicio_'.$i, 'Hora Inicio', array('class' => 'col-md-12 control-label')) !!}
+													<div class="input-group bootstrap-timepicker timepicker">									
+														{!! Form::text('dispo_horainicio_'.$i, $disponibilidad['hour_start'], array('class' => 'form-control input-small','placeholder'=>'Hora Inicio HH:mm'))!!}
+														<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+													</div>										
+												</div>
+												<div class="col-md-2">
+													{!! Form::label('dispo_horafin_'.$i, 'Hora Fin', array('class' => 'col-md-12 control-label')) !!}
+													<div class="input-group bootstrap-timepicker timepicker">									
+														{!! Form::text('dispo_horafin_'.$i, $disponibilidad['hour_end'], array('class' => 'form-control input-small','placeholder'=>'Hora Fin HH:mm'))!!}
+														<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+													</div>
+												</div>
+												<div class="epecialist col-md-3">
+													{!! Form::label('dispo_especialidadesselect_'.$i, 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
+													{!! Form::select('dispo_especialidadesselect_'.$i,Session::get('modulo.especialidades'),Session::get('modulo.dispo_espec')[$disponibilidad['id']], array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las especialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+													{!! Form::hidden('dispo_especialidades_'.$i,old('dispo_especialidades_'.$i),array('id'=>'dispo_especialidades_'.$i)) !!}													
+
+												</div>
+												<div class="epecialist col-md-3">
+													{!! Form::label('dispo_subentityselect_'.$i, 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
+													{!! Form::select('dispo_subentityselect_'.$i,array(),$disponibilidad['specialist_id'], array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}
+												</div>
+												</div>	
+											</div>
+
+										@php ($i++)	
+										@endforeach
+									@endif			
 								</div>
 							</div>
 						</div>
@@ -200,8 +242,22 @@
 </div>		
 @endsection
 
-@section('script')		
-	<script type="text/javascript">  	
+@section('script')
+	{{ Html::script('js/lib/bootstrap-timepicker.min.js') }}
+	{{ Html::script('js/lib/chosen.jquery.min.js')}}			
+	<script type="text/javascript">  
+		$('.chosen-select').chosen();
+		$('.chosen-container').width('100%');			
 		
 	</script>
+
+	@php ($i=1)	
+	@foreach (Session::get('modulo.clu_available') as $disponibilidad)
+		<script type="text/javascript">
+			$("#dispo_especialidadesselect_{!!$i!!}").chosen().change(function(event) {
+			$('#dispo_especialidades_{!!$i!!}').val($("#dispo_especialidadesselect_{!!$i!!}").chosen().val());		    
+			});	
+		</script>
+		@php ($i++)	
+	@endforeach
 @endsection

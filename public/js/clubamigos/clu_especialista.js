@@ -163,8 +163,8 @@ clu_especialista.prototype.add_dispo = function(add) {
 	opt3.innerHTML = 'MARTES';
 	select_1.appendChild(opt3);
 	var opt4 = document.createElement('option');
-	opt4.value = 'MIÈRCOLES';
-	opt4.innerHTML = 'MIÈRCOLES';
+	opt4.value = 'MIERCOLES';
+	opt4.innerHTML = 'MIERCOLES';
 	select_1.appendChild(opt4);
 	var opt5 = document.createElement('option');
 	opt5.value = 'JUEVES';
