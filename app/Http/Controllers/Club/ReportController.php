@@ -723,7 +723,7 @@ class ReportController extends Controller {
 						return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
 					}
 				}elseif($diff_ex < 30){
-					$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion. ' ['.$diff_ex.']';
+					$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion;
 						
 				}
 				
@@ -1306,6 +1306,9 @@ z
 			//proximo pago			
 						
 			$suscripcion->pagos = 0;
+			$suscripcion->precio_beneficiarios_adicionales = 0;
+			$suscripcion->precio_carnets_reimpresion=0;
+			$suscripcion->precio_carnets=0;
 			//consultamos los pagos de cada suscripcion, solo para suscripciones con estado diferente de 1
 			//lo siguinete es para la mora y para el estado
 			
@@ -1462,7 +1465,7 @@ z
 						return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
 					}
 				}elseif($diff_ex < 30){
-					$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion. ' ['.$diff_ex.']';
+					$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion;
 						
 				}
 				
@@ -1481,11 +1484,16 @@ z
 				}
 				
 			}
-			$suscripcion->fecha_suscipcion = date_create($suscripcion->fecha_suscipcion);
-			$suscripcion->fecha_suscipcion = $suscripcion->fecha_suscipcion->format('Y-m-d');
-			$suscripcion->fecha_expiracion = date_create($suscripcion->fecha_expiracion);
-			$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion->format('Y-m-d');
-			
+
+			try{
+				$suscripcion->fecha_suscipcion = date_create($suscripcion->fecha_suscipcion);
+				$suscripcion->fecha_suscipcion = $suscripcion->fecha_suscipcion->format('Y-m-d');				
+				$suscripcion->fecha_expiracion = date_create($suscripcion->fecha_expiracion);
+				$suscripcion->fecha_expiracion = $suscripcion->fecha_expiracion->format('Y-m-d');
+
+			}catch (Exception  $e) {
+				dd($suscripcion);
+			}
 			unset($suscripcion->id);
 			unset($suscripcion->adviser_id);			
 			unset($suscripcion->friend_id);
@@ -1510,7 +1518,7 @@ z
 		
 		//exportamos a pdf
 		
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+		ini_set('max_execution_time', 1200); //300 seconds = 5 minutes
 		$pdf = \PDF::loadView('invoice.generalpdf',$array);
 		return $pdf->download(''.'facturacion'.'.pdf');		
 	}
