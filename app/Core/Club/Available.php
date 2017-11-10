@@ -11,7 +11,7 @@ class Available extends Model
      */
 	protected $table = 'clu_available';
 	
-	protected $fillable =['id','day','hour_start','hour_end','observations','active','specialist_id'];
+	protected $fillable =['id','day','hour_start','hour_end','observations','active','subentity_id','specialist_id'];
 			
 }
 

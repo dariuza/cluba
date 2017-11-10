@@ -17,10 +17,10 @@ class CreateCluSpecialistXSpecialtyTable extends Migration
     		$table->integer('rate_particular');
     		$table->integer('rate_suscriptor');
     		$table->string('tiempo');
-		$table->integer('active');	
+		    $table->integer('active');	
     		$table->integer('specialist_id')->unsigned();
     		$table->foreign('specialist_id')->references('id')->on('clu_specialist')->onDelete('cascade');
-		$table->integer('specialty_id')->unsigned();
+		    $table->integer('specialty_id')->unsigned();
     		$table->foreign('specialty_id')->references('id')->on('clu_specialty')->onDelete('cascade');
     		$table->timestamps();
     	});

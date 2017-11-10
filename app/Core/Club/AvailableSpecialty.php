@@ -11,7 +11,7 @@ class AvailableSpecialty extends Model
      */
 	protected $table = 'clu_available_x_specialty';
 	
-	protected $fillable =['id','available_id','specialty_id'];
+	protected $fillable =['id','available_id','specialty_id','subentity_id'];
 			
 }
 

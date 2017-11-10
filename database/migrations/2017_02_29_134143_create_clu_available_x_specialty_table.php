@@ -16,8 +16,10 @@ class CreateCluAvailableXSpecialtyTable extends Migration
     		$table->increments('id');
     		$table->integer('available_id')->unsigned();
     		$table->foreign('available_id')->references('id')->on('clu_available')->onDelete('cascade');
-		$table->integer('specialty_id')->unsigned();
+		    $table->integer('specialty_id')->unsigned();
     		$table->foreign('specialty_id')->references('id')->on('clu_specialty')->onDelete('cascade');
+            $table->integer('subentity_id')->unsigned();
+            $table->foreign('subentity_id')->references('id')->on('clu_subentity')->onDelete('cascade');
     		$table->timestamps();
     	});
     }

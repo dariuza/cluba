@@ -221,6 +221,7 @@ class SpecialistController extends Controller {
 						}
 					}
 
+					//vector de disponibilidades
 					$array = Array();
 					foreach($request->input() as $key=>$value){
 						if(strpos($key,'dispo_') !== false){
@@ -229,13 +230,14 @@ class SpecialistController extends Controller {
 							$id_bne = end($vector);
 							$array[$id_bne][$vector[1]] = $value;
 						}
-					}
-
+					}					
+					
 					foreach($array as $key => $vector){
 						$available = new Available;
 						$available->day = $vector['dia'];
 						$available->hour_start = $vector['horainicio'];
 						$available->hour_end = $vector['horafin'];
+						$available->subentity_id = $vector['subentityselect'];
 						$available->specialist_id = $specialist->id;
 						try {
 							$available->save();					
@@ -244,12 +246,13 @@ class SpecialistController extends Controller {
 						}
 
 						//agregamos las especialidades a la disponibilidad
-						$subentyties=explode(',',$vector['especialidades']);
-						foreach($subentyties as $key => $subentidad){
+						$disponibilidades=explode(',',$vector['especialidades']);
+						foreach($disponibilidades as $key => $dispo){
 							
 							$availablespecialty = new AvailableSpecialty;
 							$availablespecialty->available_id = $available->id;
-							$availablespecialty->specialty_id = intval($subentidad);
+							$availablespecialty->specialty_id = intval($dispo);
+							$availablespecialty->subentity_id = $vector['subentityselect'];
 							try {
 								$availablespecialty->save();					
 							}catch (\Illuminate\Database\QueryException $e) {
@@ -272,7 +275,9 @@ class SpecialistController extends Controller {
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 
-		//preparación de datos		
+		//preparación de datos	
+
+		//el especialista	
 		$specialist =
 		Specialist::
 		where('clu_specialist.id', $id)
@@ -315,7 +320,7 @@ class SpecialistController extends Controller {
 		})
 		->get()
 		->toArray();
-		//$moduledata['clu_available_x_specialty']=$clu_available_x_specialty;
+		$moduledata['clu_available_x_specialty']=$clu_available_x_specialty;
 
 		//separamos el array
 		$dispo_espec = array();
@@ -342,7 +347,9 @@ class SpecialistController extends Controller {
 			$especialidades[$es->id] = $es->name;
 		}		
 		$moduledata['especialidades']=$especialidades;
+		
 		dd($moduledata);
+
 		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);
 		Session::flash('_old_input.nombres_asistente', $specialist[0]['name_assistant']);
