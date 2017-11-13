@@ -295,7 +295,7 @@ class SpecialistController extends Controller {
 		->toArray();
 		$moduledata['clu_available']=$clu_available;
 
-		dd($moduledata);
+		//dd($moduledata);
 
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		
