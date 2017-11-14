@@ -221,6 +221,7 @@ class SpecialistController extends Controller {
 						}
 					}
 
+					//vector de disponibilidades
 					$array = Array();
 					foreach($request->input() as $key=>$value){
 						if(strpos($key,'dispo_') !== false){
@@ -229,13 +230,14 @@ class SpecialistController extends Controller {
 							$id_bne = end($vector);
 							$array[$id_bne][$vector[1]] = $value;
 						}
-					}
-
+					}					
+					
 					foreach($array as $key => $vector){
 						$available = new Available;
 						$available->day = $vector['dia'];
 						$available->hour_start = $vector['horainicio'];
 						$available->hour_end = $vector['horafin'];
+						$available->subentity_id = $vector['subentityselect'];
 						$available->specialist_id = $specialist->id;
 						try {
 							$available->save();					
@@ -244,12 +246,13 @@ class SpecialistController extends Controller {
 						}
 
 						//agregamos las especialidades a la disponibilidad
-						$subentyties=explode(',',$vector['especialidades']);
-						foreach($subentyties as $key => $subentidad){
+						$disponibilidades=explode(',',$vector['especialidades']);
+						foreach($disponibilidades as $key => $dispo){
 							
 							$availablespecialty = new AvailableSpecialty;
 							$availablespecialty->available_id = $available->id;
-							$availablespecialty->specialty_id = intval($subentidad);
+							$availablespecialty->specialty_id = intval($dispo);
+							$availablespecialty->subentity_id = $vector['subentityselect'];
 							try {
 								$availablespecialty->save();					
 							}catch (\Illuminate\Database\QueryException $e) {
@@ -272,12 +275,23 @@ class SpecialistController extends Controller {
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 
-		//preparación de datos		
+		//preparación de datos	
+
+		//el especialista	
 		$specialist =
 		Specialist::
 		where('clu_specialist.id', $id)
 		->get()
 		->toArray();
+
+		//consultamos las especialidades
+		$especialidades_null = array("NO HAY ESPECIALIDADES");
+		$specialties= \DB::table('clu_specialty')->get();
+		foreach ($specialties as $especial){
+			$especialidades[$especial->id] = $especial->name;
+		}
+		$moduledata['especialidades']=$especialidades_null;	
+		if(count($moduledata['especialidades'])) $moduledata['especialidades']=$especialidades;
 
 		//especialidades por especialista
 		$clu_specialist_x_specialty =
@@ -291,11 +305,37 @@ class SpecialistController extends Controller {
 		$clu_available =
 		Available::
 		where('clu_available.specialist_id', $id)
+		->leftjoin('clu_specialty', 'clu_available.specialist_id', '=', 'clu_specialty.id')
 		->get()
 		->toArray();
 		$moduledata['clu_available']=$clu_available;
+		
+		//disponibilidades por sucursales y especialidad
+		$clu_available_x_specialty =
+		AvailableSpecialty::
+		where(function($q) use ($clu_available){
+			foreach($clu_available as $value){
+				$q->orwhere('available_id', '=', $value['id']);
+			}
+		})
+		->get()
+		->toArray();
+		$moduledata['clu_available_x_specialty']=$clu_available_x_specialty;
 
+<<<<<<< HEAD
 		//dd($moduledata);
+=======
+		//separamos el array
+		$dispo_espec = array();
+		foreach ($clu_available as $value) {
+			$dispo_espec[$value['id']]=array();
+		}
+		foreach ($clu_available_x_specialty as $value) {
+			$dispo_espec[$value['available_id']][count($dispo_espec[$value['available_id']])]=$value['specialty_id'];
+		}
+
+		$moduledata['dispo_espec']=$dispo_espec;		
+>>>>>>> ff1c46f6c63e8d201811bd35b903cc6a1641184c
 
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		
@@ -312,6 +352,8 @@ class SpecialistController extends Controller {
 		}		
 		$moduledata['especialidades']=$especialidades;
 		
+		dd($moduledata);
+
 		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);
 		Session::flash('_old_input.nombres_asistente', $specialist[0]['name_assistant']);

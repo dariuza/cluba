@@ -16,9 +16,11 @@ class CreateCluAvailableTable extends Migration
     		$table->increments('id');
     		$table->string('day');
     		$table->string('hour_start');
-            $table->string('hour_end');
-            $table->string('observations');
-            $table->integer('specialist_id')->unsigned();
+		    $table->string('hour_end');
+		    $table->string('observations');
+            $table->integer('subentity_id')->unsigned();
+            $table->foreign('subentity_id')->references('id')->on('clu_subentity')->onDelete('cascade');
+		    $table->integer('specialist_id')->unsigned();
     		$table->foreign('specialist_id')->references('id')->on('clu_specialist')->onDelete('cascade');
     		$table->timestamps();
     	});

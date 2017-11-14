@@ -314,7 +314,7 @@
 									<div class="form-group col-md-12">
 										<div class="col-md-2">											
 											{!! Form::label('dispo_dia_1', 'Día', array('class' => 'col-md-12 control-label')) !!}
-											{!! Form::select('dispo_dia_1',array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIÉRCOLES' => 'MIÉRCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SÁBADO' => 'SÁBADO', 'DOMINGO' => 'DOMINGO'),old('dispo_dia_1'), array('class' => 'form-control','placeholder'=>'Elije Día')) !!}												
+											{!! Form::select('dispo_dia_1',array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIERCOLES' => 'MIERCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SABADO' => 'SABADO', 'DOMINGO' => 'DOMINGO'),old('dispo_dia_1'), array('class' => 'form-control','placeholder'=>'Elije Día')) !!}												
 										</div>
 										
 										<div class="col-md-2">
