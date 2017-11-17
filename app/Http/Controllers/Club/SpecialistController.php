@@ -305,7 +305,7 @@ class SpecialistController extends Controller {
 		$clu_available =
 		Available::
 		where('clu_available.specialist_id', $id)
-		->leftjoin('clu_specialty', 'clu_available.specialist_id', '=', 'clu_specialty.id')
+		//->leftjoin('clu_specialty', 'clu_available.specialist_id', '=', 'clu_specialty.id')
 		->get()
 		->toArray();
 		$moduledata['clu_available']=$clu_available;
@@ -322,9 +322,7 @@ class SpecialistController extends Controller {
 		->toArray();
 		$moduledata['clu_available_x_specialty']=$clu_available_x_specialty;
 
-<<<<<<< HEAD
-		//dd($moduledata);
-=======
+
 		//separamos el array
 		$dispo_espec = array();
 		foreach ($clu_available as $value) {
@@ -335,7 +333,7 @@ class SpecialistController extends Controller {
 		}
 
 		$moduledata['dispo_espec']=$dispo_espec;		
->>>>>>> ff1c46f6c63e8d201811bd35b903cc6a1641184c
+
 
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		
@@ -343,6 +341,13 @@ class SpecialistController extends Controller {
 			$entidades[$en->id] = $en->business_name;
 		}		
 		$moduledata['entidades']=$entidades;
+
+		//sucursales de entidad
+		$subentity = \DB::table('clu_subentity')->where('clu_subentity.entity_id',$specialist[0]['entity_id'])->get();		
+		foreach ($subentity as $en){			
+			$subentidades[$en->id] = $en->sucursal_name;
+		}		
+		$moduledata['subentidades']=$subentidades;
 
 		//especialidades, 
 		//hay que llevarlas todas ya que no hay una relación de especialidad con entidad
@@ -352,7 +357,7 @@ class SpecialistController extends Controller {
 		}		
 		$moduledata['especialidades']=$especialidades;
 		
-		dd($moduledata);
+		//dd($moduledata);
 
 		Session::flash('_old_input.entidad', $specialist[0]['entity_id']);
 		Session::flash('_old_input.nombres', $specialist[0]['name']);

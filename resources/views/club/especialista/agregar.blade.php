@@ -204,7 +204,7 @@
 												</div>
 												<div class="epecialist col-md-3">
 													{!! Form::label('dispo_subentityselect_'.$i, 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
-													{!! Form::select('dispo_subentityselect_'.$i,array(),$disponibilidad['specialist_id'], array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}
+													{!! Form::select('dispo_subentityselect_'.$i,Session::get('modulo.subentidades'),$disponibilidad['subentity_id'], array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}
 												</div>
 												</div>	
 											</div>
@@ -213,6 +213,12 @@
 										@endforeach
 									@endif			
 								</div>
+								<div class="col-md-12"><hr size = "1"></hr></div>	
+								<div class="col-md-1 col-md-offset-11" data-toggle="tooltip" title="" data-original-title="Agregar Disponibilidad">
+	            					<a href="javascript:clu_especialista.add_dispo('1')" class="site_title site_title2" style="text-decoration: none;color:#5A738E !important;  ">
+	            					<i class="fa fa-plus" style="border: 1px solid #5A738E !important"></i>	
+	            					</a>
+            					</div>
 							</div>
 						</div>
 					</div>
