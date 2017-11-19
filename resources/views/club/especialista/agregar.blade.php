@@ -136,6 +136,7 @@
 										@php ($i=1)	
 										@foreach (Session::get('modulo.clu_specialist_x_specialty') as $especialidad)			
 											<div class="form-group">
+												{!! Form::hidden('espe_id_'.$i,$especialidad['id']) !!}
 												<div class="col-md-3">
 													{!! Form::label('espe_especialidad_'.$i, 'Especialidad', array('class' => 'col-md-12 control-label')) !!}
 													{!! Form::select('espe_especialidad_'.$i,Session::get('modulo.especialidades'),$especialidad['specialty_id'], array('class' => 'form-control','placeholder'=>'Ingresa La Especialidad')) !!}
@@ -178,6 +179,7 @@
 										@foreach (Session::get('modulo.clu_available') as $disponibilidad)
 											<div class="form-group">
 												<div class="col-md-12">
+												{!! Form::hidden('dispo_id_'.$i,$disponibilidad['id']) !!}
 												<div class="col-md-2">
 													{!! Form::label('dispo_dia_'.$i, 'Día', array('class' => 'col-md-12 control-label')) !!}
 													{!! Form::select('dispo_dia_'.$i,array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIERCOLES' => 'MIERCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SABADO' => 'SABADO', 'DOMINGO' => 'DOMINGO'),$disponibilidad['day'], array('class' => 'form-control','placeholder'=>'Elije Día')) !!}	
@@ -251,19 +253,24 @@
 @section('script')
 	{{ Html::script('js/lib/bootstrap-timepicker.min.js') }}
 	{{ Html::script('js/lib/chosen.jquery.min.js')}}			
-	<script type="text/javascript">  
-		$('.chosen-select').chosen();
-		$('.chosen-container').width('100%');			
-		
-	</script>
 
+	{{--Para asociar los selectores con sus iputs hidden--}}
 	@php ($i=1)	
 	@foreach (Session::get('modulo.clu_available') as $disponibilidad)
 		<script type="text/javascript">
 			$("#dispo_especialidadesselect_{!!$i!!}").chosen().change(function(event) {
-			$('#dispo_especialidades_{!!$i!!}').val($("#dispo_especialidadesselect_{!!$i!!}").chosen().val());		    
-			});	
+				$('#dispo_especialidades_{!!$i!!}').val($("#dispo_especialidadesselect_{!!$i!!}").chosen().val());		    
+			});
+			//actualizamos los inputs
+			$('#dispo_especialidades_{!!$i!!}').val($("#dispo_especialidadesselect_{!!$i!!}").chosen().val());		    	
 		</script>
 		@php ($i++)	
 	@endforeach
+
+	<script type="text/javascript">  
+		$('.chosen-select').chosen();
+		$('.chosen-container').width('100%');
+	</script>
+
+	
 @endsection

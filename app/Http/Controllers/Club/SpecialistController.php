@@ -160,6 +160,7 @@ class SpecialistController extends Controller {
 					
 			if($request->input()['edit']){
 				//se pretende actualizar el especialista
+
 				$specialist = Specialist::find($request->input('specialist_id'));
 				$specialist->name = $request->input()['nombres'];
 				$specialist->identification = $request->input()['identificacion'];
@@ -180,14 +181,83 @@ class SpecialistController extends Controller {
 					return Redirect::to('especialista/agregar')->with('error', $message)->withInput();
 				}
 
+				//editar las especialidades
+				$array = Array();
+				foreach($request->input() as $key=>$value){
+					if(strpos($key,'espe_') !== false){
+						$vector=explode('_',$key);
+						$n=count($vector);
+						$id_bne = end($vector);
+						$array[$id_bne][$vector[1]] = $value;
+					}
+				}
+				foreach($array as $key => $vector){
+					//verificar si en nuevo o si es una actualización
+					if(array_key_exists('id',$vector)){
+						//es una actualización
+						$speciallistspecialty = SpecialistSpecialty::find($vector['id']);
+						//verificamos si se quiere borrar
+						if($vector['especialidad'] != 0){
+
+							$speciallistspecialty->rate_particular= $vector['precioparticular'];
+							$speciallistspecialty->rate_suscriptor= $vector['preciosuscriptor'];
+							$speciallistspecialty->tiempo= $vector['duracion'];
+							$speciallistspecialty->specialist_id = $specialist->id;//especialista
+							$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
+							try {
+								$speciallistspecialty->save();					
+							}catch (\Illuminate\Database\QueryException $e) {										
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
+
+						}else{
+							try {
+								$speciallistspecialty->delete();
+							}catch (\Illuminate\Database\QueryException $e) {										
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
+							
+						}
+
+						//disponibilidades
+					    $array = Array();
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'dispo_') !== false){
+								$vector=explode('_',$key);
+								$n=count($vector);
+								$id_bne = end($vector);
+								$array[$id_bne][$vector[1]] = $value;
+							}
+						}	
+						//borramos todas las disponibilidaes y luego las recreamos
+						foreach($array as $key => $vector){
+							//verificar si en nuevo o si es una actualización
+							if(array_key_exists('id',$vector)){
+								
+							}
+
+						}
+
+					}else{
+						//es uno nuevo
+						$speciallistspecialty = new SpecialistSpecialty;
+
+						$speciallistspecialty->rate_particular= $vector['precioparticular'];
+						$speciallistspecialty->rate_suscriptor= $vector['preciosuscriptor'];
+						$speciallistspecialty->tiempo= $vector['duracion'];
+						$speciallistspecialty->specialist_id = $specialist->id;//especialista
+						$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
+						try {
+							$speciallistspecialty->save();					
+						}catch (\Illuminate\Database\QueryException $e) {										
+							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+						}
+					}
+					
+				}
 				
-				//Session::flash('_old_input.entidad', $specialist->entity_id);
-				//Session::flash('_old_input.nombres', $specialist->name);
-				//Session::flash('_old_input.nombres_asistente', $specialist->name_assistant);
-				
-				//Session::flash('_old_input.specialist_id', $specialist->$id);
-				//Session::flash('_old_input.edit', true);
-				//Session::flash('titulo', 'Editar');
+
+
 			
 				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialista '.$specialist->name.' editado exitosamente');
 			
