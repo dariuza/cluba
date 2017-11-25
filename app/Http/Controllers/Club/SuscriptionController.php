@@ -529,7 +529,7 @@ class SuscriptionController extends Controller {
 							$bandera_pago = true;
 						}catch (\Illuminate\Database\QueryException $e) {
 							$message = 'La Suscripción no se logro editar';
-							return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);;
+							return Redirect::to('suscripcion/listar')->with('error', $message)->withInput()->with('modulo',$moduledata);
 						}
 					}else{
 						//hay uno o varios pagos

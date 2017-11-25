@@ -58,6 +58,30 @@ seg_user.prototype.iniciarDatepiker = function(obj) {
         autoclose: true
     });
 };
+
+seg_user.prototype.iniciarDatepikerInicio = function(obj) {    
+    $( "#"+obj ).datepicker({        
+        format: "yyyy-mm-dd",       
+        language: "es",
+        autoclose: true,
+        defaultDate: new Date(),   
+        startDate: '-0d',
+        endDate: '+60d',
+
+    });    
+};
+
+seg_user.prototype.iniciarDatepikerFin = function(obj) {    
+    $( "#"+obj ).datepicker({        
+        format: "yyyy-mm-dd",        
+        language: "es",
+        autoclose: true,        
+        startDate: '+4d',
+        endDate: '+60d',
+
+    });
+};
+
 seg_user.prototype.changeImg = function(input){
 	if (input.files && input.files[0]) {
         var reader = new FileReader();

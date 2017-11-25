@@ -159,8 +159,7 @@ class SpecialistController extends Controller {
 			$specialist->entity_id = $request->input()['entidad'];
 					
 			if($request->input()['edit']){
-				//se pretende actualizar el especialista
-
+				//SE PRETENDE ACTUALIZAR LA ESPECIALIDAD
 				$specialist = Specialist::find($request->input('specialist_id'));
 				$specialist->name = $request->input()['nombres'];
 				$specialist->identification = $request->input()['identificacion'];
@@ -192,6 +191,7 @@ class SpecialistController extends Controller {
 					}
 				}
 				foreach($array as $key => $vector){
+
 					//verificar si en nuevo o si es una actualización
 					if(array_key_exists('id',$vector)){
 						//es una actualización
@@ -206,7 +206,7 @@ class SpecialistController extends Controller {
 							$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
 							try {
 								$speciallistspecialty->save();					
-							}catch (\Illuminate\Database\QueryException $e) {										
+							}catch (\Illuminate\Database\QueryException $e) {												
 								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
 							}
 
@@ -218,27 +218,9 @@ class SpecialistController extends Controller {
 							}
 							
 						}
-
-						//disponibilidades
-					    $array = Array();
-						foreach($request->input() as $key=>$value){
-							if(strpos($key,'dispo_') !== false){
-								$vector=explode('_',$key);
-								$n=count($vector);
-								$id_bne = end($vector);
-								$array[$id_bne][$vector[1]] = $value;
-							}
-						}	
-						//borramos todas las disponibilidaes y luego las recreamos
-						foreach($array as $key => $vector){
-							//verificar si en nuevo o si es una actualización
-							if(array_key_exists('id',$vector)){
-								
-							}
-
-						}
-
+						
 					}else{
+
 						//es uno nuevo
 						$speciallistspecialty = new SpecialistSpecialty;
 
@@ -253,17 +235,112 @@ class SpecialistController extends Controller {
 							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
 						}
 					}
-					
 				}
-				
+
+				//disponibilidades
+
+			    $array = Array();
+				foreach($request->input() as $key=>$value){
+					if(strpos($key,'dispo_') !== false){
+						$vector=explode('_',$key);
+						$n=count($vector);
+						$id_bne = end($vector);
+						$array[$id_bne][$vector[1]] = $value;
+					}
+				}
+
+				//borramos todas las disponibilidaes_x_especialidad y luego las recreamos
+				foreach($array as $key => $vector){
+
+					//verificar si en nuevo o si es una actualización, idavailable
+					if(array_key_exists('idavailable',$vector)){						
+						//lo primero es borrar las disponibilidades
+						if($vector['dia'] == "" ){
+							//borramos la disponibilidad
+							Available::where('id',$vector['idavailable'])->delete();
+						}else{
+							//actualizamos la disponibilidad
+							$available = Available::find($vector['idavailable']);
+
+							$available->day = $vector['dia'];
+							$available->hour_start = $vector['horainicio'];
+							$available->hour_end = $vector['horafin'];
+							$available->subentity_id = $vector['subentityselect'];
+							$available->specialist_id = $specialist->id;
+							try {
+								$available->save();					
+							}catch (\Illuminate\Database\QueryException $e) {										
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
 
 
-			
+							//borramos los registros de id availablede clu_available_x_specialty
+							AvailableSpecialty::where('clu_available_x_specialty.available_id',$vector['idavailable'])
+							->delete();
+							//creamos todos los registros para clu_available_x_specialty
+							//agregamos las especialidades a la disponibilidad
+							$disponibilidades=explode(',',$vector['especialidades']);
+							foreach($disponibilidades as $key => $dispo){
+
+								//antes de guardar miramos si todavia existe la disponivilidad
+								
+								$availablespecialty = new AvailableSpecialty;
+								$availablespecialty->available_id = $vector['idavailable'];
+								$availablespecialty->specialty_id = intval($dispo);
+								$availablespecialty->subentity_id = $vector['subentityselect'];
+								try {
+									$availablespecialty->save();					
+								}catch (\Illuminate\Database\QueryException $e) {
+									return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+								}
+
+							}
+						}
+						
+					}else{
+						
+						//nueva disponibilidad con su available
+						if($vector['dia'] != "" ){
+							$available = new Available;
+							$available->day = $vector['dia'];
+							$available->hour_start = $vector['horainicio'];
+							$available->hour_end = $vector['horafin'];
+							$available->subentity_id = $vector['subentityselect'];
+							$available->specialist_id = $specialist->id;
+							try {
+								$available->save();					
+							}catch (\Illuminate\Database\QueryException $e) {										
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
+							
+							//agregamos las especialidades a la disponibilidad
+							$disponibilidades=explode(',',$vector['especialidades']);
+							foreach($disponibilidades as $key => $dispo){
+								
+								$availablespecialty = new AvailableSpecialty;
+								$availablespecialty->available_id = $available->id;
+								$availablespecialty->specialty_id = intval($dispo);
+								$availablespecialty->subentity_id = $vector['subentityselect'];
+								try {
+									$availablespecialty->save();					
+								}catch (\Illuminate\Database\QueryException $e) {
+									return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+								}
+
+							}
+						}
+						
+					}
+					
+
+				}
+							
 				return Redirect::to('especialista/listar')->withInput()->with('message', 'Especialista '.$specialist->name.' editado exitosamente');
 			
 			}else{
 
-				//especista nuevo
+				//ESPECIALISTA NUEVO
+
 				try {
 					$specialist->save();
 					//relacionamos las especialidades
@@ -276,19 +353,22 @@ class SpecialistController extends Controller {
 							$array[$id_bne][$vector[1]] = $value;
 						}
 					}					
-					foreach($array as $key => $vector){
-						$speciallistspecialty = new SpecialistSpecialty;
+					foreach($array as $key => $vector){						
+						if($vector['especialidad'] != "" ){
+							$speciallistspecialty = new SpecialistSpecialty;
 
-						$speciallistspecialty->rate_particular= $vector['precioparticular'];
-						$speciallistspecialty->rate_suscriptor= $vector['preciosuscriptor'];
-						$speciallistspecialty->tiempo= $vector['duracion'];
-						$speciallistspecialty->specialist_id = $specialist->id;//especialista
-						$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
-						try {
-							$speciallistspecialty->save();					
-						}catch (\Illuminate\Database\QueryException $e) {										
-							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							$speciallistspecialty->rate_particular= $vector['precioparticular'];
+							$speciallistspecialty->rate_suscriptor= $vector['preciosuscriptor'];
+							$speciallistspecialty->tiempo= $vector['duracion'];
+							$speciallistspecialty->specialist_id = $specialist->id;//especialista
+							$speciallistspecialty->specialty_id = $vector['especialidad'];//especialidad
+							try {
+								$speciallistspecialty->save();					
+							}catch (\Illuminate\Database\QueryException $e) {										
+								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+							}
 						}
+						
 					}
 
 					//vector de disponibilidades
@@ -303,33 +383,35 @@ class SpecialistController extends Controller {
 					}					
 					
 					foreach($array as $key => $vector){
-						$available = new Available;
-						$available->day = $vector['dia'];
-						$available->hour_start = $vector['horainicio'];
-						$available->hour_end = $vector['horafin'];
-						$available->subentity_id = $vector['subentityselect'];
-						$available->specialist_id = $specialist->id;
-						try {
-							$available->save();					
-						}catch (\Illuminate\Database\QueryException $e) {										
-							return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
-						}
-
-						//agregamos las especialidades a la disponibilidad
-						$disponibilidades=explode(',',$vector['especialidades']);
-						foreach($disponibilidades as $key => $dispo){
-							
-							$availablespecialty = new AvailableSpecialty;
-							$availablespecialty->available_id = $available->id;
-							$availablespecialty->specialty_id = intval($dispo);
-							$availablespecialty->subentity_id = $vector['subentityselect'];
+						if($vector['dia'] != "" ){
+							$available = new Available;
+							$available->day = $vector['dia'];
+							$available->hour_start = $vector['horainicio'];
+							$available->hour_end = $vector['horafin'];
+							$available->subentity_id = $vector['subentityselect'];
+							$available->specialist_id = $specialist->id;
 							try {
-								$availablespecialty->save();					
-							}catch (\Illuminate\Database\QueryException $e) {
+								$available->save();					
+							}catch (\Illuminate\Database\QueryException $e) {										
 								return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
 							}
 
-						}
+							//agregamos las especialidades a la disponibilidad
+							$disponibilidades=explode(',',$vector['especialidades']);
+							foreach($disponibilidades as $key => $dispo){
+								
+								$availablespecialty = new AvailableSpecialty;
+								$availablespecialty->available_id = $available->id;
+								$availablespecialty->specialty_id = intval($dispo);
+								$availablespecialty->subentity_id = $vector['subentityselect'];
+								try {
+									$availablespecialty->save();					
+								}catch (\Illuminate\Database\QueryException $e) {
+									return Redirect::to('especialista/listar')->with('error', $e->getMessage())->withInput();
+								}
+
+							}
+						}					
 						
 					}					
 					
@@ -381,6 +463,7 @@ class SpecialistController extends Controller {
 		$moduledata['clu_available']=$clu_available;
 		
 		//disponibilidades por sucursales y especialidad
+		$moduledata['dispo_espec']= array();		
 		$clu_available_x_specialty =
 		AvailableSpecialty::
 		where(function($q) use ($clu_available){
@@ -392,18 +475,19 @@ class SpecialistController extends Controller {
 		->toArray();
 		$moduledata['clu_available_x_specialty']=$clu_available_x_specialty;
 
-
 		//separamos el array
 		$dispo_espec = array();
 		foreach ($clu_available as $value) {
 			$dispo_espec[$value['id']]=array();
 		}
-		foreach ($clu_available_x_specialty as $value) {
-			$dispo_espec[$value['available_id']][count($dispo_espec[$value['available_id']])]=$value['specialty_id'];
+		if(count($dispo_espec)){
+			foreach ($clu_available_x_specialty as $value) {
+				$dispo_espec[$value['available_id']][count($dispo_espec[$value['available_id']])]=$value['specialty_id'];
+			}
+			$moduledata['dispo_espec']=$dispo_espec;
 		}
 
-		$moduledata['dispo_espec']=$dispo_espec;		
-
+				
 
 		//entidades
 		$entity = \DB::table('clu_entity')->get();		

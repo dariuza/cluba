@@ -403,7 +403,20 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'module_id'=>12,
 			'option_id'=>3
 			)
-		);		
+		);	
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>1,
+			'module_id'=>12,
+			'option_id'=>4
+			)
+		);	
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>1,
+			'module_id'=>12,
+			'option_id'=>6
+			)
+		);
+		
 		\DB::table('seg_permit')->insert(array(
 			'rol_id'=>1,
 			'module_id'=>13,
@@ -428,30 +441,7 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'option_id'=>25
 			)
 		);
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>2,
-			'module_id'=>13,
-			'option_id'=>22
-			)
-		);
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>2,
-			'module_id'=>13,
-			'option_id'=>23
-			)
-		);
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>2,
-			'module_id'=>13,
-			'option_id'=>24
-			)
-		);
-		\DB::table('seg_permit')->insert(array(
-			'rol_id'=>2,
-			'module_id'=>13,
-			'option_id'=>25
-			)
-		);
+		
 		\DB::table('seg_permit')->insert(array(
 			'rol_id'=>1,
 			'module_id'=>14,
@@ -686,6 +676,42 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'module_id'=>12,
 			'option_id'=>3
 			)
+		);	
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>12,
+			'option_id'=>4
+			)
+		);	
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>12,
+			'option_id'=>6
+			)
+		);		
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>13,
+			'option_id'=>22
+			)
+		);
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>13,
+			'option_id'=>23
+			)
+		);
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>13,
+			'option_id'=>24
+			)
+		);
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>13,
+			'option_id'=>25
+			)
 		);
 		
 		\DB::table('seg_permit')->insert(array(
@@ -712,6 +738,9 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'option_id'=>3
 			)
 		);
+
+		
+
 		\DB::table('seg_permit')->insert(array(
 			'rol_id'=>3,
 			'module_id'=>7,

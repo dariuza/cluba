@@ -4,6 +4,13 @@
 {{ Html::style('css/lib/bootstrap-timepicker.min.css')}}
 {{ Html::style('css/lib/chosen.css')}}
 
+<style type="text/css">
+	.chosen-container .chosen-container-multi{
+		border: 1px solid #ccc !important;
+		border-radius: 4px !important;
+	}
+</style>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
@@ -51,7 +58,7 @@
 									<div class="form-group">						
 										<div class="col-md-12">
 											{!! Form::label('especialidad', 'Especialidad', array('class' => 'col-md-4 control-label')) !!}
-											{!! Form::select('entidad',Session::get('modulo.entidades'),old('emtidad'), array('class' => 'form-control','placeholder'=>'Ingresa la entidad')) !!}
+											{!! Form::select('entidad',Session::get('modulo.entidades'),old('entidad'), array('class' => 'form-control','onchange'=>'clu_especialista.changeSelectEntidad(this)','placeholder'=>'Ingresa la entidad')) !!}
 										</div>
 									</div>
 									
@@ -159,7 +166,31 @@
 
 											</div>
 											@php ($i++)	
-										@endforeach
+										@endforeach									
+									@endif
+									@if($i == 1)
+										<div class="form-group">										
+											<div class="col-md-3">
+												{!! Form::label('espe_especialidad_1', 'Especialidad', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::select('espe_especialidad_1',Session::get('modulo.especialidades'),old('espe_especialidad_1'), array('class' => 'form-control','placeholder'=>'Ingresa La Especialidad')) !!}
+											</div>
+											<div class="col-md-3">
+												{!! Form::label('espe_precioparticular_1', 'Precio Particular', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('espe_precioparticular_1', old('espe_precioparticular_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+											</div>	
+
+											<div class="col-md-3">
+												{!! Form::label('espe_preciosuscriptor_1', 'Precio Suscriptor', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::text('espe_preciosuscriptor_1', old('espe_preciosuscriptor_1'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa Precio'))!!}
+											</div>
+											<div class="col-md-3">
+												{!! Form::label('espe_duracion_1', 'Tiempo Duraciòn', array('class' => 'col-md-12 control-label')) !!}
+												<div class="input-group bootstrap-timepicker timepicker">									
+													{!! Form::text('espe_duracion_1', old('espe_duracion_1'), array('class' => 'form-control input-small','placeholder'=>'Duraciòn HH:mm'))!!}
+													<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+												</div>
+											</div>
+										</div>
 									@endif
 								</div>
 								<div class="col-md-12"><hr size = "1"></hr></div>
@@ -179,7 +210,7 @@
 										@foreach (Session::get('modulo.clu_available') as $disponibilidad)
 											<div class="form-group">
 												<div class="col-md-12">
-												{!! Form::hidden('dispo_id_'.$i,$disponibilidad['id']) !!}
+												{!! Form::hidden('dispo_idavailable_'.$i,$disponibilidad['id']) !!}
 												<div class="col-md-2">
 													{!! Form::label('dispo_dia_'.$i, 'Día', array('class' => 'col-md-12 control-label')) !!}
 													{!! Form::select('dispo_dia_'.$i,array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIERCOLES' => 'MIERCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SABADO' => 'SABADO', 'DOMINGO' => 'DOMINGO'),$disponibilidad['day'], array('class' => 'form-control','placeholder'=>'Elije Día')) !!}	
@@ -212,8 +243,41 @@
 											</div>
 
 										@php ($i++)	
-										@endforeach
-									@endif			
+										@endforeach								
+									@endif
+									@if($i == 1)
+										<div class="form-group col-md-12">
+											<div class="col-md-2">											
+												{!! Form::label('dispo_dia_1', 'Día', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::select('dispo_dia_1',array('LUNES' => 'LUNES', 'MARTES' => 'MARTES', 'MIERCOLES' => 'MIERCOLES', 'JUEVES' => 'JUEVES', 'VIERNES' => 'VIERNES', 'SABADO' => 'SABADO', 'DOMINGO' => 'DOMINGO'),old('dispo_dia_1'), array('class' => 'form-control','placeholder'=>'Elije Día')) !!}												
+											</div>
+											
+											<div class="col-md-2">
+												{!! Form::label('dispo_horainicio_1', 'Hora Inicio', array('class' => 'col-md-12 control-label')) !!}
+												<div class="input-group bootstrap-timepicker timepicker">									
+													{!! Form::text('dispo_horainicio_1', old('dispo_horainicio_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Inicio HH:mm'))!!}
+													<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+												</div>
+											</div>
+											
+											<div class="col-md-2">
+												{!! Form::label('dispo_horafin_1', 'Hora Fin', array('class' => 'col-md-12 control-label')) !!}
+												<div class="input-group bootstrap-timepicker timepicker">										
+													{!! Form::text('dispo_horafin_1', old('dispo_horafin_1'), array('class' => 'form-control input-small','placeholder'=>'Hora Fin HH:mm'))!!}
+													<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+												</div>
+											</div>
+											<div class="epecialist col-md-3">
+												{!! Form::label('dispo_especialidadesselect_1', 'Especialidades', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::select('dispo_especialidadesselect_1',Session::get('modulo.especialidades'),old('dispo_especialidadesselect_1'), array('class' => 'form-control chosen-select','multiple' ,'data-placeholder'=>'Selecciona las especialidades','tabindex'=>'4', 'style'=>'width:350px;')) !!}
+												{!! Form::hidden('dispo_especialidades_1',old('dispo_especialidades_1'),array('id'=>'dispo_especialidades_1')) !!}
+											</div>
+											<div class="epecialist col-md-3">
+												{!! Form::label('dispo_subentityselect_1', 'Sucursales', array('class' => 'col-md-12 control-label')) !!}
+												{!! Form::select('dispo_subentityselect_1',array(),old('dispo_subentityselect_1'), array('class' => 'form-control select-subentity','placeholder'=>'Ingresa la sucursal')) !!}
+											</div>									
+										</div>										
+									@endif		
 								</div>
 								<div class="col-md-12"><hr size = "1"></hr></div>	
 								<div class="col-md-1 col-md-offset-11" data-toggle="tooltip" title="" data-original-title="Agregar Disponibilidad">
@@ -223,14 +287,11 @@
             					</div>
 							</div>
 						</div>
-					</div>
-
-
-												
+					</div>											
 					
 					<!-- Aprovechar el formulario para editar -->
 					{!! Form::hidden('edit', old('edit')) !!}
-					{!! Form::hidden('specialist_id', old('specialist_id')) !!}
+					{!! Form::hidden('specialist_id', old('specialist_id')) !!}					
 					</div>
 					
 					<div class="form-group">
@@ -247,7 +308,12 @@
 			</div>		
 		</div>
 	</div>	
-</div>		
+</div>
+
+{!! Form::open(array('id'=>'form_select_specialista','url' => 'especialista/selectentity')) !!}
+{!! Form::close() !!} 
+
+
 @endsection
 
 @section('script')
@@ -270,6 +336,13 @@
 	<script type="text/javascript">  
 		$('.chosen-select').chosen();
 		$('.chosen-container').width('100%');
+
+		$('.input-small').timepicker({showMeridian:false});
+
+		$("#dispo_especialidadesselect_1").chosen().change(function(event) {
+			$('#dispo_especialidades_1').val($("#dispo_especialidadesselect_1").chosen().val());		    
+		});		
+		
 	</script>
 
 	

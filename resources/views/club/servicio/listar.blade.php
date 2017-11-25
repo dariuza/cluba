@@ -1,8 +1,9 @@
 @extends('app')
 
 @section('content')
-	{{ Html::style('css/lib/fullcalendar.min.css')}}		
-	<link rel="stylesheet" media="print" href="{{ url('css/lib/fullcalendar.print.css') }}">
+	{{ Html::style('css/lib/bootstrap-timepicker.min.css')}}
+	{{ Html::style('css/lib/chosen.css')}}
+	{{ Html::style('css/lib/daterangepicker.css')}}
 
 	<style>
 		.right_col{
@@ -35,8 +36,17 @@
     		background-color: #f2dede;
     		border-color: #ebccd1;
 		}
+		.chosen-container .chosen-container-multi{
+			border: 1px solid #ccc !important;
+			border-radius: 4px !important;
+		}
+		.fila{
+			margin-top: 10px;
+		}
 		
 	</style>
+	
+
 	<div class="col-md-12 col-md-offset-0 container-fluid" >
 		<div class="name_user">
 			<div>			
@@ -50,19 +60,19 @@
 	            		@if($opc['vista'] == 'listar')	            		
 	            			@if($opc['accion'] == 'actualizar' OR $opc['accion'] == 'borrar')
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
-		            				<a href="javascript:clu_entidad.opt_edt()" class="site_title site_title2" style = "text-decoration: none; ">
+		            				<a href="javascript:clu_servicio.opt_edt()" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
-		            			</div>		
+		            			</div>
 		            		@elseif($opc['accion'] == 'crear')	            			
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
-		            				<a href="javascript:clu_entidad.opt_agregar()" class="site_title site_title2" style = "text-decoration: none; ">
+		            				<a href="javascript:clu_servicio.opt_agregar()" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
-		            			</div>		            				           			
+		            			</div>	            		            				           			
 	            			@elseif($opc['accion'] == 'mirar')	            			
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
-		            				<a href="javascript:clu_entidad.opt_ver()" class="site_title site_title2" style = "text-decoration: none; ">
+		            				<a href="javascript:clu_servicio.opt_ver()" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
 		            			</div>			
@@ -133,100 +143,121 @@
 	    </div>
 	
 		<div class="col-md-12 col-md-offset-0" style="margin-top: 2%;">
-			<div id="calendar" class="fc fc-unthemed fc-ltr">
-			</div>
-		</div>  
-	    
+			
+
+		</div> 
+
+		<!-- Form en blanco para capturar la url editar y eliminar-->
+	    {!! Form::open(array('id'=>'form_ver','url' => 'servicio/ver')) !!}
+	    {!! Form::close() !!}
+	    {!! Form::open(array('id'=>'form_nuevo','url' => 'servicio/nuevo')) !!}
+	    {!! Form::close() !!}
+	    {!! Form::open(array('id'=>'form_consultar_entidades','url' => 'servicio/consultarentidad')) !!}
+	    {!! Form::close() !!}
 
 	</div>
 @endsection
 
-@section('modal')	
+@section('modal')
+
+	<div class="modal fade" id="servicio_ver_modal" role="dialog" data-backdrop="false">
+	    <div class="modal-dialog modal-lg">	    
+	    </div>
+    </div>
+
+    <div class="modal fade" id="servicio_nuevo_modal" role="dialog" data-backdrop="false">
+	    <div class="modal-dialog modal-md">
+	    	<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" id="form_entidad_title" >Consultar Nueva Cita</h4>
+				</div>
+				<div class = "alerts-module"></div>
+				{!! Form::open(array('url' => 'servicio/consultservicio', 'id'=>'form_nuevo_servicio','onsubmit'=>'javascript:return clu_servicio.validateNuevoServicio()')) !!}	
+				<div class="modal-body">
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0">
+							<div class="form-group">
+								<div class="col-md-12">
+									{!! Form::label('especialidad', 'Especialidad', array('class' => 'col-md-4 control-label')) !!}
+									{!! Form::select('especialidad',Session::get('modulo.especialidades'),old('especialidad'), array('class' => 'form-control chosen-select','id'=>'select_especialidad','placeholder'=>'Ingresa la especialidad')) !!}
+								</div>
+
+								<div class="col-md-12 fila">
+									{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-4 control-label')) !!}
+									{!! Form::select('municipio',Session::get('modulo.municipios'),old('municipio'), array('class' => 'form-control chosen-select select_municipio','id'=>'select_municipio','placeholder'=>'Ingresa el municipio')) !!}
+								</div>
+
+								<div class="col-md-12 fila">
+									{!! Form::label('entidad', 'Entidad', array('class' => 'col-md-4 control-label')) !!}
+									{!! Form::select('entidad',array(),old('entidad'), array('class' => 'form-control chosen-select select_entidad','id'=>'select_entidad','placeholder'=>'Ingresa la entidad')) !!}
+								</div>
+
+								<div class="col-md-12 fila">
+									{!! Form::label('fecha', 'Fecha inicio', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('fechainicio',old('fechainicio'), array('class' => 'form-control','id'=>'fechainicio','placeholder'=>'aaaa-mm-dd')) !!}
+								</div>
+
+								<div class="col-md-12 fila">
+									{!! Form::label('fechafin', 'Fecha fin', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('fechafin',old('fechafin'), array('class' => 'form-control','id'=>'fechafin','placeholder'=>'aaaa-mm-dd')) !!}
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				{!! Form::close() !!}
+				<div class="modal-footer">
+					<button type="submit" form = "form_nuevo_servicio" class="btn btn-default" id="form_entidad_button" >Consultar Disponibilidad</button>	         
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
+		        </div>
+
+			</div> 
+	    </div>
+    </div>
 	
 @endsection
 
 @section('script')
-	{{ Html::script('js/lib/moment.js')}}
-	{{ Html::script('js/lib/fullcalendar.min.js')}}
-	{{ Html::script('js/lib/es.js')}}
-	<script type="text/javascript">
-		var date = new Date();
-		var d = date.getDate();
-		var m = date.getMonth();
-		var y = date.getFullYear();
-	 	var calendar = $('#calendar').fullCalendar({
-	 		lang: 'es',        
-	        header:
-			{
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay'
-			},
-			defaultView: 'month',
-			selectable: true,
-			selectHelper: true,            
-				
-			/*
-				when user select timeslot this option code will execute.
-				It has three arguments. Start,end and allDay.
-				Start means starting time of event.
-				End means ending time of event.
-				allDay means if events is for entire day or not.
-			*/	
-		
-            events: [
-				{
-					title: 'ortodocia',
-					start: new Date(y, m, 1)
-				},
-				{
-					title: 'Endodoncia',
-					start: new Date(y, m, d-5),
-					end: new Date(y, m, d-2)
-				},
-				{
-					id: 999,
-					title: 'Clase aerobicos',
-					start: new Date(y, m, d-3, 16, 0),
-					allDay: false
-				},
-				{
-					id: 999,
-					title: 'Clase deportiva',
-					start: new Date(y, m, d+4, 16, 0),
-					allDay: false
-				},
-				{
-					title: 'Paseo',
-					start: new Date(y, m, d, 10, 30),
-					allDay: false
-				},
-				{
-					title: 'Almuerzo',
-					start: new Date(y, m, d, 12, 0),
-					end: new Date(y, m, d, 14, 0),
-					allDay: false
-				},
-				{
-					title: 'Otro evento',
-					start: new Date(y, m, d+1, 19, 0),
-					end: new Date(y, m, d+1, 22, 30),
-					allDay: false
-				},
-				{
-					title: 'Otro evento2',
-					start: new Date(y, m, d+1, 19, 0),
-					end: new Date(y, m, d+1, 22, 30),
-					allDay: false
-				},
-				{
-					title: 'A una url',
-					start: new Date(y, m, 28),
-					end: new Date(y, m, 29),
-					url: 'http://google.com/'
-				}
-			]
-	        
-	    })
+
+	{{ Html::script('js/lib/datetimepiker.js') }}
+	{{ Html::script('js/lib/daterangepicker.js') }}		
+	{{ Html::script('js/lib/bootstrap-timepicker.min.js') }}
+	{{ Html::script('js/lib/chosen.jquery.min.js')}}
+	{{ Html::script('js/lib/moment.js') }}
+	
+	<script type="text/javascript">  
+		$('.chosen-select').chosen();
+		$('.chosen-container').width('100%');
+
+		javascript:seg_user.iniciarDatepikerInicio('fechainicio');	
+		javascript:seg_user.iniciarDatepikerFin('fechafin');
+
+		$("#select_especialidad").chosen().change(function(event) {
+			//consultamos las cusursales correspondientes al municipio
+			if($("#select_especialidad").val()){
+				var datos = new Array();
+  				datos['idmunicipio'] = $("#select_municipio").val();
+  				datos['idespecialidad'] = $("#select_especialidad").val();  		
+  				seg_ajaxobject.peticionajax($('#form_consultar_entidades').attr('action'),datos,"clu_servicio.verRespuestaEntidades");
+			}else{
+				alert('seleccionar una especialidad')
+			}			
+		});		
+
+		$("#select_municipio").chosen().change(function(event) {
+			//consultamos las cusursales correspondientes al municipio
+			if($("#select_municipio").val()){
+				var datos = new Array();
+  				datos['idmunicipio'] = $("#select_municipio").val();
+  				datos['idespecialidad'] = $("#select_especialidad").val();  		
+  				seg_ajaxobject.peticionajax($('#form_consultar_entidades').attr('action'),datos,"clu_servicio.verRespuestaEntidades");
+			}else{
+				alert('seleccionar un municipio')
+			}			
+		});	
+
 	</script>
+	
 @endsection

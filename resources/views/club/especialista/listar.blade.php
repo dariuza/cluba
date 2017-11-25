@@ -359,7 +359,7 @@
 				</div>
 				{!! Form::close() !!}
 				<div class="modal-footer">
-					<button type="submit" form = "form_nuevo_especialista" class="btn btn-default " > @if(Session::has('_old_input.edit')) Editar @else Crear @endif Especialista</button>	         
+					<button type="submit" form = "form_nuevo_especialista" class="btn btn-default " >Crear Especialista</button>	         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
 			</div>
