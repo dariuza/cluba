@@ -29,7 +29,13 @@ class DatabaseSeeder extends Seeder {
 		$this->call('SubEntityTableSeeder');
 		$this->call('SpecialtyTableSeeder');		
 		$this->call('DepartmentTableSeeder');
-		$this->call('CityTableSeeder');		
+		$this->call('CityTableSeeder');
+		$this->call('SpecialistTableSeeder');
+		$this->call('SpecialistXSpecialtyTableSeeder');		
+		$this->call('AvailableTableSeeder');			
+		$this->call('AvailableXSpecialtyTableSeeder');	
+		$this->call('BeneficiaryTableSeeder');	
+		$this->call('ServiceTableSeeder');			
 
 	}
 

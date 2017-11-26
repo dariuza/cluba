@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use App\Core\Club\Service;
+use App\Core\Club\Specialist;
+use App\Core\Club\Specialty;
 
 class ServiceController extends Controller {
 	
@@ -84,7 +87,7 @@ class ServiceController extends Controller {
 		}
 		//para llevar temporalmente las variables a la vista.
 		Session::flash('modulo', $moduledata);
-
+		
 		//verificamos los datos, (int)especialidad, (string)municipio, (int)entidad, fechainicio, fechafin
 		$messages = [
 			'required' => 'El campo :attribute es requerido.',
@@ -116,12 +119,75 @@ class ServiceController extends Controller {
 
 			$diff = $fechainicio->diff($fechafin, true)->days;
 			//puede ser igual
-			if($fechainicio > $fechafin)$diff = $diff*-1;			
 
-			if(!$diff){
+			
+			if($fechainicio > $fechafin) $diff = $diff*-1;			
+			if($diff == 0) $diff = $diff+1;
+
+			if($diff){
 				//las fechas estan bien, se puede priceder
-				//consultamos las citas progradas para dichas fechas
+				//consultamos los especialistas disponibles en las fechas y con las especialidades y el municio dado.
+				if($request->input('entidad_check') == "1"){
+					$especialistas = \DB::table('clu_specialist')
+					->select('clu_specialist.*','clu_entity.business_name','clu_entity.nit','clu_subentity.sucursal_name','clu_subentity.adress','clu_subentity.phone1_contact','clu_subentity.phone2_contact','clu_subentity.email_contact','clu_subentity.city','clu_specialty.name as especialidad','clu_specialty.id as specialty_id','clu_specialist_x_specialty.rate_particular','clu_specialist_x_specialty.rate_suscriptor','clu_specialist_x_specialty.tiempo','clu_available.day','clu_available.hour_start','clu_available.hour_end')	
 
+					->join('clu_specialist_x_specialty', 'clu_specialist.id', '=', 'clu_specialist_x_specialty.specialist_id')
+					->join('clu_available', 'clu_specialist.id', '=', 'clu_available.specialist_id')
+					->join('clu_available_x_specialty', 'clu_available.id', '=', 'clu_available_x_specialty.available_id')
+
+					->join('clu_subentity', 'clu_available.subentity_id', '=', 'clu_subentity.id')
+					->join('clu_entity', 'clu_subentity.entity_id', '=', 'clu_entity.id')
+					->join('clu_specialty', 'clu_available_x_specialty.specialty_id', '=', 'clu_specialty.id')
+
+					->where('clu_specialist_x_specialty.specialty_id',$request->input('especialidad'))
+					->where('clu_available_x_specialty.specialty_id',$request->input('especialidad'))
+					->where('clu_available_x_specialty.subentity_id',$request->input('entidad'))
+					->get();
+				}else{
+					$especialistas = \DB::table('clu_specialist')
+					->select('clu_specialist.*','clu_entity.business_name','clu_entity.nit','clu_subentity.sucursal_name','clu_subentity.adress','clu_subentity.phone1_contact','clu_subentity.phone2_contact','clu_subentity.email_contact','clu_subentity.city','clu_specialty.name as especialidad','clu_specialty.id as specialty_id','clu_specialist_x_specialty.rate_particular','clu_specialist_x_specialty.rate_suscriptor','clu_specialist_x_specialty.tiempo','clu_available.day','clu_available.hour_start','clu_available.hour_end')	
+
+					->join('clu_specialist_x_specialty', 'clu_specialist.id', '=', 'clu_specialist_x_specialty.specialist_id')
+					->join('clu_available', 'clu_specialist.id', '=', 'clu_available.specialist_id')
+					->join('clu_available_x_specialty', 'clu_available.id', '=', 'clu_available_x_specialty.available_id')
+
+					->join('clu_subentity', 'clu_available.subentity_id', '=', 'clu_subentity.id')
+					->join('clu_entity', 'clu_subentity.entity_id', '=', 'clu_entity.id')
+					->join('clu_specialty', 'clu_available_x_specialty.specialty_id', '=', 'clu_specialty.id')
+
+					->where('clu_specialist_x_specialty.specialty_id',$request->input('especialidad'))
+					->where('clu_available_x_specialty.specialty_id',$request->input('especialidad'))
+					//->where('clu_available_x_specialty.subentity_id',$request->input('entidad'))
+					->get();
+				}			
+				
+				//creamos los campos para las citas que llamaremos cronograma
+				//corriendo todos los especialistas y evaluando su disponibilidad en dias y horas
+				foreach($especialistas as $especialista){
+
+					//por cada especialista los datos importantes
+					/*
+					+"tiempo": "1:30"
+				    +"day": "MIERCOLES"
+				    +"hour_start": "13:15"
+				    +"hour_end": "16:15"
+				    */
+
+				    //creamos los dias de cronograma
+				    for($i=0;$i<$diff;$i++){
+				    	//preguntamos por el día
+
+				    }
+
+
+
+				}
+				
+				//consultamos las sitas habiles para las fechas
+				//filtramos el cronograma por las citas
+
+
+				//rotornamos el cronograma filtrado			
 
 
 

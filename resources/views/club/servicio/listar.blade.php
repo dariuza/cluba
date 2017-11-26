@@ -203,6 +203,11 @@
 									{!! Form::text('fechafin',old('fechafin'), array('class' => 'form-control','id'=>'fechafin','placeholder'=>'aaaa-mm-dd')) !!}
 								</div>
 
+								<div class="col-md-12 fila">
+									<input name="entidad_check" type="checkbox" value="1" id="entidad_check">
+									<label for="entidad_check" class="control-label">Usar Entidad</label>
+								</div>
+
 							</div>
 						</div>
 					</div>

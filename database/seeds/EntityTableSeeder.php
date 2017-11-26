@@ -27,6 +27,17 @@ class EntityTableSeeder extends Illuminate\Database\Seeder {
 			'description'=>'Organización dedicada al cuidado corporal',				
 			)
 		);
+		\DB::table('clu_entity')->insert(array(
+			'business_name'=>'carieton',
+			'nit'=>'34235609-2',
+			'legal_representative'=>'Andres Calle',
+			'contact_representative'=>'David Sepulveda',
+			'phone1_contact'=>'31133009897',
+			'phone2_contact'=>'4200010',
+			'email_contact'=>'sepulvedadavid@odontocenter.com',
+			'description'=>'Organización dedicada a la labor dental',				
+			)
+		);
 						
 	}
 }
