@@ -7,8 +7,8 @@ class AvailableTableSeeder extends Illuminate\Database\Seeder {
 	public function run(){
 		\DB::table('clu_available')->insert(array(
 			'day'=>'MIERCOLES',
-			'hour_start'=>'13:15',			
-			'hour_end'=>'16:15',			
+			'hour_start'=>'13:00',			
+			'hour_end'=>'17:30',			
 			'observations'=>'',			
 			'subentity_id'=>2,			
 			'specialist_id'=>1,			

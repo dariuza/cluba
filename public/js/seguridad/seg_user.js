@@ -65,8 +65,8 @@ seg_user.prototype.iniciarDatepikerInicio = function(obj) {
         language: "es",
         autoclose: true,
         defaultDate: new Date(),   
-        startDate: '-0d',
-        endDate: '+60d',
+        startDate: '-1d',
+        endDate: '+40d',
 
     });    
 };

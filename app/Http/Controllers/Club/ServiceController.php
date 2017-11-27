@@ -2,6 +2,7 @@
 
 use Validator;
 use DateTime;
+use DateInterval;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -161,7 +162,10 @@ class ServiceController extends Controller {
 					->get();
 				}			
 				
-				//creamos los campos para las citas que llamaremos cronograma
+				//array de crono cronogrma
+				$crono = array();
+
+				//creamos los campos para las crono que llamaremos cronograma
 				//corriendo todos los especialistas y evaluando su disponibilidad en dias y horas
 				foreach($especialistas as $especialista){
 
@@ -172,23 +176,128 @@ class ServiceController extends Controller {
 				    +"hour_start": "13:15"
 				    +"hour_end": "16:15"
 				    */
-
+				    $arrayMapaDias = array(
+				    	'LUNES'=>1,
+				    	'MARTES'=>2,
+				    	'MIERCOLES'=>3,
+				    	'JUEVES'=>4,
+				    	'VIERNES'=>5,
+				    	'SABADO'=>6,
+				    	'DOMINGO'=>7
+				    ); 
+				    
+				    $especialista->nrodia = $arrayMapaDias[$especialista->day];
+				    
+				    $datestart = date_create($fechainicio->format('Y-m-d')." ".$especialista->hour_start);
+				    $datestart2 = date_create($fechainicio->format('Y-m-d')." ".$especialista->hour_start);
+				    $dateend = date_create($fechainicio->format('Y-m-d')." ".$especialista->hour_end);
+				    $time = explode(':',$especialista->tiempo);
+				    
 				    //creamos los dias de cronograma
-				    for($i=0;$i<$diff;$i++){
-				    	//preguntamos por el día
+				    //Corremos los días
 
+				    for($i=0;$i<=$diff;$i++){
+				    	//1.verificamos que este día halla disponibilidad
+				    	$dia =  date('N', strtotime($datestart->format('Y-m-d')));
+
+				    	if(intval($dia) == $especialista->nrodia){
+				    		//si hay disponibilidad este dia
+
+				    		//corremos las horas				    		
+
+					    	$datestart2->add(new DateInterval('PT'.$time[0].'H'.$time[1].'M'));
+					    	while($datestart2<=$dateend){
+					    		
+					    		$crono[] = array(
+					    			$datestart->format('Y-m-d'),
+					    			$datestart->format('Y-m-d H:i'),
+					    			$especialista->day,
+
+					    			$especialista->name,
+					    			$especialista->phone1,
+					    			$especialista->phone2,
+					    			$especialista->email,
+					    			$especialista->name_assistant,
+					    			$especialista->phone1_assistant,
+					    			$especialista->phone2_assistant,
+					    			$especialista->email_assistant,
+
+					    			$especialista->business_name.' - '. $especialista->sucursal_name,
+					    			$especialista->nit,
+					    			$especialista->adress,
+					    			$especialista->phone1_contact,
+					    			$especialista->phone2_contact,
+					    			$especialista->email_contact,
+
+					    			$especialista->city,
+					    			$especialista->especialidad,
+					    			$especialista->rate_particular,
+					    			$especialista->rate_suscriptor,
+					    			$especialista->tiempo,
+
+					    			$especialista->id,//id especialista
+					    			$especialista->entity_id,
+					    			$especialista->specialty_id,
+					    			'libre'
+
+				    			);
+					    		
+					    		$datestart->add(new DateInterval('PT'.$time[0].'H'.$time[1].'M'));	
+					    		$datestart2->add(new DateInterval('PT'.$time[0].'H'.$time[1].'M'));
+					    	}
+					    	
+				    	}
+
+				    	$datestart = date_create($fechainicio->format('Y-m-d')." ".$especialista->hour_start);
+				    	$datestart2 = date_create($fechainicio->format('Y-m-d')." ".$especialista->hour_start);
+
+				    	$paramday = '+'.($i+1).' day';
+				    	
+				    	$datestart->modify($paramday);//avanza 1 dia
+				    	$datestart2->modify($paramday);//avanza 1 dia
+				    	$dateend->modify('+1 day');//avanza 1 dia
+				    				    	
 				    }
+				}
+
+				//consultamos las sitas habiles para las fechas y las entidades
+				if($request->input('entidad_check') == "1"){
+					
+					$citas  = \DB::table('clu_service')
+					->whereBetween('date_service', [$fechainicio->format('Y-m-d'),$fechafin->format('Y-m-d')])
+					->where('clu_service.subentity_id',$request->input('entidad'))
+					->get();
+
+				}else{
+					
+					$citas = \DB::table('clu_service')
+					->whereBetween('date_service', [$fechainicio->format('Y-m-d'),$fechafin->format('Y-m-d')])
+					//->where('clu_service.subentity_id',$request->input('entidad'))
+					->get();
+				}				
+				
+				//filtramos el cronograma por las crono
+				foreach($citas as $cita){
+					
+					$datecita = date_create($cita->date_service." ".$cita->hour_start);
+					
+					for($i=0;$i<count($crono);$i++){
+
+						$datecrt = date_create($crono[$i][1]);
+						
+						if($datecrt == $datecita && $crono[$i][22] == $cita->especialist_id){
+
+							$crono[$i][25] = 'ocupado';
 
 
+						}						
+
+					}
 
 				}
-				
-				//consultamos las sitas habiles para las fechas
-				//filtramos el cronograma por las citas
-
 
 				//rotornamos el cronograma filtrado			
-
+				dd($crono);
 
 
 			}else{				

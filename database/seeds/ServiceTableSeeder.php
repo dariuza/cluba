@@ -12,12 +12,13 @@ class ServiceTableSeeder extends Illuminate\Database\Seeder {
 			'names_user'=>'FABIOLO',
 			'surnames_user'=>'RUA',
 			'day'=>'VIERNES',
-			'date_service'=>'2017-11-26 15:00',			
-			'date_service_time'=>'2017-11-26 15:00',			
-			'hour_start'=>'15:00',			
+			'date_service'=>'2017-11-29 14:30',			
+			'date_service_time'=>'2017-11-29 14:30',			
+			'hour_start'=>'14:30',			
 			'duration'=>'1:30',			
 			'especialty_id'=>2,			
 			'especialist_id'=>1,
+			'subentity_id'=>2,
 			'suscription_id'=>1,
 			)
 		);						

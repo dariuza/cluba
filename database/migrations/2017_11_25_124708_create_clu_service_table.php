@@ -38,10 +38,12 @@ class CreateCluServiceTable extends Migration
             //realciones
             $table->integer('especialty_id')->unsigned();//especialidad
             $table->integer('especialist_id')->unsigned();//especialidad
+            $table->integer('subentity_id')->unsigned();//subentidad
             $table->integer('suscription_id')->unsigned();//suscripcion - titular - estado
 
             $table->foreign('especialty_id')->references('id')->on('clu_specialty')->onDelete('cascade');
             $table->foreign('especialist_id')->references('id')->on('clu_specialist')->onDelete('cascade');
+            $table->foreign('subentity_id')->references('id')->on('clu_subentity')->onDelete('cascade');
             $table->foreign('suscription_id')->references('id')->on('clu_suscription')->onDelete('cascade');
 
             $table->timestamps();
