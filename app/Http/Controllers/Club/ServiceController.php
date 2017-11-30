@@ -289,7 +289,6 @@ class ServiceController extends Controller {
 
 							$crono[$i][25] = 'ocupado';
 
-
 						}						
 
 					}
