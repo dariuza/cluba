@@ -33,6 +33,8 @@
 							</ul>
 					</div>                
 				@endif	
+
+				{{dd( Session::get('modulo') )}}
 						
 				{!! Form::open(array('url' => 'servicio/save')) !!}			
 					<div class="panel-body">

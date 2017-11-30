@@ -296,9 +296,8 @@ class ServiceController extends Controller {
 
 				}
 
-				//rotornamos el cronograma filtrado			
-				dd($crono);
-
+				//rotornamos el cronograma filtrado				
+				return Redirect::to('servicio/agregar')->with('modulo',[$request->input(),$fechainicio->format('Y-m-d'),$fechafin->format('Y-m-d'),$crono,$especialistas]);
 
 			}else{				
 				$message = 'No se puede consultar, la fecha inicio es mayor que la fecha fin';				
