@@ -57,5 +57,66 @@ clu_servicio.prototype.verRespuestaEntidades = function(result) {
 	
 };
 
+clu_servicio.prototype.opt_ver_disponibilidad = function() {
+
+	if(clu_servicio.table.rows('.selected').data().length){
+
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html('');
+
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Especialidad: '+clu_servicio.table.rows('.selected').data()[0][0]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Día de cita: '+clu_servicio.table.rows('.selected').data()[0][6]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Fecha y hora de cita: '+clu_servicio.table.rows('.selected').data()[0][7]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Estado: '+clu_servicio.table.rows('.selected').data()[0][8]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Especialista: '+clu_servicio.table.rows('.selected').data()[0][1]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 1 Especialista: '+clu_servicio.table.rows('.selected').data()[0][10]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 2 Especialista: '+clu_servicio.table.rows('.selected').data()[0][11]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Email Especialista: '+clu_servicio.table.rows('.selected').data()[0][15]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Municipio: '+clu_servicio.table.rows('.selected').data()[0][2]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Sucursal: '+clu_servicio.table.rows('.selected').data()[0][3]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Dirección Sucursal: '+clu_servicio.table.rows('.selected').data()[0][4]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Nombre asistente: '+clu_servicio.table.rows('.selected').data()[0][13]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 1 asistente: '+clu_servicio.table.rows('.selected').data()[0][14]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 2 asistente: '+clu_servicio.table.rows('.selected').data()[0][15]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Email asistente: '+clu_servicio.table.rows('.selected').data()[0][16]+'</div>');
+
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Nit entidad: '+clu_servicio.table.rows('.selected').data()[0][17]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 1 entidad: '+clu_servicio.table.rows('.selected').data()[0][18]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Tel 2 entidad: '+clu_servicio.table.rows('.selected').data()[0][19]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Email entidad: '+clu_servicio.table.rows('.selected').data()[0][20]+'</div>');
+
+		
+
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Precio suscriptor: '+clu_servicio.table.rows('.selected').data()[0][5]+'</div>');
+		$("#servicio_disponibilidad_modal .modal-body .row_content").html($("#servicio_disponibilidad_modal .modal-body .row_content").html()+'<div class="col-md-6" >Precio particular: '+clu_servicio.table.rows('.selected').data()[0][21]+'</div>');
+
+		$("#servicio_disponibilidad_modal").modal();
+
+		$("input[name='id_especialista']").val(clu_servicio.table.rows('.selected').data()[0][23]);
+		$("input[name='id_entidad']").val(clu_servicio.table.rows('.selected').data()[0][24]);
+		$("input[name='id_especialidad']").val(clu_servicio.table.rows('.selected').data()[0][25]);
+
+
+	}else{
+		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+	} 
+
+	
+};
+
+clu_servicio.prototype.opt_ver_usuario = function() {
+	if($("#cedula_usuario").val()  != "" ){
+		var datos = new Array();
+  		datos['id'] = $("#cedula_usuario").val(); 
+  		seg_ajaxobject.peticionajax($('#form_consult_user').attr('action'),datos,"clu_servicio.verRespuestaConsulta");
+	}else{
+		alert('Aùn no se ha diligenciado una cedula');
+	}
+};
+
+clu_servicio.prototype.verRespuestaConsulta = function(result) {
+	alert('OK');
+
+};
+
 
 var clu_servicio = new clu_servicio();

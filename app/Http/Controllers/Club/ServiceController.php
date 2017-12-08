@@ -238,7 +238,8 @@ class ServiceController extends Controller {
 					    			$especialista->id,//id especialista
 					    			$especialista->entity_id,
 					    			$especialista->specialty_id,
-					    			'libre'
+					    			'libre',
+					    			'#dee2d7'
 
 				    			);
 					    		
@@ -276,19 +277,33 @@ class ServiceController extends Controller {
 					->get();
 				}				
 				
-				//filtramos el cronograma por las crono
+				//filtramos el cronograma por las citas
 				foreach($citas as $cita){
 					
 					$datecita = date_create($cita->date_service." ".$cita->hour_start);
 					
 					for($i=0;$i<count($crono);$i++){
 
-						$datecrt = date_create($crono[$i][1]);
+						$datecrt = date_create($crono[$i][1]);//fecha de creación
 						
-						if($datecrt == $datecita && $crono[$i][22] == $cita->especialist_id){
+						//comparamos la fecha y el especialista
+						if($datecrt == $datecita && $crono[$i][22] == $cita->especialist_id){							
 
 							$crono[$i][25] = 'ocupado';
+							$crono[$i][26] = '#e2d7d7';							
 
+						}else{
+							//ELSE ALTAMENTE SENSIBLE PROBAR CON CUIDADO
+							//hay que revisar tambien en las otras especialidades del especiasta su disponibilidad OJO!!!
+							//encontrar una cita de algun otra especialidad del especialista que cunpla las condiciones
+							$datecita2 = date_create($cita->date_service." ".$cita->hour_start);
+							$datecita_time2 = explode(':',$cita->duration);
+							$datecita2->add(new DateInterval('PT'.$datecita_time2[0].'H'.$datecita_time2[1].'M'));
+							if($datecita2 > $datecrt && $datecita < $datecrt && $crono[$i][22] == $cita->especialist_id){
+								$crono[$i][25] = 'ocupado';
+								$crono[$i][26] = '#e2d7d7';
+							}
+							
 						}						
 
 					}
@@ -316,6 +331,26 @@ class ServiceController extends Controller {
 	}
 
 	public function getAgregar(){
+
+		//consultamos la especialidades
+		//Consultas primarias		
+		$especialties= \DB::table('clu_specialty')->get();
+		foreach ($especialties as $especialty){
+			$moduledata['especialidades'][$especialty->id] = $especialty->name;
+		}
+
+		$entidades = \DB::table('clu_subentity')
+		->select('clu_subentity.*','clu_entity.business_name')
+		->join('clu_entity', 'clu_subentity.entity_id', '=', 'clu_entity.id')
+		->join('clu_available_x_specialty', 'clu_subentity.id', '=', 'clu_available_x_specialty.subentity_id')		
+		->get();
+		
+		foreach ($entidades as $entidad){
+			$moduledata['entidades'][$entidad->id] = $entidad->sucursal_name.' - '.$entidad->business_name;
+		}
+
+		//para llevar temporalmente las variables a la vista.
+		Session::flash('moduloagregar', $moduledata);
 	
 		return view('club.servicio.agregar');
 	}
@@ -342,6 +377,17 @@ class ServiceController extends Controller {
 
 		return response()->json(['respuesta'=>true,'data'=>$array]);
 
-	}	
+	}
+
+	public function postConsultaruser(Request $request){
+		$array = array('inputs'=>$request->inputs());
+		//colsultamos primero en titulares
+
+		//si no hallamos tutular, buscamos en beneficiarios
+
+
+		return response()->json(['respuesta'=>true,'data'=>$array]);
+
+	}
 	
 }

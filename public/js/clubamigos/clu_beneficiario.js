@@ -16,11 +16,10 @@ clu_beneficiario.prototype.opt_select = function(controlador,metodo) {
 	}
 };
 
-clu_beneficiario.prototype.opt_ver = function() {
-	
+clu_beneficiario.prototype.opt_ver = function() {	
 	
 	if(clu_beneficiario.table.rows('.selected').data().length){		
-  	var datos = new Array();
+  		var datos = new Array();
   		datos['id'] = clu_beneficiario.table.rows('.selected').data()[0].id; 
   		clu_beneficiario.verRespuesta();
   		//seg_ajaxobject.peticionajax($('#form_abonar').attr('action'),datos,"clu_beneficiario.verRespuesta");
