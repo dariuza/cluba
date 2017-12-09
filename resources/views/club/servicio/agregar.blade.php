@@ -58,7 +58,7 @@
 						</div>                
 					@endif
 							
-					{!! Form::open(array('url' => 'servicio/save')) !!}			
+					{!! Form::open(array('url' => 'servicio/save', 'id'=>'form_nueva_cit<')) !!}			
 						<div class="panel-body">
 							<div class="form-group">										
 								<div class="col-md-5 fil-form">
@@ -98,6 +98,7 @@
 									{!! Form::label('cedula_usuario', 'Cedula de Usuario', array('class' => ' control-label')) !!}	
 									{!! Form::text('cedula_usuario', old('cedula_usuario'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula'))!!}									
 								</div>
+								<div class = "col-md-12 alerts-form"></div>		
 							</div>
 
 							{!! Form::hidden('id_especialista',null)!!}

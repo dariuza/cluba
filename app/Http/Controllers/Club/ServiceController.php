@@ -58,8 +58,9 @@ class ServiceController extends Controller {
 		}
 
 		//para llevar temporalmente las variables a la vista.
-		Session::flash('modulo', $moduledata);
+		Session::flash('modulo', $moduledata);	
 
+		
 		return view('club.servicio.listar');
 		
 	}
@@ -380,12 +381,27 @@ class ServiceController extends Controller {
 	}
 
 	public function postConsultaruser(Request $request){
-		$array = array('inputs'=>$request->inputs());
+
+		$array = array('inputs'=>$request->input['id']);
 		//colsultamos primero en titulares
+		$array = array();
+		$array['titular'] = \DB::table('seg_user_profile')
+		->select('seg_user_profile.*','clu_suscription.*')
+		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
+		->where('seg_user_profile.identificacion',$request->input('id'))
+		->get();
 
-		//si no hallamos tutular, buscamos en beneficiarios
-
-
+		if(empty($array['titular'])){
+			$array['beneficiario'] = \DB::table('clu_beneficiary')
+			->select('clu_beneficiary.*','clu_suscription.*','seg_user_profile.names as friendnames','seg_user_profile.identificacion as friendidentificacion')
+			->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
+			->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
+			->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')
+			->where('clu_beneficiary.identification',$request->input('id'))
+			->get();
+		}
+		
 		return response()->json(['respuesta'=>true,'data'=>$array]);
 
 	}

@@ -114,7 +114,29 @@ clu_servicio.prototype.opt_ver_usuario = function() {
 };
 
 clu_servicio.prototype.verRespuestaConsulta = function(result) {
-	alert('OK');
+
+	if(result.respuesta){
+		if(result.data.titular.length !=0  || result.data.beneficiario.length != 0){
+			$('.alerts-form').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>!Consulta Exitosa!</strong></br></div>');
+			$(".close_alert_message").on('click', function () { 
+    			$("#form_nueva_cit :input").removeClass("input_danger");        	
+    		});
+
+		}else{
+			$('.alerts-form').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>!Consulta Fallida!</strong></br> No se hallan registros para la identificación consultada.</div>');
+			$(".close_alert_message").on('click', function () { 
+    			$("#form_nueva_cit :input").removeClass("input_danger");        	
+    		});
+
+		}
+
+	}else{
+		$('.alerts-form').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>!Consulta Fallida!</strong></br> Hay problemas con el codigo, consulta el administrador.</div>');
+		$(".close_alert_message").on('click', function () { 
+    		$("#form_nueva_cit :input").removeClass("input_danger");        	
+    	});		
+	}
+	
 
 };
 
