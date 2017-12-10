@@ -122,12 +122,40 @@ clu_servicio.prototype.verRespuestaConsulta = function(result) {
     			$("#form_nueva_cit :input").removeClass("input_danger");        	
     		});
 
+    		if(result.data.beneficiario == undefined){
+    			//es un titular
+
+    			$('#nombreusuariospan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames)
+    			$('#nombreusuario').val(result.data.titular[0].names+' '+result.data.titular[0].surnames)
+    			
+    			$('#identificacionspan').html(result.data.titular[0].identificacion)
+    			$('#nombreusuario').val(result.data.titular[0].identificacion)
+
+    			$('#numerocontactospan').html(result.data.titular[0].movil_number)
+    			$('#numerocontacto').val(result.data.titular[0].movil_number)
+
+    			$('#suscripcionspan').html(result.data.titular[0].code)
+    			$('#suscripcion').val(result.data.titular[0].code)
+
+    			$('#estadospan').html(result.data.titular[0].estado)
+    			$('#estado').val(result.data.titular[0].estado)
+
+    			$('#titularspan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames)
+    			$('#titular').val(result.data.titular[0].names+' '+result.data.titular[0].surnames)
+
+    		}else{
+    			//es un beneficiario
+
+    			$('#nombreusuariospan').html(''+result.data.beneficiario[0].names+' '+result.data.beneficiario[0].surnames)
+    		}
+
+
+
 		}else{
 			$('.alerts-form').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>!Consulta Fallida!</strong></br> No se hallan registros para la identificación consultada.</div>');
 			$(".close_alert_message").on('click', function () { 
     			$("#form_nueva_cit :input").removeClass("input_danger");        	
     		});
-
 		}
 
 	}else{

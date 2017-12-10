@@ -23,8 +23,8 @@
 		    border: 1px solid #73879C !important;	   
 		}
 
-
 	</style>
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12 col-md-offset-0">
@@ -91,12 +91,44 @@
 									{!! Form::hidden('fechafin', Session::get('modulo')[2]) !!}
 								</div>								
 
+								<div class="col-md-4 fil-form">
+									{!! Form::label('nombreusuario', 'Nombre Usuario', array('class' => ' control-label')) !!}	
+									<span id ="nombreusuariospan"></span>
+									{!! Form::hidden('nombreusuario', null) !!}
+								</div>
+								<div class="col-md-3 fil-form">
+									{!! Form::label('identificacion', 'Identificación', array('class' => ' control-label')) !!}	
+									<span id ="identificacionspan"></span>
+									{!! Form::hidden('identificacion', null) !!}
+								</div>								
+								<div class="col-md-4 fil-form">
+									{!! Form::label('numerocontacto', 'Número Contacto', array('class' => ' control-label')) !!}	
+									<span id ="numerocontactospan"></span>
+									{!! Form::hidden('numerocontacto', null) !!}
+								</div>	
+								<div class="col-md-4 fil-form">
+									{!! Form::label('suscripcion', 'Suscripción', array('class' => ' control-label')) !!}	
+									<span id ="suscripcionspan"></span>
+									{!! Form::hidden('suscripcion', null) !!}
+								</div>
+								<div class="col-md-3 fil-form">
+									{!! Form::label('estado', 'Estado', array('class' => ' control-label')) !!}	
+									<span id ="estadospan"></span>
+									{!! Form::hidden('estado', null) !!}
+								</div>								
+								<div class="col-md-4 fil-form">
+									{!! Form::label('titular', 'Titular', array('class' => ' control-label')) !!}	
+									<span id ="titularspan"></span>
+									{!! Form::hidden('titular', null) !!}
+								</div>								
+
+
 							</div>
 
 							<div class="form-group">
 								<div class="col-md-4">
 									{!! Form::label('cedula_usuario', 'Cedula de Usuario', array('class' => ' control-label')) !!}	
-									{!! Form::text('cedula_usuario', old('cedula_usuario'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula'))!!}									
+									{!! Form::text('cedula_usuario', old('cedula_usuario'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula'))!!}		
 								</div>
 								<div class = "col-md-12 alerts-form"></div>		
 							</div>
@@ -117,7 +149,7 @@
 				            				<i class="fa fa-users"></i>
 				            			</a>
 			            			</div>
-									<div class="col-md-1" data-toggle="tooltip" title="" data-original-title="Ver">
+									<div class="col-md-1" data-toggle="tooltip" title="" data-original-title="Ver Disponibilidad">
 			            				<a href="javascript:clu_servicio.opt_ver_disponibilidad()" class="site_title site_title2" style="text-decoration: none; ">
 				            				<i class="fa fa-eye"></i>
 				            			</a>

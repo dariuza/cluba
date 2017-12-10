@@ -386,18 +386,20 @@ class ServiceController extends Controller {
 		//colsultamos primero en titulares
 		$array = array();
 		$array['titular'] = \DB::table('seg_user_profile')
-		->select('seg_user_profile.*','clu_suscription.*')
+		->select('seg_user_profile.*','clu_suscription.*','clu_state.state as estado')
 		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
 		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
+		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
 		->where('seg_user_profile.identificacion',$request->input('id'))
 		->get();
 
 		if(empty($array['titular'])){
 			$array['beneficiario'] = \DB::table('clu_beneficiary')
-			->select('clu_beneficiary.*','clu_suscription.*','seg_user_profile.names as friendnames','seg_user_profile.identificacion as friendidentificacion')
+			->select('clu_beneficiary.*','clu_suscription.*','seg_user_profile.names as friendnames','seg_user_profile.identificacion as friendidentificacion','clu_state.state as estado')
 			->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
 			->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
 			->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')
+			->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
 			->where('clu_beneficiary.identification',$request->input('id'))
 			->get();
 		}
