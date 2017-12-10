@@ -386,7 +386,7 @@ class ServiceController extends Controller {
 		//colsultamos primero en titulares
 		$array = array();
 		$array['titular'] = \DB::table('seg_user_profile')
-		->select('seg_user_profile.*','clu_suscription.*','clu_state.state as estado')
+		->select('seg_user_profile.*','clu_suscription.*','clu_state.state as estado','clu_suscription.id as suscription_id')
 		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
 		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
 		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
@@ -395,7 +395,7 @@ class ServiceController extends Controller {
 
 		if(empty($array['titular'])){
 			$array['beneficiario'] = \DB::table('clu_beneficiary')
-			->select('clu_beneficiary.*','clu_suscription.*','seg_user_profile.names as friendnames','seg_user_profile.identificacion as friendidentificacion','clu_state.state as estado')
+			->select('clu_beneficiary.*','clu_suscription.*','seg_user_profile.names as friendnames','seg_user_profile.surnames as friendsurnames','seg_user_profile.identificacion as friendidentificacion','clu_state.state as estado','clu_suscription.id as suscription_id')
 			->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
 			->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
 			->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')

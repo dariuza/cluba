@@ -58,7 +58,7 @@
 						</div>                
 					@endif
 							
-					{!! Form::open(array('url' => 'servicio/save', 'id'=>'form_nueva_cit<')) !!}			
+					{!! Form::open(array('url' => 'servicio/save', 'id'=>'form_nueva_city','onsubmit'=>'javascript:return clu_servicio.validateNuevaCita()')) !!}			
 						<div class="panel-body">
 							<div class="form-group">										
 								<div class="col-md-5 fil-form">
@@ -136,6 +136,10 @@
 							{!! Form::hidden('id_especialista',null)!!}
 							{!! Form::hidden('id_entidad',null)!!}
 							{!! Form::hidden('id_especialidad',null)!!}
+							{!! Form::hidden('id_suscription',null)!!}
+
+							{!! Form::hidden('dia',null)!!}
+							{!! Form::hidden('fechahora',null)!!}
 
 							<!-- Aprovechar el formulario para editar -->
 							{!! Form::hidden('edit', old('edit')) !!}
