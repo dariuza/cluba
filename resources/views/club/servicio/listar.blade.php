@@ -43,6 +43,13 @@
 		.fila{
 			margin-top: 10px;
 		}
+		.site_title3{
+			color: #73879C !important;
+		}
+
+		.site_title3 i {
+		    border: 1px solid #73879C !important;	   
+		}
 		
 	</style>
 	
@@ -170,50 +177,81 @@
 	    	<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title" id="form_entidad_title" >Consultar Nueva Cita</h4>
+					<h4 class="modal-title" id="form_entidad_title" >Consultar Nuevo Servicio</h4>
 				</div>
 				<div class = "alerts-module"></div>
 				{!! Form::open(array('url' => 'servicio/consultservicio', 'id'=>'form_nuevo_servicio','onsubmit'=>'javascript:return clu_servicio.validateNuevoServicio()')) !!}	
 				<div class="modal-body">
-					<div class="row ">
-						<div class="col-md-12 col-md-offset-0">
-							<div class="form-group">
-								<div class="col-md-12">
-									{!! Form::label('especialidad', 'Especialidad', array('class' => 'col-md-4 control-label')) !!}
-									{!! Form::select('especialidad',Session::get('modulo.especialidades'),old('especialidad'), array('class' => 'form-control chosen-select','id'=>'select_especialidad','placeholder'=>'Ingresa la especialidad')) !!}
-								</div>
 
-								<div class="col-md-12 fila">
-									{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-4 control-label')) !!}
-									{!! Form::select('municipio',Session::get('modulo.municipios'),old('municipio'), array('class' => 'form-control chosen-select select_municipio','id'=>'select_municipio','placeholder'=>'Ingresa el municipio')) !!}
-								</div>
+					<ul class="nav nav-tabs">
+						<li role="bnes_cnt" class="active"><a href="#tab_servicio1" data-toggle="tab">USUARIO</a></li>
+						<li role="bnes_cnt"><a href="#tab_servicio2" data-toggle="tab">CONSULTA</a></li>
+					</ul>
 
-								<div class="col-md-12 fila">
-									{!! Form::label('entidad', 'Entidad', array('class' => 'col-md-4 control-label')) !!}
-									{!! Form::select('entidad',array(),old('entidad'), array('class' => 'form-control chosen-select select_entidad','id'=>'select_entidad','placeholder'=>'Ingresa la entidad')) !!}
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="tab_servicio1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0">
+									<div class="col-md-6">
+										{!! Form::label('criterio_usuario', 'Cedula de Usuario ó Código Suscripción', array('class' => ' control-label')) !!}{!! Form::text('criterio_usuario', old('cedula_usuario'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula o código'))!!}		
+									</div>
+									<div class="col-md-2">
+										<div class="col-md-12" data-toggle="tooltip" title="" data-original-title="Consultar Usuario">
+				            				<a href="javascript:clu_servicio.opt_ver_usuario()" class="site_title site_title3" style="text-decoration: none; ">
+					            				<i class="fa fa-users"></i>
+					            			</a>
+				            			</div>
+									</div>	
+									<div class="col-md-5">
+									</div>
 								</div>
+							</div>
+						</div>
 
-								<div class="col-md-12 fila">
-									{!! Form::label('fecha', 'Fecha inicio', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('fechainicio',old('fechainicio'), array('class' => 'form-control','id'=>'fechainicio','placeholder'=>'aaaa-mm-dd')) !!}
+						<div class="tab-pane fade " id="tab_servicio2">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0">
+									<div class="form-group">
+										<div class="col-md-12">
+											{!! Form::label('especialidad', 'Especialidad', array('class' => 'col-md-4 control-label')) !!}
+											{!! Form::select('especialidad',Session::get('modulo.especialidades'),old('especialidad'), array('class' => 'form-control chosen-select','id'=>'select_especialidad','placeholder'=>'Ingresa la especialidad')) !!}
+										</div>
+
+										<div class="col-md-12 fila">
+											{!! Form::label('municipio', 'Municipio', array('class' => 'col-md-4 control-label')) !!}
+											{!! Form::select('municipio',Session::get('modulo.municipios'),old('municipio'), array('class' => 'form-control chosen-select select_municipio','id'=>'select_municipio','placeholder'=>'Ingresa el municipio')) !!}
+										</div>
+
+										<div class="col-md-12 fila">
+											{!! Form::label('entidad', 'Entidad', array('class' => 'col-md-4 control-label')) !!}
+											{!! Form::select('entidad',array(),old('entidad'), array('class' => 'form-control chosen-select select_entidad','id'=>'select_entidad','placeholder'=>'Ingresa la entidad')) !!}
+										</div>
+
+										<div class="col-md-12 fila">
+											{!! Form::label('fecha', 'Fecha inicio', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('fechainicio',old('fechainicio'), array('class' => 'form-control','id'=>'fechainicio','placeholder'=>'aaaa-mm-dd')) !!}
+										</div>
+
+										<div class="col-md-12 fila">
+											{!! Form::label('fechafin', 'Fecha fin', array('class' => 'col-md-12 control-label')) !!}
+											{!! Form::text('fechafin',old('fechafin'), array('class' => 'form-control','id'=>'fechafin','placeholder'=>'aaaa-mm-dd')) !!}
+										</div>
+
+										<div class="col-md-12 fila">
+											<input name="entidad_check" type="checkbox" value="1" id="entidad_check">
+											<label for="entidad_check" class="control-label">Usar Entidad</label>
+										</div>
+
+									</div>
 								</div>
-
-								<div class="col-md-12 fila">
-									{!! Form::label('fechafin', 'Fecha fin', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('fechafin',old('fechafin'), array('class' => 'form-control','id'=>'fechafin','placeholder'=>'aaaa-mm-dd')) !!}
-								</div>
-
-								<div class="col-md-12 fila">
-									<input name="entidad_check" type="checkbox" value="1" id="entidad_check">
-									<label for="entidad_check" class="control-label">Usar Entidad</label>
-								</div>
-
 							</div>
 						</div>
 					</div>
+
+					
 				</div>
 				{!! Form::close() !!}
-				<div class="modal-footer">
+				<div class="modal-footer">					
 					<button type="submit" form = "form_nuevo_servicio" class="btn btn-default" id="form_entidad_button" >Consultar Disponibilidad</button>	         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
 		        </div>
