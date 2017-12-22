@@ -144,7 +144,8 @@
 
 							<!-- Aprovechar el formulario para editar -->
 							{!! Form::hidden('edit', old('edit')) !!}
-							{!! Form::hidden('specialty_id', old('specialty_id')) !!}
+							{!! Form::hidden('price', old('price')) !!}
+							{!! Form::hidden('duration', old('duration')) !!}
 
 							<div class="form-group">
 
@@ -434,9 +435,24 @@
 		    	clu_servicio.table.$('tr.selected').removeClass('selected');
 		        $(this).addClass('selected');
 
-		        $("input[name='id_especialista']").val(clu_servicio.table.rows('.selected').data()[0][23]);
-				$("input[name='id_entidad']").val(clu_servicio.table.rows('.selected').data()[0][24]);
-				$("input[name='id_especialidad']").val(clu_servicio.table.rows('.selected').data()[0][25]);
+		        //limpiamos los campos
+				$("input[name='id_especialista']").val('');
+				$("input[name='id_entidad']").val('');
+				$("input[name='id_especialidad']").val('');		
+				$("input[name='dia']").val();
+				$("input[name='fechahora']").val();
+				$("input[name='price']").val();	
+				$("input[name='duration']").val();		       
+
+				if(clu_servicio.table.rows('.selected').data()[0][8] == 'libre'){
+					$("input[name='id_especialista']").val(clu_servicio.table.rows('.selected').data()[0][23]);
+					$("input[name='id_entidad']").val(clu_servicio.table.rows('.selected').data()[0][24]);
+					$("input[name='id_especialidad']").val(clu_servicio.table.rows('.selected').data()[0][25]);
+					$("input[name='dia']").val(clu_servicio.table.rows('.selected').data()[0][6]);
+					$("input[name='fechahora']").val(clu_servicio.table.rows('.selected').data()[0][7]);
+					$("input[name='price']").val(clu_servicio.table.rows('.selected').data()[0][5]);			
+					$("input[name='duration']").val(clu_servicio.table.rows('.selected').data()[0][22]);			
+				}
 		    }
 		});
 

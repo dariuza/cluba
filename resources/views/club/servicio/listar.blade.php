@@ -50,6 +50,15 @@
 		.site_title3 i {
 		    border: 1px solid #73879C !important;	   
 		}
+		.pull_suscripcion{
+			margin-top: 15px;	
+		}
+		.susctiptor{
+			margin-top: 15px;
+			border: 1px solid;
+    		text-align: center;
+		}
+		
 		
 	</style>
 	
@@ -173,14 +182,13 @@
     </div>
 
     <div class="modal fade" id="servicio_nuevo_modal" role="dialog" data-backdrop="false">
-	    <div class="modal-dialog modal-md">
+	    <div class="modal-dialog modal-lg">
 	    	<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 					<h4 class="modal-title" id="form_entidad_title" >Consultar Nuevo Servicio</h4>
 				</div>
-				<div class = "alerts-module"></div>
-				{!! Form::open(array('url' => 'servicio/consultservicio', 'id'=>'form_nuevo_servicio','onsubmit'=>'javascript:return clu_servicio.validateNuevoServicio()')) !!}	
+				<div class = "alerts-module"></div>				
 				<div class="modal-body">
 
 					<ul class="nav nav-tabs">
@@ -192,23 +200,38 @@
 						<div class="tab-pane fade in active" id="tab_servicio1">
 							<div class="row ">
 								<div class="col-md-12 col-md-offset-0">
-									<div class="col-md-6">
-										{!! Form::label('criterio_usuario', 'Cedula de Usuario ó Código Suscripción', array('class' => ' control-label')) !!}{!! Form::text('criterio_usuario', old('cedula_usuario'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula o código'))!!}		
+									<div class="col-md-4">
+										{!! Form::label('criterio_usuario', 'Cedula de Usuario ó Código Suscripción', array('class' => ' control-label')) !!}
+										{!! Form::text('cedula_usuario_modal', old('cedula_usuario_modal'), array('id'=>'cedula_usuario_modal','class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula o código'))!!}		
 									</div>
+
 									<div class="col-md-2">
 										<div class="col-md-12" data-toggle="tooltip" title="" data-original-title="Consultar Usuario">
-				            				<a href="javascript:clu_servicio.opt_ver_usuario()" class="site_title site_title3" style="text-decoration: none; ">
+				            				<a href="javascript:clu_servicio.opt_consultar_usuario()" class="site_title site_title3" style="text-decoration: none; ">
 					            				<i class="fa fa-users"></i>
 					            			</a>
 				            			</div>
 									</div>	
-									<div class="col-md-5">
+
+									<div class="col-md-6 info_suscripcion">
+									</div>
+
+									<div class="col-md-12 susctiptor">
+										<div class="col-md-12 ">
+											<label>DATOS DE TITULAR</label>
+										</div>
+										<div class="col-md-12 susctiptor_suscripcion">
+										</div>
+									</div>
+
+									<div class="col-md-12 pull_suscripcion">
 									</div>
 								</div>
 							</div>
 						</div>
 
 						<div class="tab-pane fade " id="tab_servicio2">
+							{!! Form::open(array('url' => 'servicio/consultservicio', 'id'=>'form_nuevo_servicio','onsubmit'=>'javascript:return clu_servicio.validateNuevoServicio()')) !!}	
 							<div class="row ">
 								<div class="col-md-12 col-md-offset-0">
 									<div class="form-group">
@@ -239,18 +262,19 @@
 
 										<div class="col-md-12 fila">
 											<input name="entidad_check" type="checkbox" value="1" id="entidad_check">
-											<label for="entidad_check" class="control-label">Usar Entidad</label>
+											<label for="entidad_check" class="control-label">Todas las entidades</label>
 										</div>
 
 									</div>
 								</div>
 							</div>
+							{!! Form::close() !!}
 						</div>
 					</div>
 
 					
 				</div>
-				{!! Form::close() !!}
+				
 				<div class="modal-footer">					
 					<button type="submit" form = "form_nuevo_servicio" class="btn btn-default" id="form_entidad_button" >Consultar Disponibilidad</button>	         
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
@@ -258,6 +282,13 @@
 
 			</div> 
 	    </div>
+
+	    {!! Form::open(array('id'=>'form_consult_usermodal','url' => 'servicio/consultarusermodal')) !!}
+    	{!! Form::close() !!}
+
+    	{!! Form::open(array('id'=>'form_edit_bnf','url' => 'servicio/editbeneficiario')) !!}
+    	{!! Form::close() !!}
+
     </div>
 	
 @endsection
@@ -299,7 +330,16 @@
 			}else{
 				alert('seleccionar un municipio')
 			}			
-		});	
+		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});		
 
 	</script>
 	

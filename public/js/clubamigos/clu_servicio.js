@@ -80,7 +80,11 @@ clu_servicio.prototype.opt_ver_disponibilidad = function() {
 		//limpiamos los campos
 		$("input[name='id_especialista']").val('');
 		$("input[name='id_entidad']").val('');
-		$("input[name='id_especialidad']").val('');
+		$("input[name='id_especialidad']").val('');		
+		$("input[name='dia']").val();
+		$("input[name='fechahora']").val();
+		$("input[name='price']").val();	
+		$("input[name='duration']").val();
 
 		$("#servicio_disponibilidad_modal .modal-body .row_content").html('');
 
@@ -119,8 +123,8 @@ clu_servicio.prototype.opt_ver_disponibilidad = function() {
 			$("input[name='id_especialidad']").val(clu_servicio.table.rows('.selected').data()[0][25]);
 			$("input[name='dia']").val(clu_servicio.table.rows('.selected').data()[0][6]);
 			$("input[name='fechahora']").val(clu_servicio.table.rows('.selected').data()[0][7]);
-			
-			
+			$("input[name='price']").val(clu_servicio.table.rows('.selected').data()[0][5]);	
+			$("input[name='duration']").val(clu_servicio.table.rows('.selected').data()[0][22]);					
 		}
 
 	}else{
@@ -172,45 +176,58 @@ clu_servicio.prototype.verRespuestaConsulta = function(result) {
     		if(result.data.beneficiario == undefined){
     			//es un titular
 
-    			$('#nombreusuariospan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames)
-    			$('#nombreusuario').val(result.data.titular[0].names+' '+result.data.titular[0].surnames)
+    			$('#nombreusuariospan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames);
+    			$('#nombreusuario').val(result.data.titular[0].names+' '+result.data.titular[0].surnames);
     			
+    			/*
     			$('#identificacionspan').html(result.data.titular[0].identificacion)
     			$('#identificacion').val(result.data.titular[0].identificacion)
+    			*/
 
-    			$('#numerocontactospan').html(result.data.titular[0].movil_number)
-    			$('#numerocontacto').val(result.data.titular[0].movil_number)
+    			$('#identificacionspan').html($("input[name='cedula_usuario']").val());
+    			$('#identificacion').val($("input[name='cedula_usuario']").val());			
 
-    			$('#suscripcionspan').html(result.data.titular[0].code)
-    			$('#suscripcion').val(result.data.titular[0].code)
 
-    			$('#estadospan').html(result.data.titular[0].estado)
-    			$('#estado').val(result.data.titular[0].estado)
 
-    			$('#titularspan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames)
-    			$('#titular').val(result.data.titular[0].names+' '+result.data.titular[0].surnames)
+    			$('#numerocontactospan').html(result.data.titular[0].movil_number);
+    			$('#numerocontacto').val(result.data.titular[0].movil_number);
+
+    			$('#suscripcionspan').html(result.data.titular[0].code);
+    			$('#suscripcion').val(result.data.titular[0].code);
+
+    			$('#estadospan').html(result.data.titular[0].estado);
+    			$('#estado').val(result.data.titular[0].estado);
+
+    			$('#titularspan').html(''+result.data.titular[0].names+' '+result.data.titular[0].surnames);
+    			$('#titular').val(result.data.titular[0].names+' '+result.data.titular[0].surnames);
     			$("input[name='id_suscription']").val(result.data.titular[0].suscription_id);
 
     		}else{
     			//es un beneficiario
 
-    			$('#nombreusuariospan').html(''+result.data.beneficiario[0].names+' '+result.data.beneficiario[0].surnames)
-    			$('#nombreusuario').val(result.data.beneficiario[0].names+' '+result.data.beneficiario[0].surnames)
+    			$('#nombreusuariospan').html(''+result.data.beneficiario[0].names+' '+result.data.beneficiario[0].surnames);
+    			$('#nombreusuario').val(result.data.beneficiario[0].names+' '+result.data.beneficiario[0].surnames);
     			
-    			$('#identificacionspan').html(result.data.beneficiario[0].identification)
-    			$('#identification').val(result.data.beneficiario[0].identification)
+    			/*
+    			$('#identificacionspan').html(result.data.titular[0].identificacion)
+    			$('#identificacion').val(result.data.titular[0].identificacion)
+    			*/
 
-    			$('#numerocontactospan').html(result.data.beneficiario[0].movil_number)
-    			$('#numerocontacto').val(result.data.beneficiario[0].movil_number)
+    			$('#identificacionspan').html($("input[name='cedula_usuario']").val());
+    			$('#identificacion').val($("input[name='cedula_usuario']").val());			
 
-    			$('#suscripcionspan').html(result.data.beneficiario[0].code)
-    			$('#suscripcion').val(result.data.beneficiario[0].code)
 
-    			$('#estadospan').html(result.data.beneficiario[0].estado)
-    			$('#estado').val(result.data.beneficiario[0].estado)
+    			$('#numerocontactospan').html(result.data.beneficiario[0].movil_number);
+    			$('#numerocontacto').val(result.data.beneficiario[0].movil_number);
 
-    			$('#titularspan').html(''+result.data.beneficiario[0].friendnames+' '+result.data.beneficiario[0].friendsurnames)
-    			$('#titular').val(result.data.beneficiario[0].friendnames+' '+result.data.beneficiario[0].friendsurnames)
+    			$('#suscripcionspan').html(result.data.beneficiario[0].code);
+    			$('#suscripcion').val(result.data.beneficiario[0].code);
+
+    			$('#estadospan').html(result.data.beneficiario[0].estado);
+    			$('#estado').val(result.data.beneficiario[0].estado);
+
+    			$('#titularspan').html(''+result.data.beneficiario[0].friendnames+' '+result.data.beneficiario[0].friendsurnames);
+    			$('#titular').val(result.data.beneficiario[0].friendnames+' '+result.data.beneficiario[0].friendsurnames);
     			$("input[name='id_suscription']").val(result.data.beneficiario[0].suscription_id);
     		}
 
@@ -232,6 +249,268 @@ clu_servicio.prototype.verRespuestaConsulta = function(result) {
 	
 
 };
+
+clu_servicio.prototype.opt_consultar_usuario = function() {
+	document.getElementsByClassName('info_suscripcion')[0].textContent="";
+	document.getElementsByClassName('susctiptor_suscripcion')[0].textContent="";
+	document.getElementsByClassName('pull_suscripcion')[0].textContent="";
+	var datos = new Array();
+	if($("#cedula_usuario_modal").val() != ""){
+		datos['id'] = $("#cedula_usuario_modal").val(); 
+  		seg_ajaxobject.peticionajax($('#form_consult_usermodal').attr('action'),datos,"clu_servicio.verRespuestaConsultaModal");
+
+	}else{
+		$('.alerts-module').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>!Consulta Fallida!</strong></br> No se ha ingresado alguna cedula o código.</div>');
+		$(".close_alert_message").on('click', function () { 
+    		$("#servicio_nuevo_modal :input").removeClass("input_danger");        	
+    	});		
+	}
+  	
+};
+
+
+clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
+	//limpiamos
+	document.getElementsByClassName('info_suscripcion')[0].textContent="";
+	document.getElementsByClassName('susctiptor_suscripcion')[0].textContent="";
+	document.getElementsByClassName('pull_suscripcion')[0].textContent="";
+
+
+	if(result.data.titular.length){
+		//suscripcion
+		var nodo = document.createElement("div");
+		nodo.setAttribute("class", " form-group");
+
+		var subnodo_1 = document.createElement("div")	
+		subnodo_1.setAttribute("class", "col-md-3");
+		var label_1 = document.createElement("label");
+		var span_1 = document.createElement("span");		
+		label_1.setAttribute("class", "control-label");
+		label_1.setAttribute("for", "sct_code");
+		label_1.textContent = "Codigo: ";		
+		span_1.textContent = result.data.titular[0]['code'];		
+		subnodo_1.appendChild(label_1);
+		subnodo_1.appendChild(span_1);
+
+
+		var subnodo_2 = document.createElement("div")	
+		subnodo_2.setAttribute("class", "col-md-3");
+		var label_2 = document.createElement("label");
+		var span_2 = document.createElement("span");		
+		label_2.setAttribute("class", "control-label");
+		label_2.setAttribute("for", "sct_code");
+		label_2.textContent = "Estado: ";
+		span_2.textContent = result.data.titular[0]['estado'];		
+		subnodo_2.appendChild(label_2);
+		subnodo_2.appendChild(span_2);
+
+		var subnodo_3 = document.createElement("div")	
+		subnodo_3.setAttribute("class", "col-md-6");
+		var label_3 = document.createElement("label");		
+		var span_3 = document.createElement("span");
+		label_3.setAttribute("class", "control-label");
+		label_3.setAttribute("for", "sct_code");
+		label_3.textContent = "Fecha Expiración: ";		
+		span_3.textContent = result.data.titular[0]['date_expiration'];		
+		subnodo_3.appendChild(label_3);
+		subnodo_3.appendChild(span_3);
+
+
+		nodo.appendChild(subnodo_1);//Codigo
+		nodo.appendChild(subnodo_2);//Estado
+		nodo.appendChild(subnodo_3);//Fecha expiracion		
+
+		document.getElementsByClassName('info_suscripcion')[0].appendChild(nodo);
+
+
+		//suscriptor
+
+		var nodo = document.createElement("div");
+		nodo.setAttribute("class", " form-group");
+
+		var subnodo_1 = document.createElement("div")	
+		subnodo_1.setAttribute("class", "col-md-3");
+		var label_1 = document.createElement("label");
+		var span_1 = document.createElement("span");		
+		label_1.setAttribute("class", "control-label");
+		label_1.setAttribute("for", "sct_code");
+		label_1.textContent = "Nombres: ";		
+		span_1.textContent = result.data.titular[0]['names'];		
+		subnodo_1.appendChild(label_1);
+		subnodo_1.appendChild(span_1);
+
+
+		var subnodo_2 = document.createElement("div")	
+		subnodo_2.setAttribute("class", "col-md-3");
+		var label_2 = document.createElement("label");
+		var span_2 = document.createElement("span");		
+		label_2.setAttribute("class", "control-label");
+		label_2.setAttribute("for", "sct_code");
+		label_2.textContent = "Apellidos: ";
+		span_2.textContent = result.data.titular[0]['surnames'];		
+		subnodo_2.appendChild(label_2);
+		subnodo_2.appendChild(span_2);
+
+		var subnodo_3 = document.createElement("div")	
+		subnodo_3.setAttribute("class", "col-md-3");
+		var label_3 = document.createElement("label");		
+		var span_3 = document.createElement("span");
+		label_3.setAttribute("class", "control-label");
+		label_3.setAttribute("for", "sct_code");
+		label_3.textContent = result.data.titular[0]['type_id'];		
+		span_3.textContent = result.data.titular[0]['identificacion'];		
+		subnodo_3.appendChild(label_3);
+		subnodo_3.appendChild(span_3);
+
+		var subnodo_4 = document.createElement("div")	
+		subnodo_4.setAttribute("class", "col-md-3");
+		var label_4 = document.createElement("label");		
+		var span_4 = document.createElement("span");
+		label_4.setAttribute("class", "control-label");
+		label_4.setAttribute("for", "sct_code");
+		label_4.textContent = 'Contacto';		
+		span_4.textContent = result.data.titular[0]['movil_number'];		
+		subnodo_4.appendChild(label_4);
+		subnodo_4.appendChild(span_4);
+
+
+		nodo.appendChild(subnodo_1);//Codigo
+		nodo.appendChild(subnodo_2);//Estado
+		nodo.appendChild(subnodo_3);//Fecha expiracion
+		nodo.appendChild(subnodo_4);//Movilnumbre		
+
+		document.getElementsByClassName('susctiptor_suscripcion')[0].appendChild(nodo);
+
+
+		//construimos el contenido
+		for(var i=0;i<result.data.beneficiario.length;i++){
+			var nodo = document.createElement("div");
+			nodo.setAttribute("class", "col-md-12 form-group");
+
+			var subnodo_1 = document.createElement("div")	
+			subnodo_1.setAttribute("class", "col-md-2");
+			var input_1 = document.createElement("input");
+			input_1.setAttribute("class", "form-control");
+			input_1.setAttribute("name", "bns_nombres_"+i);	
+			input_1.setAttribute("placeholder", "Nombres");
+			input_1.value=result.data.beneficiario[i].names;			
+			subnodo_1.appendChild(input_1);
+
+			var subnodo_2 = document.createElement("div")	
+			subnodo_2.setAttribute("class", "col-md-2");
+			var input_2 = document.createElement("input");
+			input_2.setAttribute("class", "form-control");
+			input_2.setAttribute("name", "bns_apellidos_"+i);	
+			input_2.setAttribute("placeholder", "Apellidos");
+			input_2.value=result.data.beneficiario[i].surnames;			
+			subnodo_2.appendChild(input_2);
+
+			var subnodo_3 = document.createElement("div")	
+			subnodo_3.setAttribute("class", "col-md-3");
+			var input_3 = document.createElement('select');
+			input_3.setAttribute("class", "form-control");
+			input_3.setAttribute("name", "bns_typeid_"+i);
+			input_3.setAttribute("id", "bns_typeid_"+i);
+			var opt1 = document.createElement('option');
+			opt1.innerHTML = 'Selecciona una opción';
+			input_3.appendChild(opt1);
+			
+			var opt1 = document.createElement('option');
+			opt1.innerHTML = 'CEDULA CIUDADANIA';
+			if(result.data.beneficiario[i].type_id == 'CEDULA CIUDADANIA') opt1.setAttribute('selected','selected');
+			input_3.appendChild(opt1);	
+			
+			var opt2 = document.createElement('option');
+			opt2.innerHTML = 'TARJETA IDENTIDAD';
+			if(result.data.beneficiario[i].type_id == 'TARJETA IDENTIDAD') opt2.setAttribute('selected','selected');
+			input_3.appendChild(opt2);	
+			
+			var opt3 = document.createElement('option');
+			opt3.innerHTML = 'REGISTRO CIVIL';
+			if(result.data.beneficiario[i].type_id == 'REGISTRO CIVIL') opt3.setAttribute('selected','selected');
+			input_3.appendChild(opt3);	
+			
+			var opt4 = document.createElement('option');
+			opt4.innerHTML = 'CEDULA EXTRAJERIA';
+			if(result.data.beneficiario[i].type_id == 'CEDULA EXTRAJERIA') opt4.setAttribute('selected','selected');
+			input_3.appendChild(opt4);
+			subnodo_3.appendChild(input_3);
+
+			var subnodo_4 = document.createElement("div")	
+			subnodo_4.setAttribute("class", "col-md-3");
+			var input_4 = document.createElement("input");
+			input_4.setAttribute("class", "form-control solo_numeros");
+			input_4.setAttribute("name", "bns_identificacion_"+i);	
+			input_4.setAttribute("placeholder", "Identificacion");
+			input_4.value=result.data.beneficiario[i].identification;			
+			subnodo_4.appendChild(input_4);
+
+			var subnodo_5 = document.createElement("div")	
+			subnodo_5.setAttribute("class", "col-md-2");
+			var input_5 = document.createElement("button");
+			input_5.setAttribute("class", "form-control btn btn-default bns_edit_button");
+			input_5.setAttribute("id", "bns_edit_"+i);
+			input_5.innerHTML = "Actualizar";			
+			subnodo_5.appendChild(input_5);
+
+			var subnodo_6 = document.createElement("div")				
+			var input_6 = document.createElement("input");
+			input_6.setAttribute("type", "hidden");
+			input_6.setAttribute("id", "bns_id_"+i);			
+			input_6.value=result.data.beneficiario[i].id;			
+			subnodo_6.appendChild(input_6);	
+
+
+			nodo.appendChild(subnodo_1);//Nombres de beneficiario
+			nodo.appendChild(subnodo_2);//Apellidos de beneficiario
+			nodo.appendChild(subnodo_3);//Tipo id beneficiario
+			nodo.appendChild(subnodo_4);//Identificacion
+			nodo.appendChild(subnodo_5);//Boton
+			nodo.appendChild(subnodo_6);//Id de beneficiario
+
+			document.getElementsByClassName('pull_suscripcion')[0].appendChild(nodo);
+
+		}
+
+		//agregamos la funcion a los botones actualizar
+		$('.bns_edit_button').click(function(){
+		    		    
+		    var datos = new Array();
+  			datos['names'] = $("input[name='bns_nombres_"+this.id.split('_')[2]+"']" ).val();
+  			datos['surnames'] = $("input[name='bns_apellidos_"+this.id.split('_')[2]+"']" ).val();
+  			datos['type_id'] = $("#bns_typeid_"+this.id.split('_')[2] ).val();
+  			datos['identification'] = $("input[name='bns_identificacion_"+this.id.split('_')[2]+"']" ).val();
+  			datos['id'] = $("input[id='bns_id_"+this.id.split('_')[2]+"']" ).val();
+
+  			seg_ajaxobject.peticionajax($('#form_edit_bnf').attr('action'),datos,"clu_servicio.respuestaEditBeneficiario");
+		    
+		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			evt = (evt) ? evt : window.event;
+	    	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+	        	return false;
+	    	}
+		    return true;
+		});		
+	}
+
+};
+
+clu_servicio.prototype.respuestaEditBeneficiario = function(result) {
+	if(result.respuesta == true){
+		$('#servicio_nuevo_modal .alerts-module').html('<div class="alert alert-success alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>!Actualización acertada!</strong></br> El beneficiario fue actualizado correctamente.</div>');	 
+	}else{
+		$('#servicio_nuevo_modal .alerts-module').html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close close_alert_product" data-dismiss="alert">&times;</button><strong>!Actualización Fallida!</strong></br> El beneficiario no fue actualizado.</div>');
+	}
+	$(".close_alert_product").on('click', function () { 
+    	$("#form_nuevo_servicio :input").removeClass("input_danger");        	
+    });
+	
+};
+
+
 
 
 var clu_servicio = new clu_servicio();
