@@ -541,7 +541,6 @@ class ServiceController extends Controller {
 					->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
 					->where('clu_license.suscription_id',$array['suscripcion'][0]->suscription_id)
 					->get();
-
 				}
 			}
 			

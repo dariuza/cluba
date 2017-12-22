@@ -202,7 +202,7 @@
 								<div class="col-md-12 col-md-offset-0">
 									<div class="col-md-4">
 										{!! Form::label('criterio_usuario', 'Cedula de Usuario ó Código Suscripción', array('class' => ' control-label')) !!}
-										{!! Form::text('cedula_usuario_modal', old('cedula_usuario_modal'), array('id'=>'cedula_usuario_modal','class' => 'form-control solo_numeros','placeholder'=>'Ingresa una cedula o código'))!!}		
+										{!! Form::text('cedula_usuario_modal', old('cedula_usuario_modal'), array('id'=>'cedula_usuario_modal','class' => 'form-control','placeholder'=>'Ingresa una cedula o código'))!!}		
 									</div>
 
 									<div class="col-md-2">
