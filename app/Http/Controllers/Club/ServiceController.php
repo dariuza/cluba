@@ -59,8 +59,8 @@ class ServiceController extends Controller {
 		}
 
 		//para llevar temporalmente las variables a la vista.
-		Session::flash('modulo', $moduledata);	
-		
+		Session::flash('modulo', $moduledata);
+				
 		return view('club.servicio.listar');
 		
 	}
@@ -262,9 +262,9 @@ class ServiceController extends Controller {
 				    }
 				}
 
-				//consultamos las sitas habiles para las fechas y las entidades
+				//consultamos las citas habiles para las fechas y las entidades
 				if($request->input('entidad_check') != "1"){
-					
+					//si esta NO seleccionada
 					$citas  = \DB::table('clu_service')
 					->whereBetween('date_service', [$fechainicio->format('Y-m-d'),$fechafin->format('Y-m-d')])
 					->where('clu_service.subentity_id',$request->input('entidad'))
@@ -383,14 +383,34 @@ class ServiceController extends Controller {
 			
 			$servicio = new Service();
 
-			$servicio->city = $request->input()['municipio'];
-			$servicio->city = $request->input()['municipio'];
+			$date = date_create($request->input('fechahora'));			
 
-			$date = date_create($request->input('fechahora'));
-			$hora_inicio = date_format($date,"H:i");//Y-m-d 
+			$servicio->city = $request->input()['municipio'];
+			$servicio->price = $request->input()['price'];
+			$servicio->identification_user = $request->input()['identificacion'];
+			$servicio->names_user = $request->input()['nombreusuario'];
+			$servicio->day = $request->input()['dia'];
+			$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
+			$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
+			$servicio->hour_start = date_format($date,"H:i");
+			$servicio->duration = $request->input()['duration'];
+			$servicio->especialty_id = $request->input()['id_especialidad'];
+			$servicio->especialist_id = $request->input()['id_especialista'];
+			$servicio->subentity_id = $request->input()['entidad'];
+			$servicio->suscription_id = $request->input()['id_suscription'];
+
+			if($request->input()['service_id']){
+				//actualizacion de servicio - borrado
+			}else{
+				//nueva entidad
+				try {
+					$servicio->save();
+					return Redirect::to('servicio/listar')->withInput()->with('message', 'Servicio agregado exitosamente');					
+				}catch (\Illuminate\Database\QueryException $e) {										
+					return Redirect::to('servicio/listar')->with('error', $e->getMessage())->withInput();
+				}	
+			}
 			
-
-			dd($request->input());
 		}
 	}
 	
@@ -448,80 +468,49 @@ class ServiceController extends Controller {
 
 		//consultamos los beneficiarios y el titular de la suscripción
 		$array = array();
+		if(is_numeric($request->input('id'))){
 
-		$array['titular'] = \DB::table('seg_user_profile')
-		->select(
-			'seg_user_profile.*',
-			'clu_suscription.*',
-			'clu_state.state as estado',
-			'clu_suscription.id as suscription_id',
-			'clu_suscription.code as suscription_code')
-		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
-		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
-		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-		->where('seg_user_profile.identificacion',$request->input('id'))
-		->get();
-
-	
-		if(!empty($array['titular'])){
-			//ya tenemos el titular y suscripción
-			//falta los beneficiarios
-			$array['beneficiario'] = \DB::table('clu_beneficiary')
-			->select('clu_beneficiary.*')
-			->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
-			->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
-			->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
-			->where('clu_license.suscription_id',$array['titular'][0]->suscription_id)
-			->get();
-
-		}else{
-
-			$array['beneficiario'] = \DB::table('clu_beneficiary')
+			$array['titular'] = \DB::table('seg_user_profile')
 			->select(
-				'clu_beneficiary.*',
+				'seg_user_profile.*',
 				'clu_suscription.*',
-				'clu_suscription.id as suscription_id')
-			->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
-			->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
-			->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')
+				'clu_state.state as estado',
+				'clu_suscription.id as suscription_id',
+				'clu_suscription.code as suscription_code')
+			->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+			->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
 			->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-			->where('clu_beneficiary.identification',$request->input('id'))
+			->where('seg_user_profile.identificacion',$request->input('id'))
 			->get();
 
-			if(!empty($array['beneficiario'])){
-				//es un beneficiario
-				$array['titular'] = \DB::table('seg_user_profile')
-				->select('seg_user_profile.*',
-					'clu_suscription.*',
-					'clu_state.state as estado',
-					'clu_suscription.id as suscription_id',
-					'clu_suscription.code as suscription_code')
-				->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
-				->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
-				->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-				->where('clu_suscription.id',$array['beneficiario'][0]->suscription_id)
-				->get();
-
+		
+			if(!empty($array['titular'])){
+				//ya tenemos el titular y suscripción
+				//falta los beneficiarios
 				$array['beneficiario'] = \DB::table('clu_beneficiary')
 				->select('clu_beneficiary.*')
 				->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
 				->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
 				->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
-				->where('clu_license.suscription_id',$array['beneficiario'][0]->suscription_id)
+				->where('clu_license.suscription_id',$array['titular'][0]->suscription_id)
 				->get();
-
 
 			}else{
-				//posiblemnte es un codigo
-				$array['suscripcion'] = \DB::table('clu_suscription')
+				
+				$array['beneficiario'] = \DB::table('clu_beneficiary')
 				->select(
+					'clu_beneficiary.*',
 					'clu_suscription.*',
-					'clu_suscription.id as suscription_id')				
-				->where('clu_suscription.code','LIKE',$request->input('id'))
+					'clu_suscription.id as suscription_id')
+				->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
+				->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
+				->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')
+				->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
+				->where('clu_beneficiary.identification',$request->input('id'))
 				->get();
 
-				if(!empty($array['suscripcion'])){
-					//si es un codigo
+				if(!empty($array['beneficiario'])){
+					//es un beneficiario
 					$array['titular'] = \DB::table('seg_user_profile')
 					->select('seg_user_profile.*',
 						'clu_suscription.*',
@@ -531,7 +520,7 @@ class ServiceController extends Controller {
 					->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
 					->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
 					->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-					->where('clu_suscription.id',$array['suscripcion'][0]->suscription_id)
+					->where('clu_suscription.id',$array['beneficiario'][0]->suscription_id)
 					->get();
 
 					$array['beneficiario'] = \DB::table('clu_beneficiary')
@@ -539,12 +528,84 @@ class ServiceController extends Controller {
 					->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
 					->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
 					->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
-					->where('clu_license.suscription_id',$array['suscripcion'][0]->suscription_id)
+					->where('clu_license.suscription_id',$array['beneficiario'][0]->suscription_id)
 					->get();
+
+
+				}else{
+					//posiblemnte es un codigo
+					
+					$array['suscripcion'] = \DB::table('clu_suscription')
+					->select(
+						'clu_suscription.*',
+						'clu_suscription.id as suscription_id')				
+					->where('clu_suscription.code','LIKE',$request->input('id'))
+					->get();
+
+					if(!empty($array['suscripcion'])){
+
+						//si es un codigo
+						$array['titular'] = \DB::table('seg_user_profile')
+						->select('seg_user_profile.*',
+							'clu_suscription.*',
+							'clu_state.state as estado',
+							'clu_suscription.id as suscription_id',
+							'clu_suscription.code as suscription_code')
+						->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+						->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
+						->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
+						->where('clu_suscription.id',$array['suscripcion'][0]->suscription_id)
+						->get();
+
+						$array['beneficiario'] = \DB::table('clu_beneficiary')
+						->select('clu_beneficiary.*')
+						->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
+						->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
+						->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
+						->where('clu_license.suscription_id',$array['suscripcion'][0]->suscription_id)
+						->get();
+					}
 				}
+				
+			}		
+
+		}else{
+			//posiblemnte es un codigo
+					
+			$array['suscripcion'] = \DB::table('clu_suscription')
+			->select(
+				'clu_suscription.*',
+				'clu_suscription.id as suscription_id')				
+			->where('clu_suscription.code','LIKE',$request->input('id'))
+			->get();
+
+			if(!empty($array['suscripcion'])){
+
+				//si es un codigo
+				$array['titular'] = \DB::table('seg_user_profile')
+				->select('seg_user_profile.*',
+					'clu_suscription.*',
+					'clu_state.state as estado',
+					'clu_suscription.id as suscription_id',
+					'clu_suscription.code as suscription_code')
+				->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+				->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
+				->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
+				->where('clu_suscription.id',$array['suscripcion'][0]->suscription_id)
+				->get();
+
+				$array['beneficiario'] = \DB::table('clu_beneficiary')
+				->select('clu_beneficiary.*')
+				->join('clu_license', 'clu_beneficiary.license_id', '=', 'clu_license.id')
+				->join('clu_suscription', 'clu_license.suscription_id', '=', 'clu_suscription.id')
+				->join('seg_user_profile', 'clu_suscription.friend_id', '=', 'seg_user_profile.user_id')			
+				->where('clu_license.suscription_id',$array['suscripcion'][0]->suscription_id)
+				->get();
 			}
-			
-		}		
+		}
+
+
+		
 
 		return response()->json(['respuesta'=>true,'data'=>$array]);
 	}

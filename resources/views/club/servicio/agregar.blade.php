@@ -147,6 +147,9 @@
 							{!! Form::hidden('price', old('price')) !!}
 							{!! Form::hidden('duration', old('duration')) !!}
 
+							<!-- Para actualizar borrar-->
+							{!! Form::hidden('service_id', old('service_id')) !!}
+
 							<div class="form-group">
 
 								<div class="col-md-12 col-md-offset-0">
