@@ -58,10 +58,62 @@ class ServiceController extends Controller {
 			$moduledata['municipios'][$city->city] = $city->city;
 		}
 
+		$moduledata['fillable'] = ['Usuario','Contacto','Ciudad','Especialista','Especialidad','Día y Hora','Estado'];
+
 		//para llevar temporalmente las variables a la vista.
 		Session::flash('modulo', $moduledata);
-				
+
+
 		return view('club.servicio.listar');
+		
+	}
+
+	public function getListarajax(Request $request){
+
+		$moduledata['total'] = Service::count();
+		//realizamos la consulta
+		if(!empty($request->input('search')['value'])){
+			Session::flash('search', $request->input('search')['value']);			
+			
+			$moduledata['servicios']=\DB::table('clu_service')
+			->select('clu_service.*',
+				'clu_specialist.name as name_specialist',
+				'clu_specialty.name as name_specialty')
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			
+			->where(function ($query) {
+				$query
+				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%');			
+			})
+
+			->skip($request->input('start'))
+			->take($request->input('length'))
+			->get();
+
+			$moduledata['filtro'] = count($moduledata['servicios']);
+		}else{
+
+			$moduledata['servicios']=\DB::table('clu_service')
+			->select('clu_service.*',
+				'clu_specialist.name as name_specialist',
+				'clu_specialty.name as name_specialty')
+
+			->join('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->join('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->skip($request->input('start'))->take($request->input('length'))
+			->get();		
+			
+				
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+		
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['servicios']]);	
 		
 	}
 
@@ -69,6 +121,98 @@ class ServiceController extends Controller {
 	public function postNuevo(Request $request){
 		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
+
+	public function getCrear($id_app=null,$categoria=null,$id_mod=null){
+		//Modo de evitar que otros roles ingresen por la url
+		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
+		
+		return Redirect::to('servicio/agregar');
+	}
+
+	public function getAgregar(){
+
+		//consultamos la especialidades
+		//Consultas primarias		
+		$especialties= \DB::table('clu_specialty')->get();
+		foreach ($especialties as $especialty){
+			$moduledata['especialidades'][$especialty->id] = $especialty->name;
+		}
+
+		$entidades = \DB::table('clu_subentity')
+		->select('clu_subentity.*','clu_entity.business_name')
+		->join('clu_entity', 'clu_subentity.entity_id', '=', 'clu_entity.id')
+		->join('clu_available_x_specialty', 'clu_subentity.id', '=', 'clu_available_x_specialty.subentity_id')		
+		->get();
+		
+		foreach ($entidades as $entidad){
+			$moduledata['entidades'][$entidad->id] = $entidad->sucursal_name.' - '.$entidad->business_name;
+		}
+
+		//para llevar temporalmente las variables a la vista.
+		Session::flash('moduloagregar', $moduledata);
+	
+		return view('club.servicio.agregar');
+	}
+
+	public function postSave(Request $request){
+		
+		$messages = [
+			'required' => 'El campo :attribute es requerido.',				
+		];
+		
+		$rules = array(
+			'municipio'    => 'required',
+			'price' => 'required',
+			'identificacion' => 'required',
+			'nombreusuario'    => 'required',
+			'dia' => 'required',
+			'fechahora' => 'required',
+			'duration' => 'required',
+			'id_especialidad' => 'required',
+			'id_especialista' => 'required',
+			'id_entidad' => 'required',
+			'id_suscription' => 'required',
+		);
+		
+		$validator = Validator::make($request->input(), $rules, $messages);
+		if ($validator->fails()) {
+			return view('club.servicio.agregar')->withErrors($validator)->withInput();
+		}else{
+			
+			$servicio = new Service();
+
+			$date = date_create($request->input('fechahora'));			
+
+			$servicio->city = $request->input()['municipio'];
+			$servicio->price = $request->input()['price'];
+			$servicio->identification_user = $request->input()['identificacion'];
+			$servicio->names_user = $request->input()['nombreusuario'];
+			$servicio->surnames_user = $request->input()['numerocontacto'];
+			$servicio->day = $request->input()['dia'];
+			$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
+			$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
+			$servicio->hour_start = date_format($date,"H:i");
+			$servicio->duration = $request->input()['duration'];
+			$servicio->especialty_id = $request->input()['id_especialidad'];
+			$servicio->especialist_id = $request->input()['id_especialista'];
+			$servicio->subentity_id = $request->input()['entidad'];
+			$servicio->suscription_id = $request->input()['id_suscription'];
+
+			if($request->input()['service_id']){
+				//actualizacion de servicio - borrado
+			}else{
+				//nueva entidad
+				try {
+					$servicio->save();
+					return Redirect::to('servicio/listar')->withInput()->with('message', 'Servicio agregado exitosamente');					
+				}catch (\Illuminate\Database\QueryException $e) {										
+					return Redirect::to('servicio/listar')->with('error', $e->getMessage())->withInput();
+				}	
+			}
+			
+		}
+	}
+	
 
 	//retorna los especialistas y sus disponibilidades
 	public function postConsultservicio(Request $request){
@@ -324,96 +468,6 @@ class ServiceController extends Controller {
 		return view('club.servicio.listar');
 	}
 
-	public function getCrear($id_app=null,$categoria=null,$id_mod=null){
-		//Modo de evitar que otros roles ingresen por la url
-		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
-		
-		return Redirect::to('servicio/agregar');
-	}
-
-	public function getAgregar(){
-
-		//consultamos la especialidades
-		//Consultas primarias		
-		$especialties= \DB::table('clu_specialty')->get();
-		foreach ($especialties as $especialty){
-			$moduledata['especialidades'][$especialty->id] = $especialty->name;
-		}
-
-		$entidades = \DB::table('clu_subentity')
-		->select('clu_subentity.*','clu_entity.business_name')
-		->join('clu_entity', 'clu_subentity.entity_id', '=', 'clu_entity.id')
-		->join('clu_available_x_specialty', 'clu_subentity.id', '=', 'clu_available_x_specialty.subentity_id')		
-		->get();
-		
-		foreach ($entidades as $entidad){
-			$moduledata['entidades'][$entidad->id] = $entidad->sucursal_name.' - '.$entidad->business_name;
-		}
-
-		//para llevar temporalmente las variables a la vista.
-		Session::flash('moduloagregar', $moduledata);
-	
-		return view('club.servicio.agregar');
-	}
-
-	public function postSave(Request $request){
-		
-		$messages = [
-			'required' => 'El campo :attribute es requerido.',				
-		];
-		
-		$rules = array(
-			'municipio'    => 'required',
-			'price' => 'required',
-			'identificacion' => 'required',
-			'nombreusuario'    => 'required',
-			'dia' => 'required',
-			'fechahora' => 'required',
-			'duration' => 'required',
-			'id_especialidad' => 'required',
-			'id_especialista' => 'required',
-			'id_entidad' => 'required',
-			'id_suscription' => 'required',
-		);
-		
-		$validator = Validator::make($request->input(), $rules, $messages);
-		if ($validator->fails()) {
-			return view('club.servicio.agregar')->withErrors($validator)->withInput();
-		}else{
-			
-			$servicio = new Service();
-
-			$date = date_create($request->input('fechahora'));			
-
-			$servicio->city = $request->input()['municipio'];
-			$servicio->price = $request->input()['price'];
-			$servicio->identification_user = $request->input()['identificacion'];
-			$servicio->names_user = $request->input()['nombreusuario'];
-			$servicio->day = $request->input()['dia'];
-			$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
-			$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
-			$servicio->hour_start = date_format($date,"H:i");
-			$servicio->duration = $request->input()['duration'];
-			$servicio->especialty_id = $request->input()['id_especialidad'];
-			$servicio->especialist_id = $request->input()['id_especialista'];
-			$servicio->subentity_id = $request->input()['entidad'];
-			$servicio->suscription_id = $request->input()['id_suscription'];
-
-			if($request->input()['service_id']){
-				//actualizacion de servicio - borrado
-			}else{
-				//nueva entidad
-				try {
-					$servicio->save();
-					return Redirect::to('servicio/listar')->withInput()->with('message', 'Servicio agregado exitosamente');					
-				}catch (\Illuminate\Database\QueryException $e) {										
-					return Redirect::to('servicio/listar')->with('error', $e->getMessage())->withInput();
-				}	
-			}
-			
-		}
-	}
-	
 
 	public function postConsultarentidad(Request $request){
 
@@ -616,6 +670,7 @@ class ServiceController extends Controller {
 		$beneficiario = Beneficiary::find($request->input()['id']);		
 		$beneficiario->identification = $request->input()['identification'];
 		$beneficiario->type_id = $request->input()['type_id'];
+		$beneficiario->movil_number = $request->input()['telefono'];
 		$beneficiario->names = $request->input()['names'];
 		$beneficiario->surnames = $request->input()['surnames'];
 

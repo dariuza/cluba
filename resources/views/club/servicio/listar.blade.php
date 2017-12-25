@@ -158,10 +158,18 @@
 	            @endif
 	    </div>
 	
-		<div class="col-md-12 col-md-offset-0" style="margin-top: 2%;">
-			
-
-		</div> 
+		<table id="example" class="display " cellspacing="0" width="100%">
+	         <thead>
+	            <tr>
+	            	@if(Session::has('modulo.fillable'))
+	            		@foreach (Session::get('modulo.fillable') as $col)
+	            			<th>{{$col}}</th>
+	            		@endforeach
+	            	@endif               
+	            </tr>
+	        </thead>              
+	    </table>
+    
 
 		<!-- Form en blanco para capturar la url editar y eliminar-->
 	    {!! Form::open(array('id'=>'form_ver','url' => 'servicio/ver')) !!}
@@ -300,6 +308,57 @@
 	{{ Html::script('js/lib/bootstrap-timepicker.min.js') }}
 	{{ Html::script('js/lib/chosen.jquery.min.js')}}
 	{{ Html::script('js/lib/moment.js') }}
+
+	<script type="text/javascript">
+	javascript:clu_servicio.table = $('#example').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('servicio/listarajax')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [				   
+		        { "data": "names_user"},        	            
+		        { "data": "surnames_user" },
+		        { "data": "city" },
+		        { "data": "name_specialist" },		        
+		        { "data": "name_specialty" },
+		        { "data": "date_service_time" },
+		        { "data": "status" },
+		        { "data": "especialty_id", "visible":false },
+		        { "data": "especialist_id", "visible":false },
+		        { "data": "subentity_id", "visible":false },
+		        { "data": "suscription_id", "visible":false }
+		                    
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    }		    
+		});
+		@if(Session::has('filtro'))
+			clu_servicio.table.search( "{{Session::get('filtro')}}" ).draw();
+		@endif
+		javascript:$('#example tbody').on( 'click', 'tr', function () {
+		    if ($(this).hasClass('selected')) {
+		        $(this).removeClass('selected');
+		    }
+		    else {
+		    	clu_servicio.table.$('tr.selected').removeClass('selected');
+		        $(this).addClass('selected');
+		    }
+		});
+
+		$( ".solo_numeros" ).keypress(function(evt) {
+			 evt = (evt) ? evt : window.event;
+		    var charCode = (evt.which) ? evt.which : evt.keyCode;
+		    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		        return false;
+		    }
+		    return true;
+		});		
+
+
+	</script>
 	
 	<script type="text/javascript">  
 		$('.chosen-select').chosen();

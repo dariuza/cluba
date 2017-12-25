@@ -382,7 +382,7 @@ clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
 		document.getElementsByClassName('susctiptor_suscripcion')[0].appendChild(nodo);
 
 
-		//construimos el contenido
+		//construimos el contenido de beneficiarios
 		for(var i=0;i<result.data.beneficiario.length;i++){
 			var nodo = document.createElement("div");
 			nodo.setAttribute("class", "col-md-12 form-group");
@@ -406,7 +406,7 @@ clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
 			subnodo_2.appendChild(input_2);
 
 			var subnodo_3 = document.createElement("div")	
-			subnodo_3.setAttribute("class", "col-md-3");
+			subnodo_3.setAttribute("class", "col-md-2");
 			var input_3 = document.createElement('select');
 			input_3.setAttribute("class", "form-control");
 			input_3.setAttribute("name", "bns_typeid_"+i);
@@ -437,13 +437,22 @@ clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
 			subnodo_3.appendChild(input_3);
 
 			var subnodo_4 = document.createElement("div")	
-			subnodo_4.setAttribute("class", "col-md-3");
+			subnodo_4.setAttribute("class", "col-md-2");
 			var input_4 = document.createElement("input");
 			input_4.setAttribute("class", "form-control solo_numeros");
 			input_4.setAttribute("name", "bns_identificacion_"+i);	
 			input_4.setAttribute("placeholder", "Identificacion");
 			input_4.value=result.data.beneficiario[i].identification;			
 			subnodo_4.appendChild(input_4);
+
+			var subnodo_41 = document.createElement("div")	
+			subnodo_41.setAttribute("class", "col-md-2");
+			var input_41 = document.createElement("input");
+			input_41.setAttribute("class", "form-control");
+			input_41.setAttribute("name", "bns_telefono_"+i);	
+			input_41.setAttribute("placeholder", "Teléfono");
+			input_41.value=result.data.beneficiario[i].movil_number;			
+			subnodo_41.appendChild(input_41);
 
 			var subnodo_5 = document.createElement("div")	
 			subnodo_5.setAttribute("class", "col-md-2");
@@ -465,6 +474,7 @@ clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
 			nodo.appendChild(subnodo_2);//Apellidos de beneficiario
 			nodo.appendChild(subnodo_3);//Tipo id beneficiario
 			nodo.appendChild(subnodo_4);//Identificacion
+			nodo.appendChild(subnodo_41);//Contacto
 			nodo.appendChild(subnodo_5);//Boton
 			nodo.appendChild(subnodo_6);//Id de beneficiario
 
@@ -480,6 +490,7 @@ clu_servicio.prototype.verRespuestaConsultaModal = function(result) {
   			datos['surnames'] = $("input[name='bns_apellidos_"+this.id.split('_')[2]+"']" ).val();
   			datos['type_id'] = $("#bns_typeid_"+this.id.split('_')[2] ).val();
   			datos['identification'] = $("input[name='bns_identificacion_"+this.id.split('_')[2]+"']" ).val();
+  			datos['telefono'] = $("input[name='bns_telefono_"+this.id.split('_')[2]+"']" ).val();
   			datos['id'] = $("input[id='bns_id_"+this.id.split('_')[2]+"']" ).val();
 
   			seg_ajaxobject.peticionajax($('#form_edit_bnf').attr('action'),datos,"clu_servicio.respuestaEditBeneficiario");
