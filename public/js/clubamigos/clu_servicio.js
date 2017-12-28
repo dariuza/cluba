@@ -73,6 +73,97 @@ clu_servicio.prototype.verRespuestaEntidades = function(result) {
 	
 };
 
+clu_servicio.prototype.opt_ver = function() {
+
+	if(clu_servicio.table.rows('.selected').data().length){
+
+		var datos = new Array();
+  		datos['id_service'] = clu_servicio.table.rows('.selected').data()[0].id;
+  		datos['especialty_id'] = clu_servicio.table.rows('.selected').data()[0].especialty_id;
+  		datos['especialist_id'] = clu_servicio.table.rows('.selected').data()[0].especialist_id;
+  		datos['subentity_id'] = clu_servicio.table.rows('.selected').data()[0].subentity_id;
+  		datos['status'] = clu_servicio.table.rows('.selected').data()[0].status;
+  		datos['suscription_id'] = clu_servicio.table.rows('.selected').data()[0].suscription_id;
+  		
+
+  		seg_ajaxobject.peticionajax($('#form_ver_servicio').attr('action'),datos,"clu_servicio.verServicioRespuesta");
+
+	}else{
+
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></br></div>');
+
+	}
+
+};
+
+clu_servicio.prototype.verServicioRespuesta = function(result) {
+
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html('');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html('');
+
+	//tab 1
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >USUARIO: '+result.data.servicio.names_user+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >CONTACTO USUARIO: '+result.data.servicio.surnames_user+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >IDENTIFICACIÓN USUARIO: '+result.data.servicio.identification_user+'</div>');	
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >DÍA: '+result.data.servicio.day+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >FECHA: '+result.data.servicio.date_service+' </div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >HORA: '+result.data.servicio.hour_start+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >DURACIÓN: '+result.data.servicio.duration+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >PRECIO: '+result.data.servicio.price+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >SUCURSAL: '+result.data.entidad.business_name+' - '+result.data.sucursal.sucursal_name+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >CIUDAD: '+result.data.servicio.city+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >DIRECCIÓN SUCURSAL: '+result.data.sucursal.adress+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >EMAIL SUCURSAL: '+result.data.sucursal.email_contact+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELEFONO 1 SUCURSAL: '+result.data.sucursal.phone1_contact+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELEFONO 2 SUCURSAL: '+result.data.sucursal.phone2_contact+'</div>');
+	
+	
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');
+	
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b>INFORMACIÓN DE ENTIDAD</b></div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >ENTIDAD: '+result.data.entidad.business_name+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >NIT: '+result.data.entidad.nit+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >REPRESENTANTE LEGAL: '+result.data.entidad.legal_representative+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >CONTACTO: '+result.data.entidad.contact_representative+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >EMAIL CONTACTO: '+result.data.entidad.email_contact+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO ENTIDAD 1: '+result.data.entidad.phone1_contact+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO ENTIDAD 2: '+result.data.entidad.phone2_contact+'</div>');
+
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');
+	
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b>INFORMACIÓN DE ESPECIALISTA</b></div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >ESPECIALIDAD: '+result.data.especialidad.name+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >CÓDIGO: '+result.data.especialidad.code+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >DESCRIPCIÓN: '+result.data.especialidad.description+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >NOMBRES ESPECIALISTA: '+result.data.especialista.name+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >IDENTIFICACIÓN: '+result.data.especialista.identification+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO 1: '+result.data.especialista.phone1+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO 2: '+result.data.especialista.phone2+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >EMAIL ESPECIALISTA: '+result.data.especialista.email+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >NOMBRES ASISTENTE: '+result.data.especialista.name_assistant+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO 1 ASISTENTE: '+result.data.especialista.phone1_assistant+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >TELÉFONO 2 ASISTENTE: '+result.data.especialista.phone2_assistant+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" >EMAIL ASISTENTE: '+result.data.especialista.email_assistant+'</div>');
+
+	//tab 2
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >CÓDIGO: '+result.data.suscripcion[0].code+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >ESTADO: '+result.data.suscripcion[0].state+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >FECHA SUSCRIPCIÓN: '+result.data.suscripcion[0].date_suscription+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >FECHA VIGENCIA: '+result.data.suscripcion[0].date_expiration+'</div>');
+	
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');
+	
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-12"  ><b>INFORMACIÓN DE TITULAR</b></div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >NOMBRES: '+result.data.titular[0].names+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >APELLIDOS: '+result.data.titular[0].surnames+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >TELÉFONO FIJO: '+result.data.titular[0].fix_number+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >TELÉFONO MOVIL: '+result.data.titular[0].movil_number+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >DIRECCIÓN: '+result.data.titular[0].city+' - '+result.data.titular[0].adress+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" >FECHA VIGENCIA: '+result.data.titular[0].identificacion+'</div>');
+	
+	$("#servicio_ver_modal").modal();
+};
+
 clu_servicio.prototype.opt_ver_disponibilidad = function() {
 
 	if(clu_servicio.table.rows('.selected').data().length){
@@ -520,6 +611,67 @@ clu_servicio.prototype.respuestaEditBeneficiario = function(result) {
     });
 	
 };
+
+
+clu_servicio.prototype.opt_edt = function() {
+
+	if(clu_servicio.table.rows('.selected').data().length){
+
+		var datos = new Array();
+  		datos['id_service'] = clu_servicio.table.rows('.selected').data()[0].id;
+  		seg_ajaxobject.peticionajax($('#form_edit_servicio').attr('action'),datos,"clu_servicio.editarServicioRespuesta");
+  		
+	}else{
+
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></br></div>');
+
+	}
+
+};
+
+clu_servicio.prototype.editarServicioRespuesta = function(result) {
+
+	
+	$("#servicio_editar_modal").modal();
+}
+
+clu_servicio.prototype.opt_delete = function() {
+
+	if(clu_servicio.table.rows('.selected').data().length){
+
+		var r = confirm("Estas segur@ de borrar el servicio seleccionado!!!");
+
+		if (r == true) {
+	        var datos = new Array();
+  			datos['id_service'] = clu_servicio.table.rows('.selected').data()[0].id;  		
+
+  			seg_ajaxobject.peticionajax($('#form_delete_servicio').attr('action'),datos,"clu_servicio.borrarServicioRespuesta");
+  			
+	    }
+		
+
+	}else{
+
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></br></div>');
+
+	}
+
+};
+
+clu_servicio.prototype.borrarServicioRespuesta = function(result) {
+
+	if(result.respuesta == true){
+		$('.alerts').html('<div class="alert alert-success alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>¡Muy bien!</strong> Se logro borrar el registro correctamente!!!.<br><br><ul><li>Esta operación es irreversible, ahora si quieres recuperar el registro deberas crear la cita nuevamente dando click en la opción agregar</li></ul></br></div>');
+		clu_servicio.table.row('.selected').remove().draw( false );
+
+	}else{
+		clu_servicio.table.$('tr.selected').removeClass('selected');
+		$('.alerts').html('<div class="alert alert-info alert-dismissable"><button type="button" class="close close_alert_message" data-dismiss="alert">&times;</button><strong>¡No se logro borrar el registro!</strong> Intentalo nuevamente!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></br></div>');
+	}
+	
+};
+
+
 
 
 

@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('AvailableTableSeeder');			
 		$this->call('AvailableXSpecialtyTableSeeder');	
 		$this->call('BeneficiaryTableSeeder');	
+		$this->call('CluStateServiceTableSeeder');	
 		$this->call('ServiceTableSeeder');			
 
 	}

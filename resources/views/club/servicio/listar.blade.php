@@ -58,6 +58,9 @@
 			border: 1px solid;
     		text-align: center;
 		}
+		.tab_cita{
+			padding: 15px;
+		}
 		
 		
 	</style>
@@ -103,9 +106,11 @@
 	            					<span class="{{$opc['icono']}}" aria-hidden="true" style = "margin-right:5px; color:#666699;" ></span>{{$opc[$key]}}
 	            				</div>
 	            			@elseif($opc['accion'] == 'eliminar')
-	            				<div id = "-1" class = "message_mod bnt_lugar" >           				
-	            					<span class="{{$opc['icono']}}" aria-hidden="true" style = "margin-right:5px; color:#666699;" ></span>{{$opc[$key]}}
-	            				</div>
+	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
+		            				<a href="javascript:clu_servicio.opt_delete()" class="site_title site_title2" style = "text-decoration: none; ">
+			            				<i class="{{$opc['icono']}}"></i>
+			            			</a>
+		            			</div>	
 	            			@else
 	            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">		
 		            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
@@ -185,7 +190,38 @@
 @section('modal')
 
 	<div class="modal fade" id="servicio_ver_modal" role="dialog" data-backdrop="false">
-	    <div class="modal-dialog modal-lg">	    
+	    <div class="modal-dialog modal-lg">
+	    	<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" id="form_entidad_title" >Servicio</h4>
+				</div>
+
+				<div class = "alerts-module"></div>				
+
+				<div class="modal-body"> 
+					<ul class="nav nav-tabs">
+						<li role="bnes_cnt" class="active"><a href="#tab_cita1" data-toggle="tab">CITA</a></li>
+						<li role="bnes_cnt"><a href="#tab_cita2" data-toggle="tab">SUSCRIPCION</a></li>
+					</ul> 
+
+					<div class="tab-content">
+						<div class="tab-pane fade in active tab_cita" id="tab_cita1">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 row_tab1_content"></div>
+							</div>
+						</div>
+						<div class="tab-pane fade tab_cita" id="tab_cita2">
+							<div class="row ">
+								<div class="col-md-12 col-md-offset-0 row_tab2_content"></div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
 	    </div>
     </div>
 
@@ -290,14 +326,45 @@
 
 			</div> 
 	    </div>
-
-	    {!! Form::open(array('id'=>'form_consult_usermodal','url' => 'servicio/consultarusermodal')) !!}
-    	{!! Form::close() !!}
-
-    	{!! Form::open(array('id'=>'form_edit_bnf','url' => 'servicio/editbeneficiario')) !!}
-    	{!! Form::close() !!}
-
     </div>
+
+    <div class="modal fade" id="servicio_editar_modal" role="dialog" data-backdrop="false">
+    	 <div class="modal-dialog modal-sm">
+	    	<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title" id="form_entidad_title" >Editar Servicio</h4>
+				</div>
+
+				<div class = "alerts-module"></div>				
+
+				<div class="modal-body"> 
+					
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0 row_content"></div>						
+					</div>
+
+				</div>
+
+			</div>
+	    </div>
+    </div>
+
+    {!! Form::open(array('id'=>'form_consult_usermodal','url' => 'servicio/consultarusermodal')) !!}
+	{!! Form::close() !!}
+
+	{!! Form::open(array('id'=>'form_edit_bnf','url' => 'servicio/editbeneficiario')) !!}
+	{!! Form::close() !!}
+
+	{!! Form::open(array('id'=>'form_ver_servicio','url' => 'servicio/consultarservicio')) !!}
+	{!! Form::close() !!}
+
+	{!! Form::open(array('id'=>'form_delete_servicio','url' => 'servicio/borrarservicio')) !!}
+	{!! Form::close() !!}
+
+	{!! Form::open(array('id'=>'form_edit_servicio','url' => 'servicio/editarservicio')) !!}
+	{!! Form::close() !!}
 	
 @endsection
 
@@ -324,7 +391,7 @@
 		        { "data": "name_specialist" },		        
 		        { "data": "name_specialty" },
 		        { "data": "date_service_time" },
-		        { "data": "status" },
+		        { "data": "name_state" },
 		        { "data": "especialty_id", "visible":false },
 		        { "data": "especialist_id", "visible":false },
 		        { "data": "subentity_id", "visible":false },
@@ -333,7 +400,16 @@
 		    ],	       
 		    "language": {
 		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
-		    }		    
+		    },
+		     "fnRowCallback": function( nRow, aData ) {
+		        //pintar el fondo de la fila
+		        //$('td', nRow).css('background-color', aData.alert);
+		        $(nRow).children()[6].style.backgroundColor = aData.status_alert;
+		        $(nRow).children()[5].style.backgroundColor = aData.day_alert;
+		        //	$(nRow).children()[5].style.backgroundColor = aData.next_alert;
+		        		        
+		        
+            },	    
 		});
 		@if(Session::has('filtro'))
 			clu_servicio.table.search( "{{Session::get('filtro')}}" ).draw();

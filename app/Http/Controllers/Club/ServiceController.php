@@ -12,6 +12,9 @@ use App\Core\Club\Beneficiary;
 use App\Core\Club\Service;
 use App\Core\Club\Specialist;
 use App\Core\Club\Specialty;
+use App\Core\Club\Subentity;
+use App\Core\Club\Entity;
+use App\Core\Club\Suscription;
 
 class ServiceController extends Controller {
 	
@@ -61,8 +64,7 @@ class ServiceController extends Controller {
 		$moduledata['fillable'] = ['Usuario','Contacto','Ciudad','Especialista','Especialidad','Día y Hora','Estado'];
 
 		//para llevar temporalmente las variables a la vista.
-		Session::flash('modulo', $moduledata);
-
+		Session::flash('modulo', $moduledata);		
 
 		return view('club.servicio.listar');
 		
@@ -78,10 +80,12 @@ class ServiceController extends Controller {
 			$moduledata['servicios']=\DB::table('clu_service')
 			->select('clu_service.*',
 				'clu_specialist.name as name_specialist',
-				'clu_specialty.name as name_specialty')
+				'clu_specialty.name as name_specialty',
+				'clu_state_service.state as name_state',
+				'clu_state_service.alert as status_alert')
 			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
 			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
-			
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')	
 			->where(function ($query) {
 				$query
 				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
@@ -102,15 +106,40 @@ class ServiceController extends Controller {
 			$moduledata['servicios']=\DB::table('clu_service')
 			->select('clu_service.*',
 				'clu_specialist.name as name_specialist',
-				'clu_specialty.name as name_specialty')
+				'clu_specialty.name as name_specialty',
+				'clu_state_service.state as name_state',
+				'clu_state_service.alert as status_alert')
 
-			->join('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
-			->join('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
 			->skip($request->input('start'))->take($request->input('length'))
 			->get();		
 			
 				
 			$moduledata['filtro'] = $moduledata['total'];
+		}
+
+		foreach($moduledata['servicios'] as $servicio){
+
+			$servicio->day_alert = '#dff0d8';//pago efectuado
+			//alert para dia de servicio
+			$next_day = date_create($servicio->date_service_time);//fecha proximo pago	
+			$hoy = new DateTime();
+			//$hoy = $hoy->format('Y-m-d');
+			//$hoy = date_create($hoy);
+				
+			$diff = $hoy->diff(new DateTime($servicio->date_service_time), true)->days + 1;
+			if($hoy > $next_day) {$diff = $diff*-1;}
+
+			if($diff <= 0){
+				$servicio->day_alert = '#f2dede';				
+			}elseif($diff <= 1){
+				$servicio->day_alert = '#fff5cc';
+			}elseif($diff >= 2){
+				$servicio->day_alert = '#d9edf7';
+			}
+
 		}
 		
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['servicios']]);	
@@ -184,7 +213,7 @@ class ServiceController extends Controller {
 			$date = date_create($request->input('fechahora'));			
 
 			$servicio->city = $request->input()['municipio'];
-			$servicio->price = $request->input()['price'];
+			$servicio->price = str_replace('$','',$request->input()['price']);
 			$servicio->identification_user = $request->input()['identificacion'];
 			$servicio->names_user = $request->input()['nombreusuario'];
 			$servicio->surnames_user = $request->input()['numerocontacto'];
@@ -681,6 +710,61 @@ class ServiceController extends Controller {
 		}
 		
 		return response()->json(['respuesta'=>true]);
+	}
+
+
+	public function postConsultarservicio(Request $request){
+
+		$array = array();
+
+		$array['servicio'] = Service::find($request->input()['id_service']);		
+		$array['especialidad'] = Specialty::find($request->input()['especialty_id']);		
+		$array['especialista'] = Specialist::find($request->input()['especialist_id']);		
+		$array['sucursal'] = Subentity::find($request->input()['subentity_id']);		
+		$array['entidad'] = Entity::find($array['sucursal']->entity_id);		
+		//$array['suscripcion']= Suscription::find($request->input()['suscription_id']);	
+		$array['suscripcion'] = \DB::table('clu_suscription')
+		->select(
+			'clu_suscription.*',
+			'clu_state.state as state')	
+		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
+		->where('clu_suscription.code','LIKE',$request->input('id'))
+		->get();
+		
+		$array['titular'] = \DB::table('seg_user_profile')
+		->select('seg_user_profile.*',
+			'clu_suscription.*',
+			'clu_state.state as estado',
+			'clu_suscription.id as suscription_id',
+			'clu_suscription.code as suscription_code')
+		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
+		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
+		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
+		->where('clu_suscription.id',$request->input()['suscription_id'])
+		->get();	
+
+		return response()->json(['respuesta'=>true,'data'=>$array]);
+
+	}
+
+	public function postBorrarservicio(Request $request){
+
+		$servicio = Service::find($request->input()['id_service']);		
+
+		try {
+			$servicio->delete();			
+		}catch (\Illuminate\Database\QueryException $e) {			
+			return response()->json(['respuesta'=>false]);
+		}
+
+		return response()->json(['respuesta'=>true]);		
+	}
+
+	public function postEditarservicio(Request $request){
+
+		$array = \DB::table('clu_state_service')->get();
+		return response()->json(['respuesta'=>true,'data'=>$array]);
+
 	}
 
 	
