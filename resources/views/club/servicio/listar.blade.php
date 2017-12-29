@@ -340,12 +340,24 @@
 				<div class = "alerts-module"></div>				
 
 				<div class="modal-body"> 
-					
+					{!! Form::open(array('url' => 'servicio/metodeditarservicio', 'id'=>'form_editar_servicio')) !!}	
 					<div class="row ">
-						<div class="col-md-12 col-md-offset-0 row_content"></div>						
+						<div class="col-md-12 col-md-offset-0 row_content_edit">						
+
+							{!! Form::select('sel_status_service',array(), null, array('class' => 'form-control chosen-select sel_status_service','id'=>'sel_status_service','placeholder'=>'Ingresa el estado de la cita')) !!}
+
+							{!! Form::hidden('id_service_form', null) !!}							
+
+						</div>						
 					</div>
+					{!! Form::close() !!}
 
 				</div>
+
+				<div class="modal-footer">					
+					<button type="submit" form = "form_editar_servicio" class="btn btn-default" id="form_entidad_button" >Editar Servicio</button>	         
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
+		        </div>
 
 			</div>
 	    </div>

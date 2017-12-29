@@ -760,12 +760,32 @@ class ServiceController extends Controller {
 		return response()->json(['respuesta'=>true]);		
 	}
 
+	//consulta javascript ajax
 	public function postEditarservicio(Request $request){
 
-		$array = \DB::table('clu_state_service')->get();
+		$array['estados'] = \DB::table('clu_state_service')->get();
 		return response()->json(['respuesta'=>true,'data'=>$array]);
 
 	}
+
+	//datos que llegan el form
+	public function postMetodeditarservicio(Request $request){
+
+		$servicio = Service::find($request->input()['id_service_form']);		
+		$servicio->status = $request->input()['sel_status_service'];
+
+		try {
+			$servicio->save();						
+		}catch (\Illuminate\Database\QueryException $e) {			
+			$message = 'No se puedo editar el servicio';				
+			return Redirect::to('servicio/listar')->with('error', $message)->withInput();			
+		}
+		
+		$message = 'Servicio correctamente editado';				
+		return Redirect::to('servicio/listar')->with('message', $message)->withInput();			
+	}
+
+	
 
 	
 	

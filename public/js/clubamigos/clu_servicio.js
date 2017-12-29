@@ -342,6 +342,7 @@ clu_servicio.prototype.verRespuestaConsulta = function(result) {
 };
 
 clu_servicio.prototype.opt_consultar_usuario = function() {
+	
 	document.getElementsByClassName('info_suscripcion')[0].textContent="";
 	document.getElementsByClassName('susctiptor_suscripcion')[0].textContent="";
 	document.getElementsByClassName('pull_suscripcion')[0].textContent="";
@@ -612,7 +613,6 @@ clu_servicio.prototype.respuestaEditBeneficiario = function(result) {
 	
 };
 
-
 clu_servicio.prototype.opt_edt = function() {
 
 	if(clu_servicio.table.rows('.selected').data().length){
@@ -631,6 +631,34 @@ clu_servicio.prototype.opt_edt = function() {
 
 clu_servicio.prototype.editarServicioRespuesta = function(result) {
 
+	if(result.respuesta){
+		if(result.data.length != 0){
+
+			var selects = document.getElementsByClassName("sel_status_service")[0];
+			$('.sel_status_service').empty();
+			for(var i in result.data.estados) {
+				var opt1 = document.createElement('option');
+				opt1.value = result.data.estados[i].id;
+				opt1.innerHTML = result.data.estados[i].state;
+				if(clu_servicio.table.rows('.selected').data()[0].status == result.data.estados[i].id) opt1.setAttribute('selected','selected');
+				selects.appendChild(opt1);			
+				opt1 = undefined;
+			}
+
+			$('.sel_status_service').trigger("chosen:updated");	
+
+			//input for id servicios			
+			$("input[name='id_service_form']").val(clu_servicio.table.rows('.selected').data()[0].id);
+
+		}else{
+			$('.sel_status_service').empty();
+			$('.sel_status_service').trigger("chosen:updated");	
+		}
+
+	}else{
+		$('.sel_status_service').empty();
+		$('.sel_status_service').trigger("chosen:updated");
+	}
 	
 	$("#servicio_editar_modal").modal();
 }
