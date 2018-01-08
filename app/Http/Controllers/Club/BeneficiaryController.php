@@ -118,7 +118,8 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
+					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -142,7 +143,8 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
+					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -166,7 +168,8 @@ class BeneficiaryController extends Controller {
 					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
+					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
+					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -211,7 +214,8 @@ class BeneficiaryController extends Controller {
 						->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
 						->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')	
 						->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
-						->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%');
+						->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
+						->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 					})
 					->orderBy($order_column, $order_dir)
 					->skip($request->input('start'))->take($request->input('length'))

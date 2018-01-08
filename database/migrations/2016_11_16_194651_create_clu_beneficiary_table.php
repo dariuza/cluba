@@ -26,10 +26,12 @@ class CreateCluBeneficiaryTable extends Migration
     		$table->integer('price');
     		$table->string('civil_status');
     		$table->string('more');
+            $table->date('birthdate')->nullable();
+            $table->string('adress')->nullable();
+            $table->string('city')->nullable();
+            $table->string('email')->nullable();
     		$table->integer('license_id')->unsigned();
-    		$table->foreign('license_id')->references('id')->on('clu_license')->onDelete('cascade');
-    		//$table->integer('titular_id')->unsigned();
-    		//$table->foreign('titular_id')->references('id')->on('seg_user')->onDelete('cascade');    		
+    		$table->foreign('license_id')->references('id')->on('clu_license')->onDelete('cascade');    		
     		$table->timestamps();
     	});
     }
