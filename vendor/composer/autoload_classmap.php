@@ -29,6 +29,7 @@ return array(
     'CreateCluLicenseTable' => $baseDir . '/database/migrations/2016_11_16_115551_create_clu_license_table.php',
     'CreateCluNeighborhoodTable' => $baseDir . '/database/migrations/2016_10_29_124550_create_clu_neighborhood_table.php',
     'CreateCluPaymentBeneficiaryTable' => $baseDir . '/database/migrations/2016_11_16_205559_create_clu_payment_beneficiary_table.php',
+    'CreateCluPaymentMethodTable' => $baseDir . '/database/migrations/2017_12_29_174433_create_clu_payment_method_table.php',
     'CreateCluPaymentTable' => $baseDir . '/database/migrations/2016_09_26_214401_create_clu_payment_table.php',
     'CreateCluServiceTable' => $baseDir . '/database/migrations/2017_11_25_124708_create_clu_service_table.php',
     'CreateCluSpecialistTable' => $baseDir . '/database/migrations/2017_01_25_134143_create_clu_specialist_table.php',

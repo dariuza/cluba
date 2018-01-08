@@ -728,7 +728,7 @@ class ServiceController extends Controller {
 			'clu_suscription.*',
 			'clu_state.state as state')	
 		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')			
-		->where('clu_suscription.code','LIKE',$request->input('id'))
+		->where('clu_suscription.id',$request->input()['suscription_id'])
 		->get();
 		
 		$array['titular'] = \DB::table('seg_user_profile')
