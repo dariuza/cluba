@@ -154,6 +154,37 @@
 								</div>
 							</div>
 							--}}
+
+
+							<div class="form-group input-grp">									
+								<div class="col-md-12">
+									{!! Form::label('birthdate', 'Fecha de nacimiento', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('birthdate',old('birthdate'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
+								</div>
+							</div>
+
+							<div class="form-group input-grp">									
+								<div class="col-md-12">
+									{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('adress',old('adress'), array('class' => 'form-control','placeholder'=>'Ingresa la dirección de residencia')) !!}
+								</div>
+							</div>
+
+							<div class="form-group input-grp">									
+								<div class="col-md-12">
+									@if(old('city'))
+										{!! Form::label('city', 'Ciudad', array('class' => 'col-md-12 control-label')) !!}
+										{!! Form::select('city',Session::get('modulo.ciudades'),old('city'), array('class' => 'form-control','placeholder'=>'Ingresa la ciudad de recidencia')) !!}
+									@else
+										{!! Form::label('city', 'Ciudad', array('class' => 'col-md-12 control-label')) !!}
+										{!! Form::select('city',Session::get('modulo.ciudades'),null, array('class' => 'form-control','placeholder'=>'Ingresa la ciudad de recidencia')) !!}	
+									@endif	
+								</div>
+							</div>
+
+							
+
+
 						</div>
 						
 						<div class="tab-pane fade" id="tab2">
@@ -221,7 +252,9 @@
 		$('.fecha_pago').datetimepicker({
 			dateFormat: "yy-mm-dd",
 			timeFormat: "hh:mm:ss",		
-		});		
+		});
+
+		javascript:seg_user.iniciarDatepiker('birthdate');//todavia no esta definido		
   		
 	    
 		
