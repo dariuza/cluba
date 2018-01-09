@@ -211,7 +211,7 @@
       </div>     
 	</div>
 	
-	{--
+	
 	<div class="modal fade" id="beneficiario_abono_modal" role="dialog" data-backdrop="false">
 	    <div class="modal-dialog">	    
 	      <!-- Modal content-->
@@ -233,7 +233,7 @@
 	      </div>
       </div>
 	</div>
-	--}}
+	
 
 @endsection
 

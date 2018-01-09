@@ -43,6 +43,11 @@
 	.ui-timepicker-div.ui-timepicker-oneLine dl dd.ui_tpicker_microsec:before { content:'.'; display:inline-block; }
 	.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_unit_hide,
 	.ui-timepicker-div.ui-timepicker-oneLine .ui_tpicker_unit_hide:before{ display: none; }
+
+	.chosen-container .chosen-container-multi{
+		border: 1px solid #ccc !important;
+		border-radius: 4px !important;
+	}
 		
 </style>
 
@@ -146,6 +151,7 @@
 									{!! Form::text('movil_number', old('movil_number'), array('class' => 'form-control','placeholder'=>'Ingresa telefono Celular'))!!}
 								</div>
 							</div>
+							
 							{{--
 							<div class="form-group">
 								{!! Form::label('titular_id', 'Titular', array('class' => 'col-md-4 control-label')) !!}
@@ -169,17 +175,11 @@
 									{!! Form::text('adress',old('adress'), array('class' => 'form-control','placeholder'=>'Ingresa la dirección de residencia')) !!}
 								</div>
 							</div>
-
-							<div class="form-group input-grp">									
-								<div class="col-md-12">
-									@if(old('city'))
-										{!! Form::label('city', 'Ciudad', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::select('city',Session::get('modulo.ciudades'),old('city'), array('class' => 'form-control','placeholder'=>'Ingresa la ciudad de recidencia')) !!}
-									@else
-										{!! Form::label('city', 'Ciudad', array('class' => 'col-md-12 control-label')) !!}
-										{!! Form::select('city',Session::get('modulo.ciudades'),null, array('class' => 'form-control','placeholder'=>'Ingresa la ciudad de recidencia')) !!}	
-									@endif	
-								</div>
+							<div class="form-group input-grp">	
+							<div class="col-md-12">
+								{!! Form::label('city', 'Municipio recidencia', array('class' => 'col-md-12 control-label')) !!}
+								{!! Form::select('city',Session::get('modulo.ciudades'),null, array('class' => 'form-control ','placeholder'=>'Municipio de Beneficiario')) !!}
+							</div>
 							</div>
 
 							
@@ -241,6 +241,7 @@
 @endsection
 
 @section('script')
+	<script type="text/javascript" src="{{ asset('/js/lib/chosen.jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/js/lib/datetimepiker.js') }}"></script>	
 	<script type="text/javascript">
 		
@@ -255,6 +256,9 @@
 		});
 
 		javascript:seg_user.iniciarDatepiker('birthdate');//todavia no esta definido		
+
+		$('.chosen-select').chosen();
+		$('.chosen-container').width('100%');
   		
 	    
 		

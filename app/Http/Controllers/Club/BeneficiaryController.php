@@ -332,12 +332,21 @@ class BeneficiaryController extends Controller {
 	public function getCrear($id_app=null,$categoria=null,$id_mod=null){	
 		//Modo de evitar que otros roles ingresen por la url
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
+
+		
 			
 		return Redirect::to('beneficiario/agregar');
 	}
 	public function getAgregar(){
+
+		//consultamos las ciudades
+		$citys = \DB::table('clu_city')->get();
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades']=$ciudades;
 		
-		return view('club.beneficiario.agregar');
+		return view('club.beneficiario.agregar')->with('modulo',$moduledata);;
 	}
 	//función para guardar usuarios con su perfil
 	public function postSave(Request $request){
@@ -469,7 +478,14 @@ class BeneficiaryController extends Controller {
 	}
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
-				
+		
+		//consultamos las ciudades
+		$citys = \DB::table('clu_city')->get();
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades']=$ciudades;
+
 		$bne =
 		Beneficiary::
 		where('clu_beneficiary.id', $id)
@@ -508,7 +524,7 @@ class BeneficiaryController extends Controller {
 		Session::flash('titulo', 'Editar');
 		
 		//return Redirect::to('beneficiario/agregar')->with('modulo',$moduledata);
-		return Redirect::to('beneficiario/agregar');
+		return Redirect::to('beneficiario/agregar')->with('modulo',$moduledata);
 	}
 	
 	public function postBuscar(Request $request){
