@@ -682,11 +682,17 @@ class SuscriptionController extends Controller {
 			$departamentos[$department->id] = $department->department;
 		}
 		$moduledata['departamentos']=$departamentos;
+
+		$citys = \DB::table('clu_city')->get();	
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades2']=$ciudades;
 			
 		return Redirect::to('suscripcion/agregar')->with('modulo',$moduledata);
 	}
 
-	public function getAgregar(){	
+	public function getAgregar(){
 		
 		return view('club.suscripcion.agregar');
 	}
@@ -737,6 +743,11 @@ class SuscriptionController extends Controller {
 			$ciudades[$city->id] = $city->city;
 		}
 		$moduledata['ciudades']=$ciudades;
+
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades2']=$ciudades;
 		
 		$moduledata['estados']=\DB::table('clu_state')
 		->select()
@@ -990,6 +1001,10 @@ class SuscriptionController extends Controller {
 							$bne_renovation->state = $bne['state'];
 							$bne_renovation->alert = $bne['alert'];
 							$bne_renovation->price = $bne['price'];
+							$bne_renovation->birthdate = $bne['birthdate'];
+							$bne_renovation->adress = $bne['adress'];
+							$bne_renovation->city = $bne['city'];
+							$bne_renovation->email = $bne['email'];
 							$bne_renovation->license_id = $c_rel[$bne['license_id']];
 							$bne_renovation->save();					
 						}catch (\Illuminate\Database\QueryException $e) {
@@ -999,11 +1014,35 @@ class SuscriptionController extends Controller {
 						}
 					}
 					
-					//bneficiarios adicionales
+					//bneficiarios adicionales salen con el codigo anterior
 
 					
+
+
+					$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
+					if(Session::get('opaplus.usuario.rol_id') == 4){
+						$moduledata['fillable'] = ['N° Contrato','suscriptor','Identificación','Fecha Vencimiento'];
+					}
 					
-					return Redirect::to('suscripcion/agregar')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
+					//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
+					$url = explode("/", Session::get('_previous.url'));
+					
+					//estas opciones se usaran para pintar las opciones adecuadamente con respecto al modulo
+					/*
+					$moduledata['modulo'] = $url[count($url)-5];
+					$moduledata['id_app'] = $url[count($url)-3];
+					$moduledata['categoria'] = $url[count($url)-2];
+					$moduledata['id_mod'] = $url[count($url)-1];
+					*/
+					$moduledata['modulo'] = 'suscripcion';
+					$moduledata['id_app'] = '2';
+					$moduledata['categoria'] = 'Componentes';
+					$moduledata['id_mod'] = '7';
+					Session::flash('modulo', $moduledata);
+					Session::flash('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code']);
+					return Redirect::to('suscripcion/listar');
+					
+					//return Redirect::to('suscripcion/agrega')->with('message', 'Suscripción se ha renovado exitosamente, codigo:'.$request->input()['code'])->with('modulo',$moduledata);
 				}
 				
 				if($request->input()['edit'] == 'TRUE'){
@@ -1254,7 +1293,11 @@ class SuscriptionController extends Controller {
 										'surnames' => $value['surnames'],
 										'relationship' => $value['relationship'],
 										'movil_number' => $value['movil'],
-										'civil_status' => $value['civil']
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
 										//'more' => $value['more']
 										));
 									}else{
@@ -1269,6 +1312,10 @@ class SuscriptionController extends Controller {
 										$bne->state = 'Pago por suscripción';
 										$bne->alert = '#dff0d8';
 										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
 										//$bne->more = $value['more'];
 										$bne->license_id = $id_cnt;
 										try {
@@ -1314,7 +1361,11 @@ class SuscriptionController extends Controller {
 										'surnames' => $value['surnames'],
 										'relationship' => $value['relationship'],
 										'movil_number' => $value['movil'],
-										'civil_status' => $value['civil']
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
 										//'more' => $value['more']
 										));
 									}else{
@@ -1346,6 +1397,10 @@ class SuscriptionController extends Controller {
 										$bne->state = 'Pago pendiente';
 										$bne->alert = '#dff0d8';
 										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
 										//$bne->more = $value['more'];
 										$bne->license_id = $cnt->id;
 										try {
@@ -1852,6 +1907,11 @@ class SuscriptionController extends Controller {
 			$ciudades[$city->id] = $city->city;
 		}
 		$moduledata['ciudades']=$ciudades;
+
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades2']=$ciudades;
 		
 		$suscripcion =
 		Suscription::
@@ -2316,6 +2376,11 @@ class SuscriptionController extends Controller {
 			$ciudades[$city->id] = $city->city;
 		}
 		$moduledata['ciudades']=$ciudades;
+
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades2']=$ciudades;
 		
 		$suscripcion =
 		Suscription::

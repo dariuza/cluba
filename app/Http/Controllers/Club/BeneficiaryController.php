@@ -112,12 +112,12 @@ class BeneficiaryController extends Controller {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.state', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.names', 'like', '%'.Session::get('search').'%')
-					->orWhere('clu_beneficiary.surnames', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.movil_number', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.city', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.email', 'like', '%'.Session::get('search').'%')
 					->orWhere('fr.identificacion', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.names', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
 					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
 					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
@@ -137,12 +137,12 @@ class BeneficiaryController extends Controller {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.state', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.names', 'like', '%'.Session::get('search').'%')
-					->orWhere('clu_beneficiary.surnames', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.movil_number', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.city', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.email', 'like', '%'.Session::get('search').'%')
 					->orWhere('fr.identificacion', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.names', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
 					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
 					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
@@ -162,12 +162,12 @@ class BeneficiaryController extends Controller {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.state', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.names', 'like', '%'.Session::get('search').'%')
-					->orWhere('clu_beneficiary.surnames', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.movil_number', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.city', 'like', '%'.Session::get('search').'%')
+					->orWhere('clu_beneficiary.email', 'like', '%'.Session::get('search').'%')
 					->orWhere('fr.identificacion', 'like',  '%'.Session::get('search').'%')
 					->orWhere('fr.names', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')
-					->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
 					->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
 					->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 				})
@@ -208,12 +208,12 @@ class BeneficiaryController extends Controller {
 						$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
 						->orWhere('clu_beneficiary.state', 'like', '%'.Session::get('search').'%')
 						->orWhere('clu_beneficiary.names', 'like', '%'.Session::get('search').'%')
-						->orWhere('clu_beneficiary.surnames', 'like', '%'.Session::get('search').'%')
+						->orWhere('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
+						->orWhere('clu_beneficiary.movil_number', 'like', '%'.Session::get('search').'%')
+						->orWhere('clu_beneficiary.city', 'like', '%'.Session::get('search').'%')
+						->orWhere('clu_beneficiary.email', 'like', '%'.Session::get('search').'%')
 						->orWhere('fr.identificacion', 'like',  '%'.Session::get('search').'%')
 						->orWhere('fr.names', 'like',  '%'.Session::get('search').'%')
-						->orWhere('fr.surnames', 'like',  '%'.Session::get('search').'%')
-						->orWhere('fr.state', 'like',  '%'.Session::get('search').'%')	
-						->orWhere('fr.city', 'like',  '%'.Session::get('search').'%')
 						->orWhere('ss.date_suscription', 'like', '%'.Session::get('search').'%')
 						->orWhere('ss.code', 'like', '%'.Session::get('search').'%');
 					})
@@ -359,7 +359,16 @@ class BeneficiaryController extends Controller {
 			}
 		}
 		$request->replace($array_input);
-		
+
+		//preparamos los datos
+		//consultamos las ciudades
+		$citys = \DB::table('clu_city')->get();
+		foreach ($citys as $city){
+			$ciudades[$city->city] = $city->city;
+		}
+		$moduledata['ciudades']=$ciudades;
+
+				
 		$messages = [
 			'required' => 'El campo :attribute es requerido.',				
 		];
@@ -384,6 +393,11 @@ class BeneficiaryController extends Controller {
 			$beneficiario->relationship = $request->input()['relationship'];
 			$beneficiario->movil_number = $request->input()['movil_number'];
 			$beneficiario->civil_status = $request->input()['civil_status'];
+			$beneficiario->birthdate = $request->input()['birthdate'];
+			$beneficiario->adress = $request->input()['adress'];
+			$beneficiario->city = $request->input()['city'];
+			$beneficiario->email = $request->input()['email'];
+			
 			
 			/*
 			$array = explode(" ",$request->input()['titular_id']);
@@ -402,7 +416,11 @@ class BeneficiaryController extends Controller {
 						'surnames' => $beneficiario->surnames,
 						'relationship' => $beneficiario->relationship,
 						'movil_number' => $beneficiario->movil_number,
-						'civil_status' => $beneficiario->civil_status
+						'civil_status' => $beneficiario->civil_status,
+						'birthdate' => $beneficiario->birthdate,
+						'adress' => $beneficiario->adress,
+						'city' => $beneficiario->city,
+						'email' => $beneficiario->email
 						)
 						);
 					
@@ -418,10 +436,10 @@ class BeneficiaryController extends Controller {
 					Session::flash('titulo', 'Editar');
 						
 					//return Redirect::to('beneficiario/agregar')->withInput()->with('message', 'Beneficiario editado exitosamente')->with('modulo',$moduledata);
-					return Redirect::to('beneficiario/agregar')->withInput()->with('message', 'Beneficiario editado exitosamente');
+					return Redirect::to('beneficiario/agregar')->withInput()->with('message', 'Beneficiario editado exitosamente')->with('modulo',$moduledata);;
 					
 				}
-				return Redirect::to('beneficiario/agregar')->withInput()->with('error', 'No se hallo el titular');
+				//return Redirect::to('beneficiario/agregar')->withInput()->with('error', 'No se hallo el titular');
 				
 			}else{
 				try {
@@ -514,7 +532,11 @@ class BeneficiaryController extends Controller {
 		Session::flash('_old_input.surnames', $bne[0]['surnames']);
 		Session::flash('_old_input.relationship', $bne[0]['relationship']);
 		Session::flash('_old_input.movil_number', $bne[0]['movil_number']);
-		Session::flash('_old_input.civil_status', $bne[0]['civil_status']);		
+		Session::flash('_old_input.civil_status', $bne[0]['civil_status']);	
+		Session::flash('_old_input.birthdate', $bne[0]['birthdate']);	
+		Session::flash('_old_input.adress', $bne[0]['adress']);	
+		Session::flash('_old_input.city', $bne[0]['city']);	
+		Session::flash('_old_input.email', $bne[0]['email']);		
 		Session::flash('_old_input.state', $bne[0]['state']);
 		Session::flash('_old_input.alert', $bne[0]['alert']);
 		//Session::flash('_old_input.titular_id', $user[0]->names.' '.$user[0]->surnames.' '.$user[0]->identificacion);

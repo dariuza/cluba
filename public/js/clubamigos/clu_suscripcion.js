@@ -497,6 +497,78 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	
 	subnode_ss.appendChild(label_ss);
 	subnode_ss.appendChild(select_ss);
+
+	var subnode_br = document.createElement("div")
+	subnode_br.setAttribute("class",  "col-md-3 bne_add_"+crnt+"_"+n);
+	subnode_br.style.display = "none";
+	
+	var label_br = document.createElement("label");		
+	var input_br = document.createElement("input");
+	label_br.setAttribute("class", "col-md-12 control-label");
+	label_br.setAttribute("for", "birthdate");
+	label_br.textContent = "Fecha Nacimiento";
+	input_br.setAttribute("class", "form-control birthdate_input");
+	input_br.setAttribute("placeholder", "Ingresa la fecha de nacimiento");
+	input_br.setAttribute("name", "bne"+add+"_birthdate_"+crnt+"_"+n);
+	
+	subnode_br.appendChild(label_br);
+	subnode_br.appendChild(input_br);
+
+	var subnode_ad = document.createElement("div")
+	subnode_ad.setAttribute("class",  "col-md-3 bne_add_"+crnt+"_"+n);
+	subnode_ad.style.display = "none";
+	
+	var label_ad = document.createElement("label");		
+	var input_ad = document.createElement("input");
+	label_ad.setAttribute("class", "col-md-12 control-label");
+	label_ad.setAttribute("for", "adress");
+	label_ad.textContent = "Dirección";
+	input_ad.setAttribute("class", "form-control");
+	input_ad.setAttribute("placeholder", "Ingresa la dirección");
+	input_ad.setAttribute("name", "bne"+add+"_adress_"+crnt+"_"+n);
+	
+	subnode_ad.appendChild(label_ad);
+	subnode_ad.appendChild(input_ad);
+
+
+	var subnode_mn = document.createElement("div")
+	subnode_mn.setAttribute("class",  "col-md-3 bne_add_"+crnt+"_"+n);
+	subnode_mn.style.display = "none";
+	var label_mn = document.createElement("label");
+	label_mn.setAttribute("class", "col-md-12 control-label");	
+	label_mn.textContent = "minicipio";
+
+	var select = document.getElementsByClassName("cityes")[0];
+	var select_mn=document.createElement("select");
+	select_mn.setAttribute("class", "form-control");
+	select_mn.setAttribute("name", "bne"+add+"_city_"+crnt+"_"+n);	
+	for(var i=0;i<select.childElementCount;i++){
+		var opt = select.options[i];
+		var opt1 = document.createElement('option');		
+		opt1.value = opt.value;
+		opt1.innerHTML = opt.innerHTML;
+		select_mn.appendChild(opt1);		
+	}
+	subnode_mn.appendChild(label_mn);
+	subnode_mn.appendChild(select_mn);
+
+	var subnode_em = document.createElement("div")
+	subnode_em.setAttribute("class",  "col-md-3 bne_add_"+crnt+"_"+n);
+	subnode_em.style.display = "none";
+	
+	var label_em = document.createElement("label");		
+	var input_em = document.createElement("input");
+	label_em.setAttribute("class", "col-md-12 control-label");
+	label_em.setAttribute("for", "email");
+	label_em.textContent = "Correo Electrónico";
+	input_em.setAttribute("class", "form-control");
+	input_em.setAttribute("placeholder", "Ingresa el correo electónico");
+	input_em.setAttribute("name", "bne"+add+"_email_"+crnt+"_"+n);
+	
+	subnode_em.appendChild(label_em);
+	subnode_em.appendChild(input_em);
+
+
 	/*
 	var subnode_o = document.createElement("div")
 	subnode_o.setAttribute("class", "col-md-3");
@@ -543,6 +615,10 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	node.appendChild(subnode_r);//parentesco
 	node.appendChild(subnode_c);//Celular
 	node.appendChild(subnode_ss);//EstadoCivil
+	node.appendChild(subnode_br);//birthdate
+	node.appendChild(subnode_ad);//adress
+	node.appendChild(subnode_mn);//city
+	node.appendChild(subnode_em);//email
 	//node.appendChild(subnode_o);//more
 	node.appendChild(subnode_b);//boton
 	node.appendChild(subnode_hr);
@@ -571,7 +647,9 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	        return false;
 	    }
 	    return true;
-	});	
+	});
+
+	javascript:seg_user.iniciarDatepikerClass('birthdate_input');//nacimiento
 };
 
 clu_suscripcion.prototype.add_pay = function() {

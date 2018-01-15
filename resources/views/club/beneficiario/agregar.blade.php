@@ -162,29 +162,32 @@
 							--}}
 
 
-							<div class="form-group input-grp">									
+							<div class="form-group">									
 								<div class="col-md-12">
 									{!! Form::label('birthdate', 'Fecha de nacimiento', array('class' => 'col-md-12 control-label')) !!}
 									{!! Form::text('birthdate',old('birthdate'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
 								</div>
 							</div>
 
-							<div class="form-group input-grp">									
+							<div class="form-group ">									
 								<div class="col-md-12">
 									{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
 									{!! Form::text('adress',old('adress'), array('class' => 'form-control','placeholder'=>'Ingresa la dirección de residencia')) !!}
 								</div>
 							</div>
-							<div class="form-group input-grp">	
+							<div class="form-group">	
 							<div class="col-md-12">
 								{!! Form::label('city', 'Municipio recidencia', array('class' => 'col-md-12 control-label')) !!}
 								{!! Form::select('city',Session::get('modulo.ciudades'),null, array('class' => 'form-control ','placeholder'=>'Municipio de Beneficiario')) !!}
 							</div>
 							</div>
 
-							
-
-
+							<div class="form-group input-grp">									
+								<div class="col-md-12">
+									{!! Form::label('email', 'Correo electronico', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::email('email',old('email'), array('class' => 'form-control','placeholder'=>'Ingresa el correo electonico')) !!}
+								</div>
+							</div>
 						</div>
 						
 						<div class="tab-pane fade" id="tab2">

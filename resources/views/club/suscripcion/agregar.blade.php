@@ -487,6 +487,23 @@
 																							{!! Form::text('bne_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
 																						</div>
 																						--}}
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
+																							{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_adress_'.$cnt['id'].'_'.$bne['id'], $bne['adress'], array('class' => 'form-control ','placeholder'=>'Ingresa la dirección'))!!}
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('city', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+
+																							{!! Form::select('bne_city_'.$cnt['id'].'_'.$bne['id'],Session::get('modulo.ciudades2'),$bne['city'], array('class' => 'form-control cityes','placeholder'=>'Ingresa municipio de recidencia')) !!}	
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('email', 'Correo Electrónico', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_email_'.$cnt['id'].'_'.$bne['id'], $bne['email'], array('class' => 'form-control ','placeholder'=>'Ingresa el cooro electronico'))!!}
+																						</div>
 																			<div class="col-md-3">
 																				{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
 																				{!! Form::button('Información Adicional', array('id'=>'bne_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
@@ -553,9 +570,27 @@
 																							{!! Form::text('bne_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
 																						</div>
 																						--}}
+
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
+																							{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_adress_'.$cnt['id'].'_'.$bne['id'], $bne['adress'], array('class' => 'form-control ','placeholder'=>'Ingresa la dirección'))!!}
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('city', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+
+																							{!! Form::select('bne_city_'.$cnt['id'].'_'.$bne['id'],Session::get('modulo.ciudades2'),$bne['city'], array('class' => 'form-control cityes','placeholder'=>'Ingresa municipio de recidencia')) !!}	
+																						</div>
+																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																							{!! Form::label('email', 'Correo Electrónico', array('class' => 'col-md-12 control-label')) !!}
+																							{!! Form::text('bne_email_'.$cnt['id'].'_'.$bne['id'], $bne['email'], array('class' => 'form-control ','placeholder'=>'Ingresa el cooro electronico'))!!}
+																						</div>
 																						
 																						<div class="col-md-3">
-																							{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
+																							{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}
 																							{!! Form::button('Información Adicional', array('id'=>'bne_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
 																						</div>
 																			
@@ -613,37 +648,57 @@
 																		{!! Form::text('bneadd_surnames_'.$cnt['id'].'_'.$bne['id'], $bne['surnames'], array('class' => 'form-control','placeholder'=>'Ingresa los Apellidos'))!!}
 																	</div>
 																	
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::select('bneadd_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
-																			</div>
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
-																			</div>
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('relationship', 'Parentesco', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_relationship_'.$cnt['id'].'_'.$bne['id'], $bne['relationship'], array('class' => 'form-control','placeholder'=>'Ingresa el parentesco'))!!}
-																			</div>
-																			
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
-																			</div>
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::select('bneadd_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
-																			</div>
-																			{{--
-																			<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
-																				{!! Form::label('more', 'Otros datos', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::text('bneadd_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
-																			</div>
-																			--}}
-																			<div class="col-md-3">
-																				{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
-																				{!! Form::button('Información Adicional', array('id'=>'bneadd_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
-																			</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('typeid', 'Tipo Id', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::select('bneadd_type_id_'.$cnt['id'].'_'.$bne['id'],array('CEDULA CIUDADANIA' => 'CEDULA CIUDADANIA','TERJETA IDENTIDAD' => 'TERJETA IDENTIDAD','REGISTRO CIVIL' => 'REGISTRO CIVIL', 'CEDULA EXTRANJERIA' => 'CEDULA EXTRANJERIA'),$bne['type_id'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('identificacion', 'Identiticación', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_identification_'.$cnt['id'].'_'.$bne['id'], $bne['identification'] , array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('relationship', 'Parentesco', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_relationship_'.$cnt['id'].'_'.$bne['id'], $bne['relationship'], array('class' => 'form-control','placeholder'=>'Ingresa el parentesco'))!!}
+																	</div>
+																	
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('movil_number', 'Celular', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_movil_number_'.$cnt['id'].'_'.$bne['id'], $bne['movil_number'], array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa el teléfono movil'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::select('bneadd_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																	</div>
+																	{{--
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('more', 'Otros datos', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
+																	</div>
+																	--}}
+
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
+																		{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bne_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_adress_'.$cnt['id'].'_'.$bne['id'], $bne['adress'], array('class' => 'form-control ','placeholder'=>'Ingresa la dirección'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('city', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+
+																		{!! Form::select('bneadd_city_'.$cnt['id'].'_'.$bne['id'],Session::get('modulo.ciudades2'),$bne['city'], array('class' => 'form-control cityes','placeholder'=>'Ingresa municipio de recidencia')) !!}	
+																	</div>
+																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
+																		{!! Form::label('email', 'Correo Electrónico', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_email_'.$cnt['id'].'_'.$bne['id'], $bne['email'], array('class' => 'form-control ','placeholder'=>'Ingresa el cooro electronico'))!!}
+																	</div>
+
+
+																	<div class="col-md-3">
+																		{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
+																		{!! Form::button('Información Adicional', array('id'=>'bneadd_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
+																	</div>
 																	
 																	<div class="col-md-12"><hr size = "1"></hr></div>
 																</div>
@@ -783,12 +838,31 @@
 																		{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
 																		{!! Form::select('bne_civil_status_1_1',array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),old('civil_status'), array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																	</div>
-																	{{--																															
+																	{{--									
 																	<div class="col-md-3 bne_add_1_1" style = "display:none">
 																		{!! Form::label('more', 'Otros Datos', array('class' => 'col-md-12 control-label')) !!}
 																		{!! Form::text('bne_more_1_1', old('bne_more_1'), array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
 																	</div>
 																	--}}
+
+																	<div class="col-md-3 bne_add_1_1" style = "display:none">	
+																		{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bne_birthdate_1_1', old('bne_birthdate_number_1'), array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_1_1" style = "display:none">
+																		{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_adress_1_1', old('bne_adress_number_1'), array('class' => 'form-control ','placeholder'=>'Ingresa la dirección'))!!}
+																	</div>
+																	<div class="col-md-3 bne_add_1_1" style = "display:none">
+																		{!! Form::label('city', 'Municipio', array('class' => 'col-md-12 control-label')) !!}
+
+																		{!! Form::select('bneadd_city_1_1',Session::get('modulo.ciudades2'),old('bne_city_number_1'), array('class' => 'form-control cityes','placeholder'=>'Ingresa municipio de recidencia')) !!}	
+																	</div>
+																	<div class="col-md-3 bne_add_1_1" style = "display:none">
+																		{!! Form::label('email', 'Correo Electrónico', array('class' => 'col-md-12 control-label')) !!}
+																		{!! Form::text('bneadd_email_1_1', old('bne_email_number_1'), array('class' => 'form-control ','placeholder'=>'Ingresa el cooro electronico'))!!}
+																	</div>
+
 																	<div class="col-md-3">
 																		{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
 																		{!! Form::button('Información Adicional', array('id'=>'bne_more_1_1','class' => 'col-md-12 btn btn-default btn_more')) !!}
@@ -870,6 +944,7 @@
 	<script type="text/javascript">  
 			
   		javascript:seg_user.iniciarDatepiker('birthdate');//todavia no esta definido
+  		javascript:seg_user.iniciarDatepikerClass('birthdate_input');//nacimiento	
   		//javascript:seg_user.iniciarDatepiker('date_suscription');
 		javascript:seg_user.iniciarDatepiker('date_expiration');
 		javascript:seg_user.iniciarDatepiker('pay_interval');

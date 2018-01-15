@@ -59,6 +59,14 @@ seg_user.prototype.iniciarDatepiker = function(obj) {
     });
 };
 
+seg_user.prototype.iniciarDatepikerClass = function(obj) {
+    $( "."+obj ).datepicker({        
+        format: "yyyy-mm-dd",
+        language: "es",
+        autoclose: true
+    });
+};
+
 seg_user.prototype.iniciarDatepikerInicio = function(obj) {    
     $( "#"+obj ).datepicker({        
         format: "yyyy-mm-dd",       
