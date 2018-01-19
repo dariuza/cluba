@@ -1015,6 +1015,215 @@ class SuscriptionController extends Controller {
 					}
 					
 					//bneficiarios adicionales salen con el codigo anterior
+					//beneficiarios por suscripción
+						$array = Array();
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'bne_') !== false){
+								$vector=explode('_',$key);
+								$n=count($vector);
+								$id_bne = end($vector);
+								
+								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
+							}
+						}
+						
+						foreach($array as $key=>$vector){
+							$id_cnt = $key;
+							$ids_cnt = array();
+							$exist_cnt =License::where('clu_license.id', $key)->where('clu_license.suscription_id', $suscription_renovation->id)
+							//->where('clu_license.type', 'suscription_add')					
+							->get()->toArray();				
+							//creación de carnets
+							
+							if(empty($exist_cnt) || in_array($id_cnt,$ids_cnt)){
+								//el segundo argumento del if es ya que puede pasar que el recien creado coincida en id con $id_cnt, para carnet nuevos
+								//hay que crear un nuevo carnet, este es un nuevo beneficiary
+								$cnt = new License();
+								$cnt->type = 'suscription_add';
+								$cnt->price = env('PRICE_LICENSE',5000);
+								$cnt->date = date("Y-m-d H:i:s");
+								$cnt->suscription_id = $suscription_renovation->id;
+								try {
+									$cnt->save();
+								}catch (\Illuminate\Database\QueryException $e) {
+									//eliminamos el usuario
+									Suscription::destroy($suscription_renovation->id);
+									User::destroy($request->input()['user_id']);
+									return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+								}
+								$id_cnt = $cnt->id;
+								$ids_cnt[] = $cnt->id;
+							}
+							
+							foreach($vector as $value){
+								//alguno es no nulo
+								if(!empty($value['names']) && !empty($value['surnames'])){							
+									//verificamos la existencia de el carnet							
+									if(!empty($value['beneficiaryid'])){
+										//se pretende actualizar el beneficiario
+										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
+										'type_id' => $value['type'],
+										'identification' => $value['identification'],
+										'names' => $value['names'],
+										'surnames' => $value['surnames'],
+										'relationship' => $value['relationship'],
+										'movil_number' => $value['movil'],
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
+										//'more' => $value['more']
+										));
+									}else{
+										//nuevo suscriptor con su carnet
+										$bne = new Beneficiary();
+										$bne->type_id = $value['type'];
+										$bne->identification = $value['identification'];
+										$bne->names = $value['names'];
+										$bne->surnames = $value['surnames'];
+										$bne->relationship = $value['relationship'];
+										$bne->movil_number = $value['movil'];
+										$bne->state = 'Pago por suscripción';
+										$bne->alert = '#dff0d8';
+										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
+										//$bne->more = $value['more'];
+										$bne->license_id = $id_cnt;
+										try {
+											$bne->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($suscription_renovation->id);
+											User::destroy($request->input()['user_id']);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}	
+									}
+								
+								}else{
+									if(!empty($value['beneficiaryid'])){
+										//se pretende borrar el beneficiario
+										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
+									}
+								}
+							}						
+							
+						}
+						
+						//actualizar beneficiarios adicionales
+						$array = Array();
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'bneadd_') !== false){
+								$vector=explode('_',$key);
+								$n=count($vector);
+								$id_bne = end($vector);
+								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
+							}
+						}
+						
+						foreach($array as $vector){
+							foreach($vector as $value){
+								if(!empty($value['names']) && !empty($value['surnames'])){
+									if(!empty($value['beneficiaryid'])){
+										//se pretende actualizar el beneficiario
+										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
+										'type_id' => $value['type'],
+										'identification' => $value['identification'],
+										'names' => $value['names'],
+										'surnames' => $value['surnames'],
+										'relationship' => $value['relationship'],
+										'movil_number' => $value['movil'],
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
+										//'more' => $value['more']
+										));
+									}else{
+										//se pretende guardar
+										
+										$cnt = new License();
+										$cnt->type = 'beneficiary_add';
+										//$cnt->price = env('PRICE_LICENSE',5000);
+										$cnt->price = 0;//el precio del carnet va incluido
+										$cnt->date = date("Y-m-d H:i:s");
+										$cnt->suscription_id = $suscription_renovation->id;
+										try {
+											$cnt->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($suscription->id);
+											User::destroy($user->id);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}
+											
+										$bne = new Beneficiary();
+										$bne->type_id = $value['type'];
+										$bne->identification = $value['identification'];
+										$bne->names = $value['names'];
+										$bne->surnames = $value['surnames'];
+										$bne->relationship = $value['relationship'];
+										$bne->movil_number = $value['movil'];
+										$bne->price = env('PRICE_BENEFICIARY',20000);
+										$bne->state = 'Pago pendiente';
+										$bne->alert = '#dff0d8';
+										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
+										//$bne->more = $value['more'];
+										$bne->license_id = $cnt->id;
+										try {
+											$bne->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($suscription_renovation->id);//con destruir la suscripción se destruyen sus carnets
+											User::destroy($request->input()['user_id']);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}
+										
+									}
+								}else{
+									if(!empty($value['beneficiaryid'])){
+										//se pretende borrar el beneficiario
+										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
+										License::where('id', $key)->delete();
+									}
+								}
+								
+							}
+						}					
+					
+					//limpiar carnet en blanco
+					$cnts =
+					License::
+					where('clu_license.suscription_id', $suscription_renovation->id)
+					->get()
+					->toArray();
+									
+					$bandera_cnt = true;//para permitir solo un carnet con cero beneficiarios				
+					foreach( $cnts as $cnt){
+						
+						$total_bnes = \DB::table('clu_beneficiary')
+						->select(\DB::raw('count(*) as total'))
+						->where('license_id',$cnt['id'])
+						->get()[0]->total;
+						
+						if(!$total_bnes){
+							//el total es cero
+							if($bandera_cnt){
+								$bandera_cnt = false;
+							}else{							
+								License::where('id', $cnt['id'])->delete();
+							}
+						}					
+					}				
+					
 
 					
 

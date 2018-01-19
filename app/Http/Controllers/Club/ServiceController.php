@@ -624,6 +624,14 @@ class ServiceController extends Controller {
 						'clu_suscription.id as suscription_id')				
 					->where('clu_suscription.code','LIKE',$request->input('id'))
 					->get();
+					if(empty($array['suscripcion'])){
+						$array['suscripcion'] = \DB::table('clu_suscription')
+						->select(
+							'clu_suscription.*',
+							'clu_suscription.id as suscription_id')				
+						->where('clu_suscription.code','LIKE',' '.$request->input('id'))
+						->get();
+					}
 
 					if(!empty($array['suscripcion'])){
 
