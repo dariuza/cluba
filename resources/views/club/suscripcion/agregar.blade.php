@@ -484,13 +484,7 @@
 																							<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																								{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
 																								{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
-																							</div>
-																							{{--
-																							<div class="col-md-3">	
-																								{!! Form::label('more', 'Otros datos', array('class' => 'col-md-12 control-label')) !!}
-																								{!! Form::text('bne_more_'.$cnt['id'].'_'.$bne['id'], $bne['more'], array('class' => 'form-control','placeholder'=>'Separados por comas'))!!}
-																							</div>
-																							--}}
+																							</div>											
 																							<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
 																								{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
 																								{!! Form::text('bne_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
@@ -754,7 +748,7 @@
 
 																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
 																		{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
-																		{!! Form::text('bne_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
+																		{!! Form::text('bneadd_birthdate_'.$cnt['id'].'_'.$bne['id'], $bne['birthdate'], array('class' => 'form-control birthdate_input ','placeholder'=>'Ingresa la fecha de nacimiento'))!!}
 																	</div>
 																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																		{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
@@ -773,7 +767,7 @@
 
 																	<div class="col-md-3">
 																		{!! Form::label('more', 'Información Adicional', array('class' => 'col-md-12 control-label')) !!}																			
-																		{!! Form::button('Información Adicional', array('id'=>'bneadd_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
+																		{!! Form::button('Información Adicional', array('id'=>'bne_more_'.$cnt['id'].'_'.$bne['id'],'class' => 'col-md-12 btn btn-default btn_more')) !!}
 																	</div>
 																	
 																	<div class="col-md-12"><hr size = "1"></hr></div>

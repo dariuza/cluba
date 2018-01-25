@@ -1557,7 +1557,7 @@ class SuscriptionController extends Controller {
 								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
 							}
 						}
-						
+						//dd($array);
 						foreach($array as $vector){
 							foreach($vector as $value){
 								if(!empty($value['names']) && !empty($value['surnames'])){
