@@ -837,6 +837,402 @@ class SuscriptionController extends Controller {
 				
 				if($request->input()['renovar'] == 'TRUE'){
 
+					/**PIMERO EDITAMOS LA SUSCRIPCIÓN**/
+
+					//usuario
+					try {
+						/*
+						 $user = User::find($request->input()['user_id']);
+						$user->name = $request->input()['identification'];					
+						$user->email = $request->input()['email'];					
+						$user->save();
+						 */
+						$userAffectedRows = User::where('id', $request->input()['user_id'])->update(array('ip' => $user->ip,'name' => $user->name,'email' => $user->email,'rol_id' => $user->rol_id));					
+					}catch (\Illuminate\Database\QueryException $e){					
+						return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+					}
+					//perfil_usuario
+					
+					//crear su perfil
+					$userprofile ->identificacion =  $request->input()['identification'];
+					$userprofile ->type_id =  $request->input()['type_id'];
+					$userprofile ->names =  $request->input()['names'];
+					$userprofile ->surnames =  $request->input()['surnames'];
+					$userprofile ->birthdate =  $request->input()['birthdate'];
+					$userprofile ->birthplace =  $request->input()['birthplace'];
+					$userprofile ->sex =  $request->input()['sex'];
+					$userprofile ->adress =  $request->input()['adress'];
+					$userprofile ->state =  $department;
+					$userprofile ->city =  $city;
+					$userprofile ->neighborhood =  $request->input()['neighborhood'];
+					$userprofile ->home =  $request->input()['home'];
+					$userprofile ->movil_number =  $request->input()['movil_number'];
+					$userprofile ->fix_number =  $request->input()['fix_number'];
+					$userprofile ->profession =  $request->input()['profession'];
+					$userprofile ->paymentadress =  $request->input()['paymentadress'];
+					$userprofile ->reference =  $request->input()['reference'];
+					$userprofile ->reference_phone =  $request->input()['reference_phone'];
+					$userprofile ->template =  'default';
+					$userprofile ->location =  57;
+					$userprofile ->avatar =  'default.png';
+					$userprofile ->user_id =  $request->input()['user_id'];
+						
+					try {					
+						$userProfileAffectedRows = UserProfile::where('user_id', $request->input()['user_id'])->update(array(
+						'identificacion' => $userprofile->identificacion,
+						'type_id' => $userprofile->type_id,
+						'names' => $userprofile->names,
+						'surnames' => $userprofile->surnames,
+						'birthdate' => $userprofile->birthdate,
+						'birthplace' => $userprofile->birthplace,
+						'sex' => $userprofile->sex,
+						'adress' => $userprofile->adress,
+						'state' => $userprofile->state,
+						'city' => $userprofile->city,
+						'neighborhood' => $userprofile->neighborhood,
+						'home' => $userprofile->home,					
+						'movil_number' => $userprofile->movil_number,
+						'fix_number' => $userprofile->fix_number,					
+						'profession' => $userprofile->profession,
+						'paymentadress' => $userprofile->paymentadress,
+						'reference' => $userprofile->reference,
+						'reference_phone' => $userprofile->reference_phone,					
+						'avatar' => $userprofile->avatar));
+					}catch (\Illuminate\Database\QueryException $e) {					
+						return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+					}
+					
+					//ACTUALIZACION DE SUSCRIPCIÓN
+					/*
+					if(!empty(\DB::table('clu_suscription')->max('code'))){
+						Session::flash('_old_input.code', \DB::table('clu_suscription')->max('code') + 1);
+					}
+					*/
+					
+					//verificamos que el codigo no este en base
+					//primero consultamos la suscripcion					
+					
+						$old_suscription = \DB::table('clu_suscription')->where('id', $request->input()['suscription_id'])->get()[0];
+						if($old_suscription->code != $request->input()['code']){					
+							if(count(\DB::table('clu_suscription')->where('code', $request->input()['code'])->get())){
+								//existe el nuevo codigo
+								return Redirect::to('suscripcion/agregar')->with('error', 'N° Contrato invalido, ya existe otra suscripción con codigo: '.$request->input()['code'])->withInput()->with('modulo',$moduledata);
+							}
+						}				
+						
+						$suscription->code = $request->input()['code'];				
+						$suscription->date_suscription = date("Y-m-d H:i:s");//OJO CADA QUE SE ACTUALIZA SE ASIGNA NUEVA FECHA DE HOY
+						
+						if(!empty($request->input()['date_suscription'])){ $suscription->date_suscription = $request->input()['date_suscription'];}
+						$suscription->date_expiration = date ( 'Y-m-j' , strtotime ( '+1 year' , strtotime ( date('Y-m-j'))));
+						if(!empty($request->input()['date_expiration'])){ $suscription->date_expiration = $request->input()['date_expiration'];}					
+					
+						//si no hay renovación entonces editamos la suscripción
+						$suscription->price = $request->input()['price'];
+						$suscription->waytopay = $request->input()['waytopay'];				
+						
+						$suscription->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime ( date('Y-m-j'))));
+						if(!empty($request->input()['pay_interval'])){ $suscription->pay_interval = $request->input()['pay_interval'];}
+										
+						//$suscription->reason = $request->input()['reason'];
+						$suscription->observation = $request->input()['observation'];
+						$suscription->reason = $request->input()['provisional'];
+						$suscription->state_id = $request->input()['state_id'];
+						//vamos por el asesor
+						$array = explode(" ",$request->input()['adviser']);
+						$identification = end($array);
+						$id_adviser = UserProfile::select('user_id')
+						->where('identificacion','=',$identification)
+						->get()->toarray()[0]['user_id'];				
+						$suscription->adviser_id= $id_adviser;
+						
+						try {
+							$suscriptionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array(
+							'code' => $suscription->code,
+							'date_suscription' => $suscription->date_suscription,
+							'date_expiration' => $suscription->date_expiration,
+							'price' => $suscription->price,
+							'waytopay' => $suscription->waytopay,
+							'pay_interval' => $suscription->pay_interval,
+							'reason' => $suscription->reason,
+							'observation' => $suscription->observation,
+							'adviser_id' => $suscription->adviser_id,
+							'state_id' => $suscription->state_id));
+						}catch (\Illuminate\Database\QueryException $e) {
+							return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+						}					
+					
+						//actualización de abonos
+						$ids_pago = Array();
+						$fechas_pagos = Array();
+						$pagos = Array();
+						$recibos = Array();
+						
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'fecha_pago_') !== false){						
+								$array=explode('_',$key);
+								$id_abono = end($array);
+								$fechas_pagos[$id_abono] = $value;
+							}
+							if(strpos($key,'pago_abono_') !== false){
+								$array=explode('_',$key);
+								$id_abono = end($array);
+								$pagos[$id_abono] = $value;
+							}
+
+							if(strpos($key,'n_receipt_') !== false){
+								$array=explode('_',$key);
+								$id_abono = end($array);
+								$recibos[$id_abono] = $value;
+							}
+						}				
+						//abonos				
+						$i=0;
+						//borrado de todos los abonos
+						Payment::where('suscription_id', (int) $request->input()['suscription_id'])->delete();
+						//creación de todos los abonos
+						foreach($pagos as $key=>$value){
+							//if(!empty($fechas_pagos[$key]) && !empty($value)){
+								try{						
+									$payment = new Payment();
+									$payment->date_payment = $fechas_pagos[$key];
+									$payment->payment = $value;
+									$payment->n_receipt = $recibos[$key];
+									$payment->suscription_id = $request->input()['suscription_id'];
+									$payment->save();
+									/*
+									 $paymentAffectedRows = Payment::where('id',$key)->update(array(
+									 'date_payment' => $fechas_pagos[$key],
+									 'payment' => $value));
+									 */
+								}catch (\Illuminate\Database\QueryException $e) {
+									return Redirect::to('suscripcion/agregar')->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+								}
+								
+								//datos para interfaz grafica de abonos
+								$moduledata['pagos'][$i]['id']=$key;
+								$moduledata['pagos'][$i]['payment']=$value;
+								$moduledata['pagos'][$i]['date_payment']=$fechas_pagos[$key];
+								$moduledata['pagos'][$i]['n_receipt']=$recibos[$key];
+								$i++;							
+							//}
+						}
+
+						/**Actualizar Beneficiarios**/					
+						//beneficiarios por suscripción
+						$array = Array();
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'bne_') !== false){
+								$vector=explode('_',$key);
+								$n=count($vector);
+								$id_bne = end($vector);
+								
+								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
+							}
+						}
+						
+						foreach($array as $key=>$vector){
+							$id_cnt = $key;
+							$ids_cnt = array();
+							$exist_cnt =License::where('clu_license.id', $key)->where('clu_license.suscription_id', $request->input()['suscription_id'])
+							//->where('clu_license.type', 'suscription_add')					
+							->get()->toArray();				
+							//creación de carnets
+							
+							if(empty($exist_cnt) || in_array($id_cnt,$ids_cnt)){
+								//el segundo argumento del if es ya que puede pasar que el recien creado coincida en id con $id_cnt, para carnet nuevos
+								//hay que crear un nuevo carnet, este es un nuevo beneficiary
+								$cnt = new License();
+								$cnt->type = 'suscription_add';
+								$cnt->price = env('PRICE_LICENSE',5000);
+								$cnt->date = date("Y-m-d H:i:s");
+								$cnt->suscription_id = $request->input()['suscription_id'];
+								try {
+									$cnt->save();
+								}catch (\Illuminate\Database\QueryException $e) {
+									//eliminamos el usuario
+									Suscription::destroy($request->input()['suscription_id']);
+									User::destroy($request->input()['user_id']);
+									return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+								}
+								$id_cnt = $cnt->id;
+								$ids_cnt[] = $cnt->id;
+							}
+							
+							foreach($vector as $value){
+								//alguno es no nulo
+								if(!empty($value['names']) && !empty($value['surnames'])){							
+									//verificamos la existencia de el carnet							
+									if(!empty($value['beneficiaryid'])){
+										//se pretende actualizar el beneficiario
+										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
+										'type_id' => $value['type'],
+										'identification' => $value['identification'],
+										'names' => $value['names'],
+										'surnames' => $value['surnames'],
+										'relationship' => $value['relationship'],
+										'movil_number' => $value['movil'],
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
+										//'more' => $value['more']
+										));
+									}else{
+										//nuevo suscriptor con su carnet
+										$bne = new Beneficiary();
+										$bne->type_id = $value['type'];
+										$bne->identification = $value['identification'];
+										$bne->names = $value['names'];
+										$bne->surnames = $value['surnames'];
+										$bne->relationship = $value['relationship'];
+										$bne->movil_number = $value['movil'];
+										$bne->state = 'Pago por suscripción';
+										$bne->alert = '#dff0d8';
+										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
+										//$bne->more = $value['more'];
+										$bne->license_id = $id_cnt;
+										try {
+											$bne->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($request->input()['suscription_id']);
+											User::destroy($request->input()['user_id']);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}	
+									}
+								
+								}else{
+									if(!empty($value['beneficiaryid'])){
+										//se pretende borrar el beneficiario
+										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
+									}
+								}
+							}						
+							
+						}
+						
+						//actualizar beneficiarios adicionales
+						$array = Array();
+						foreach($request->input() as $key=>$value){
+							if(strpos($key,'bneadd_') !== false){
+								$vector=explode('_',$key);
+								$n=count($vector);
+								$id_bne = end($vector);
+								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
+							}
+						}
+						//dd($array);
+						foreach($array as $vector){
+							foreach($vector as $value){
+								if(!empty($value['names']) && !empty($value['surnames'])){
+									if(!empty($value['beneficiaryid'])){
+										//se pretende actualizar el beneficiario
+										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
+										'type_id' => $value['type'],
+										'identification' => $value['identification'],
+										'names' => $value['names'],
+										'surnames' => $value['surnames'],
+										'relationship' => $value['relationship'],
+										'movil_number' => $value['movil'],
+										'civil_status' => $value['civil'],
+										'birthdate' => $value['birthdate'],
+										'adress' => $value['adress'],
+										'city' => $value['city'],
+										'email' => $value['email']
+										//'more' => $value['more']
+										));
+									}else{
+										//se pretende guardar
+										
+										$cnt = new License();
+										$cnt->type = 'beneficiary_add';
+										//$cnt->price = env('PRICE_LICENSE',5000);
+										$cnt->price = 0;//el precio del carnet va incluido
+										$cnt->date = date("Y-m-d H:i:s");
+										$cnt->suscription_id = $request->input()['suscription_id'];
+										try {
+											$cnt->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($suscription->id);
+											User::destroy($user->id);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}
+											
+										$bne = new Beneficiary();
+										$bne->type_id = $value['type'];
+										$bne->identification = $value['identification'];
+										$bne->names = $value['names'];
+										$bne->surnames = $value['surnames'];
+										$bne->relationship = $value['relationship'];
+										$bne->movil_number = $value['movil'];
+										$bne->price = env('PRICE_BENEFICIARY',20000);
+										$bne->state = 'Pago pendiente';
+										$bne->alert = '#dff0d8';
+										$bne->civil_status = $value['civil'];
+										$bne->birthdate = $value['birthdate'];
+										$bne->adress = $value['adress'];
+										$bne->city = $value['city'];
+										$bne->email = $value['email'];
+										//$bne->more = $value['more'];
+										$bne->license_id = $cnt->id;
+										try {
+											$bne->save();
+										}catch (\Illuminate\Database\QueryException $e) {
+											//eliminamos el usuario
+											Suscription::destroy($request->input()['suscription_id']);//con destruir la suscripción se destruyen sus carnets
+											User::destroy($request->input()['user_id']);
+											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
+										}
+										
+									}
+								}else{
+									if(!empty($value['beneficiaryid'])){
+										//se pretende borrar el beneficiario
+										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
+										License::where('id', $key)->delete();
+									}
+								}
+								
+							}
+						}
+
+					
+					
+					//limpiar carnet en blanco
+					$cnts =
+					License::
+					where('clu_license.suscription_id', $request->input()['suscription_id'])
+					->get()
+					->toArray();
+									
+					$bandera_cnt = true;//para permitir solo un carnet con cero beneficiarios				
+					foreach( $cnts as $cnt){
+						
+						$total_bnes = \DB::table('clu_beneficiary')
+						->select(\DB::raw('count(*) as total'))
+						->where('license_id',$cnt['id'])
+						->get()[0]->total;
+						
+						if(!$total_bnes){
+							//el total es cero
+							if($bandera_cnt){
+								$bandera_cnt = false;
+							}else{							
+								License::where('id', $cnt['id'])->delete();
+							}
+						}					
+					}				
+
+					/**fIN DE ACTUALIZACIÓN DE SUSCRIPCION**/
+
+
 					//creamos el abono y abonamos el saldo en mora - cambiamos el estado de la suscripciòn
 					//para la suscripcion antes de renovar, castigo de cartera
 					if(intval($request->input()['mora']) > 0){
@@ -1013,219 +1409,6 @@ class SuscriptionController extends Controller {
 							return Redirect::to('suscripcion/listar');
 						}
 					}
-					
-					//bneficiarios adicionales salen con el codigo anterior
-					//beneficiarios por suscripción
-						$array = Array();
-						foreach($request->input() as $key=>$value){
-							if(strpos($key,'bne_') !== false){
-								$vector=explode('_',$key);
-								$n=count($vector);
-								$id_bne = end($vector);
-								
-								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
-							}
-						}
-						
-						foreach($array as $key=>$vector){
-							$id_cnt = $key;
-							$ids_cnt = array();
-							$exist_cnt =License::where('clu_license.id', $key)->where('clu_license.suscription_id', $suscription_renovation->id)
-							//->where('clu_license.type', 'suscription_add')					
-							->get()->toArray();				
-							//creación de carnets
-							
-							if(empty($exist_cnt) || in_array($id_cnt,$ids_cnt)){
-								//el segundo argumento del if es ya que puede pasar que el recien creado coincida en id con $id_cnt, para carnet nuevos
-								//hay que crear un nuevo carnet, este es un nuevo beneficiary
-								$cnt = new License();
-								$cnt->type = 'suscription_add';
-								$cnt->price = env('PRICE_LICENSE',5000);
-								$cnt->date = date("Y-m-d H:i:s");
-								$cnt->suscription_id = $suscription_renovation->id;
-								try {
-									$cnt->save();
-								}catch (\Illuminate\Database\QueryException $e) {
-									//eliminamos el usuario
-									Suscription::destroy($suscription_renovation->id);
-									User::destroy($request->input()['user_id']);
-									return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-								}
-								$id_cnt = $cnt->id;
-								$ids_cnt[] = $cnt->id;
-							}
-							
-							foreach($vector as $value){
-								//alguno es no nulo
-								if(!empty($value['names']) && !empty($value['surnames'])){							
-									//verificamos la existencia de el carnet							
-									if(!empty($value['beneficiaryid'])){
-										//se pretende actualizar el beneficiario
-										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
-										'type_id' => $value['type'],
-										'identification' => $value['identification'],
-										'names' => $value['names'],
-										'surnames' => $value['surnames'],
-										'relationship' => $value['relationship'],
-										'movil_number' => $value['movil'],
-										'civil_status' => $value['civil'],
-										'birthdate' => $value['birthdate'],
-										'adress' => $value['adress'],
-										'city' => $value['city'],
-										'email' => $value['email']
-										//'more' => $value['more']
-										));
-									}else{
-										//nuevo suscriptor con su carnet
-										$bne = new Beneficiary();
-										$bne->type_id = $value['type'];
-										$bne->identification = $value['identification'];
-										$bne->names = $value['names'];
-										$bne->surnames = $value['surnames'];
-										$bne->relationship = $value['relationship'];
-										$bne->movil_number = $value['movil'];
-										$bne->state = 'Pago por suscripción';
-										$bne->alert = '#dff0d8';
-										$bne->civil_status = $value['civil'];
-										$bne->birthdate = $value['birthdate'];
-										$bne->adress = $value['adress'];
-										$bne->city = $value['city'];
-										$bne->email = $value['email'];
-										//$bne->more = $value['more'];
-										$bne->license_id = $id_cnt;
-										try {
-											$bne->save();
-										}catch (\Illuminate\Database\QueryException $e) {
-											//eliminamos el usuario
-											Suscription::destroy($suscription_renovation->id);
-											User::destroy($request->input()['user_id']);
-											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-										}	
-									}
-								
-								}else{
-									if(!empty($value['beneficiaryid'])){
-										//se pretende borrar el beneficiario
-										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
-									}
-								}
-							}						
-							
-						}
-						
-						//actualizar beneficiarios adicionales
-						$array = Array();
-						foreach($request->input() as $key=>$value){
-							if(strpos($key,'bneadd_') !== false){
-								$vector=explode('_',$key);
-								$n=count($vector);
-								$id_bne = end($vector);
-								$array[$vector[$n-2]][$id_bne][$vector[1]] = strtoupper($value);
-							}
-						}
-						
-						foreach($array as $vector){
-							foreach($vector as $value){
-								if(!empty($value['names']) && !empty($value['surnames'])){
-									if(!empty($value['beneficiaryid'])){
-										//se pretende actualizar el beneficiario
-										$benficiaryAffectedRows = Beneficiary::where('id',$value['beneficiaryid'])->update(array(
-										'type_id' => $value['type'],
-										'identification' => $value['identification'],
-										'names' => $value['names'],
-										'surnames' => $value['surnames'],
-										'relationship' => $value['relationship'],
-										'movil_number' => $value['movil'],
-										'civil_status' => $value['civil'],
-										'birthdate' => $value['birthdate'],
-										'adress' => $value['adress'],
-										'city' => $value['city'],
-										'email' => $value['email']
-										//'more' => $value['more']
-										));
-									}else{
-										//se pretende guardar
-										
-										$cnt = new License();
-										$cnt->type = 'beneficiary_add';
-										//$cnt->price = env('PRICE_LICENSE',5000);
-										$cnt->price = 0;//el precio del carnet va incluido
-										$cnt->date = date("Y-m-d H:i:s");
-										$cnt->suscription_id = $suscription_renovation->id;
-										try {
-											$cnt->save();
-										}catch (\Illuminate\Database\QueryException $e) {
-											//eliminamos el usuario
-											Suscription::destroy($suscription->id);
-											User::destroy($user->id);
-											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-										}
-											
-										$bne = new Beneficiary();
-										$bne->type_id = $value['type'];
-										$bne->identification = $value['identification'];
-										$bne->names = $value['names'];
-										$bne->surnames = $value['surnames'];
-										$bne->relationship = $value['relationship'];
-										$bne->movil_number = $value['movil'];
-										$bne->price = env('PRICE_BENEFICIARY',20000);
-										$bne->state = 'Pago pendiente';
-										$bne->alert = '#dff0d8';
-										$bne->civil_status = $value['civil'];
-										$bne->birthdate = $value['birthdate'];
-										$bne->adress = $value['adress'];
-										$bne->city = $value['city'];
-										$bne->email = $value['email'];
-										//$bne->more = $value['more'];
-										$bne->license_id = $cnt->id;
-										try {
-											$bne->save();
-										}catch (\Illuminate\Database\QueryException $e) {
-											//eliminamos el usuario
-											Suscription::destroy($suscription_renovation->id);//con destruir la suscripción se destruyen sus carnets
-											User::destroy($request->input()['user_id']);
-											return Redirect::back()->with('error', $e->getMessage())->withInput()->with('modulo',$moduledata);
-										}
-										
-									}
-								}else{
-									if(!empty($value['beneficiaryid'])){
-										//se pretende borrar el beneficiario
-										Beneficiary::where('id', (int)$value['beneficiaryid'])->delete();
-										License::where('id', $key)->delete();
-									}
-								}
-								
-							}
-						}					
-					
-					//limpiar carnet en blanco
-					$cnts =
-					License::
-					where('clu_license.suscription_id', $suscription_renovation->id)
-					->get()
-					->toArray();
-									
-					$bandera_cnt = true;//para permitir solo un carnet con cero beneficiarios				
-					foreach( $cnts as $cnt){
-						
-						$total_bnes = \DB::table('clu_beneficiary')
-						->select(\DB::raw('count(*) as total'))
-						->where('license_id',$cnt['id'])
-						->get()[0]->total;
-						
-						if(!$total_bnes){
-							//el total es cero
-							if($bandera_cnt){
-								$bandera_cnt = false;
-							}else{							
-								License::where('id', $cnt['id'])->delete();
-							}
-						}					
-					}				
-					
-
-					
 
 
 					$moduledata['fillable'] = ['N° Contrato','Suscriptor','Municipio','Asesor','Saldo','Abonos','Estado','Próximo abono','Fecha Vencimiento'];
