@@ -87,7 +87,7 @@ class SpecialistController extends Controller {
 			Specialist::
 			where(function ($query) {
 				$query->where('clu_specialist.name', 'like', '%'.Session::get('search').'%')				
-				->orWhere('clu_specialty.identification', 'like', '%'.Session::get('search').'%');
+				->orWhere('clu_specialist.identification', 'like', '%'.Session::get('search').'%');
 			})
 			->skip($request->input('start'))->take($request->input('length'))
 			->get();

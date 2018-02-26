@@ -150,6 +150,19 @@
 					<div class="row ">
 						<div class="col-md-12 col-md-offset-0 row_izq">
 						</div>
+						<hr class="col-md-10 col-md-offset-1" style="border: 1px solid;">
+						<div class="col-md-12 col-md-offset-0 row_table">
+							<table id="table_specialty" class="display " cellspacing="0" width="100%">
+						         <thead>
+						            <tr>
+						            	<th>Especialidad</th>
+						            	<th>Especialista</th>
+						            	<th>Precio</th>
+						            	<th>Precio Suscripción</th>
+						            </tr>
+						        </thead>              
+						    </table>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">		         
@@ -188,6 +201,7 @@
 		        
             }
 		});
+
 	
 		@if(Session::has('filtro'))
 			clu_especialidad.table.search( "{{Session::get('filtro')}}" ).draw();
@@ -200,6 +214,32 @@
 		    	clu_especialidad.table.$('tr.selected').removeClass('selected');
 		        $(this).addClass('selected');
 		    }
+		});
+
+
+		clu_especialidad.table_specialty = $('#table_specialty').DataTable( {
+		    "responsive": true,
+		    "processing": true,
+		    "bLengthChange": false,
+		    "serverSide": true,	        
+		    "ajax": "{{url('especialidad/listarspecialtyajax')}}",	
+		    "iDisplayLength": 25,       
+		    "columns": [				   
+		        { "data": "specialty"}, 
+		        { "data": "name"}, 
+		        { "data": "rate_particular"}, 
+		        { "data": "rate_suscriptor"}       	            
+		        		                   
+		    ],	       
+		    "language": {
+		        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+		    },		   
+		    "fnRowCallback": function( nRow, aData ) {
+		        //pintar el fondo de la fila		        
+		        //$(nRow).children()[5].style.backgroundColor = aData.next_alert;
+		        //$(nRow).children()[4].style.backgroundColor = aData.alert;		        
+		        
+	        }
 		});		
 		
 	</script>

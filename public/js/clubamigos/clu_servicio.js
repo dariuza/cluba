@@ -647,6 +647,9 @@ clu_servicio.prototype.editarServicioRespuesta = function(result) {
 
 			$('.sel_status_service').trigger("chosen:updated");	
 
+			//imput service
+			$('#date_service').val(clu_servicio.table.rows('.selected').data()[0].date_service_time);
+
 			//input for id servicios			
 			$("input[name='id_service_form']").val(clu_servicio.table.rows('.selected').data()[0].id);
 

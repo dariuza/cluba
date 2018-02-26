@@ -2,6 +2,7 @@
 
 use Validator;
 use App\Core\Club\Specialty;
+use App\Core\Club\SpecialistSpecialty;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -37,8 +38,8 @@ class SpecialtyController extends Controller {
 	}
 	
 	public function getEnumerar($id_app=null,$categoria=null,$id_mod=null){
-		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se debe alcanzar por url, solo es valido desde las opciones del menú');		
-		
+		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se debe alcanzar por url, solo es valido desde las opciones del menú');
+
 		return Redirect::to('especialidad/listar');
 	}
 	public function getListar(){
@@ -158,6 +159,7 @@ class SpecialtyController extends Controller {
 			}
 		}
 	}
+
 	public function getActualizar($id_app=null,$categoria=null,$id_mod=null,$id=null){
 		if(is_null($id_mod)) return Redirect::to('/')->with('error', 'Este modulo no se puede alcanzar por url, solo es valido desde las opciones del menú');
 		
@@ -193,7 +195,53 @@ class SpecialtyController extends Controller {
 	}
 	
 	public function postVer(Request $request){
-		return response()->json(['respuesta'=>true,'data'=>null]);	
+		//consultamos los precios de las especialidades segùn los especialistas
+		
+		//asignamos el id al session
+		Session::put('specialty_id', $request->input('id'));
+
+		return response()->json(['respuesta'=>true,'data'=>$request->input()]);	
+	}
+
+	public function getListarspecialtyajax(Request $request){
+		//otros parametros
+		$moduledata['total']=SpecialistSpecialty::
+		where('clu_specialist_x_specialty.specialty_id',intval(Session::get('specialty_id')))
+		->count();
+		
+		//realizamos la consulta
+		if(!empty($request->input('search')['value'])){
+			Session::flash('search', $request->input('search')['value']);
+				
+			$moduledata['especialidades']=
+			SpecialistSpecialty::
+			select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty')
+			->leftjoin('clu_specialty', 'clu_specialist_x_specialty.specialty_id', '=', 'clu_specialty.id')	
+			->leftjoin('clu_specialist', 'clu_specialist_x_specialty.specialist_id', '=', 'clu_specialist.id')	
+			->where('clu_specialist_x_specialty.specialty_id',intval(Session::get('specialty_id')))
+			->where(function ($query) {
+				$query->where('clu_specialist_x_specialty.rate_suscriptor', 'like', '%'.Session::get('search').'%')				
+				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%');
+			})
+			->skip($request->input('start'))->take($request->input('length'))
+			->get();
+			$moduledata['filtro'] = count($moduledata['especialidades']);
+		}else{		
+
+			$moduledata['especialidades']=\DB::table('clu_specialist_x_specialty')
+			->select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty')
+			->leftjoin('clu_specialty', 'clu_specialist_x_specialty.specialty_id', '=', 'clu_specialty.id')	
+			->leftjoin('clu_specialist', 'clu_specialist_x_specialty.specialist_id', '=', 'clu_specialist.id')	
+			->where('clu_specialist_x_specialty.specialty_id',intval(Session::get('specialty_id')))			
+			->skip($request->input('start'))
+			->take($request->input('length'))
+			->get();
+		
+			$moduledata['filtro'] = $moduledata['total'];
+		}
+		
+		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['especialidades']]);
+		
 	}
 	
 }

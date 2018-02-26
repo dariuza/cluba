@@ -469,11 +469,19 @@ class ServiceController extends Controller {
 						}else{
 							//ELSE ALTAMENTE SENSIBLE PROBAR CON CUIDADO
 							//hay que revisar tambien en las otras especialidades del especiasta su disponibilidad OJO!!!
-							//encontrar una cita de algun otra especialidad del especialista que cunpla las condiciones
+							//encontrar una cita de algun otra especialidad del especialista que cumpla las condiciones
 							$datecita2 = date_create($cita->date_service." ".$cita->hour_start);
 							$datecita_time2 = explode(':',$cita->duration);
 							$datecita2->add(new DateInterval('PT'.$datecita_time2[0].'H'.$datecita_time2[1].'M'));
 							if($datecita2 > $datecrt && $datecita < $datecrt && $crono[$i][22] == $cita->especialist_id){
+								$crono[$i][25] = 'ocupado';
+								$crono[$i][26] = '#e2d7d7';
+							}
+
+							$datecita2 = date_create($cita->date_service." ".$cita->hour_start);
+							$datecita_time2 = explode(':',$cita->duration);
+							$datecita2->sub(new DateInterval('PT'.$datecita_time2[0].'H'.$datecita_time2[1].'M'));
+							if($datecita2 < $datecrt && $datecita > $datecrt && $crono[$i][22] == $cita->especialist_id){
 								$crono[$i][25] = 'ocupado';
 								$crono[$i][26] = '#e2d7d7';
 							}
@@ -779,8 +787,14 @@ class ServiceController extends Controller {
 	//datos que llegan el form
 	public function postMetodeditarservicio(Request $request){
 
-		$servicio = Service::find($request->input()['id_service_form']);		
+		$servicio = Service::find($request->input()['id_service_form']);
+
+		$date = date_create($request->input('date_service'));
+
 		$servicio->status = $request->input()['sel_status_service'];
+		$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
+		$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
+		$servicio->hour_start = date_format($date,"H:i");
 
 		try {
 			$servicio->save();						
@@ -791,10 +805,6 @@ class ServiceController extends Controller {
 		
 		$message = 'Servicio correctamente editado';				
 		return Redirect::to('servicio/listar')->with('message', $message)->withInput();			
-	}
-
-	
-
-	
+	}	
 	
 }

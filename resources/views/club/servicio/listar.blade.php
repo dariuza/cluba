@@ -344,7 +344,14 @@
 					<div class="row ">
 						<div class="col-md-12 col-md-offset-0 row_content_edit">						
 
-							{!! Form::select('sel_status_service',array(), null, array('class' => 'form-control chosen-select sel_status_service','id'=>'sel_status_service','placeholder'=>'Ingresa el estado de la cita')) !!}
+							<div class="col-md-12 fila">
+								{!! Form::select('sel_status_service',array(), null, array('class' => 'form-control chosen-select sel_status_service','id'=>'sel_status_service','placeholder'=>'Ingresa el estado de la cita')) !!}
+							</div>
+
+							<div class="col-md-12 fila">
+								{!! Form::label('date_service', 'Fecha Cita', array('class' => 'col-md-12 control-label')) !!}
+								{!! Form::text('date_service',old('date_service'), array('class' => 'form-control','id'=>'date_service','placeholder'=>'aaaa-mm-dd')) !!}
+							</div>
 
 							{!! Form::hidden('id_service_form', null) !!}							
 
