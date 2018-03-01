@@ -217,6 +217,7 @@ class ServiceController extends Controller {
 			$servicio->identification_user = $request->input()['identificacion'];
 			$servicio->names_user = $request->input()['nombreusuario'];
 			$servicio->surnames_user = $request->input()['numerocontacto'];
+			$servicio->description = $request->input()['description'];
 			$servicio->day = $request->input()['dia'];
 			$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
 			$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
@@ -792,6 +793,7 @@ class ServiceController extends Controller {
 		$date = date_create($request->input('date_service'));
 
 		$servicio->status = $request->input()['sel_status_service'];
+		$servicio->description = $request->input()['description'];
 		$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
 		$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
 		$servicio->hour_start = date_format($date,"H:i");

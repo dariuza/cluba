@@ -62,9 +62,7 @@
 			padding: 15px;
 		}
 		
-		
 	</style>
-	
 
 	<div class="col-md-12 col-md-offset-0 container-fluid" >
 		<div class="name_user">
@@ -351,6 +349,11 @@
 							<div class="col-md-12 fila">
 								{!! Form::label('date_service', 'Fecha Cita', array('class' => 'col-md-12 control-label')) !!}
 								{!! Form::text('date_service',old('date_service'), array('class' => 'form-control','id'=>'date_service','placeholder'=>'aaaa-mm-dd')) !!}
+							</div>
+
+							<div class="col-md-12 fila">
+								{!! Form::label('description', 'Descripción', array('class' => 'col-md-12 control-label')) !!}
+								{!! Form::textarea('description',old('description'), array('class' => 'form-control','id'=>'description','placeholder'=>'Descripción')) !!}
 							</div>
 
 							{!! Form::hidden('id_service_form', null) !!}							

@@ -122,6 +122,12 @@
 									{!! Form::label('titular', 'Titular', array('class' => ' control-label')) !!}	
 									<span id ="titularspan"></span>
 									{!! Form::hidden('titular', null) !!}
+								</div>	
+
+								<div class="col-md-12 fil-form">
+									{!! Form::label('description', 'Descripción', array('class' => ' control-label')) !!}	
+									
+									{!! Form::textarea('description', old('description'), array('class' => 'form-control ','placeholder'=>'Ingresa una descripción'))!!}	
 								</div>								
 
 

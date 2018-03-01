@@ -11,7 +11,7 @@ class Service extends Model
      */
 	protected $table = 'clu_service';
 	
-	protected $fillable =['id','city','price','identification_user','names_user','surnames_user','day','date_service','date_service_time','hour_start','duration','status','active','especialty_id','especialist_id','subentity_id','suscription_id'];
+	protected $fillable =['id','city','price','identification_user','names_user','surnames_user','description','day','date_service','date_service_time','hour_start','duration','status','active','especialty_id','especialist_id','subentity_id','suscription_id'];
 			
 }
 
