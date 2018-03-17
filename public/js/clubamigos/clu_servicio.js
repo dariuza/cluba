@@ -102,26 +102,34 @@ clu_servicio.prototype.verServicioRespuesta = function(result) {
 	$("#servicio_ver_modal .modal-body .row_tab2_content").html('');
 
 	//tab 1
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b style="color: black;">INFORMACIÓN DE USUARIO</b></div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>USUARIO:</b> '+result.data.servicio.names_user+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>CONTACTO USUARIO:</b> '+result.data.servicio.surnames_user+'</div>');
-	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>IDENTIFICACIÓN USUARIO:</b> '+result.data.servicio.identification_user+'</div>');	
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>IDENTIFICACIÓN USUARIO:</b> '+result.data.servicio.identification_user+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>ESTADO CIVIL:</b> '+result.data.usuario[0].civil_status+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>FECHA NACIMIENTO:</b> '+result.data.usuario[0].birthdate+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>EDAD:</b> '+clu_servicio.edad(result.data.usuario[0].birthdate)+'</div>');
+
+
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b style="color: black;">INFORMACIÓN DE CITA</b></div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>DÍA:</b> '+result.data.servicio.day+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>FECHA:</b> '+result.data.servicio.date_service+' </div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>HORA:</b> '+result.data.servicio.hour_start+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>DURACIÓN:</b> '+result.data.servicio.duration+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>PRECIO:</b> '+result.data.servicio.price+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"><b>DESCRIPCIÓN:</b> '+result.data.servicio.description+'</div>');
+
+		
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');	
+
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b style="color: black;">INFORMACIÓN DE ENTIDAD</b></div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>SUCURSAL:</b> '+result.data.entidad.business_name+' - '+result.data.sucursal.sucursal_name+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>CIUDAD:</b> '+result.data.servicio.city+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>DIRECCIÓN SUCURSAL:</b> '+result.data.sucursal.adress+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>EMAIL SUCURSAL:</b> '+result.data.sucursal.email_contact+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>TELEFONO 1 SUCURSAL:</b> '+result.data.sucursal.phone1_contact+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>TELEFONO 2 SUCURSAL:</b> '+result.data.sucursal.phone2_contact+'</div>');
-	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"><b>DESCRIPCIÓN:</b> '+result.data.servicio.description+'</div>');
-	
-	
-	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');
-	
-	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12"  ><b style="color: black;">INFORMACIÓN DE ENTIDAD</b></div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>ENTIDAD:</b> '+result.data.entidad.business_name+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>NIT:</b> '+result.data.entidad.nit+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>REPRESENTANTE LEGAL:</b> '+result.data.entidad.legal_representative+'</div>');
@@ -164,6 +172,18 @@ clu_servicio.prototype.verServicioRespuesta = function(result) {
 	
 	$("#servicio_ver_modal").modal();
 };
+
+clu_servicio.prototype.edad = function(birthday) {
+	if(birthday != null){
+
+		var birthday_arr = birthday.split("-");
+	    var birthday_date = new Date(birthday_arr[0], birthday_arr[1] - 1, birthday_arr[2]);
+	    var ageDifMs = Date.now() - birthday_date.getTime();
+	    var ageDate = new Date(ageDifMs);
+	    return Math.abs(ageDate.getUTCFullYear() - 1970) + " años";
+    }
+    return 'edad indeterminada';
+}
 
 clu_servicio.prototype.opt_ver_disponibilidad = function() {
 

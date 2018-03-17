@@ -145,6 +145,13 @@
 										{!! Form::text('identification', old('identification'), array('class' => 'form-control solo_numeros','placeholder'=>'Ingresa la identificación', 'autofocus'=>'autofocus'))!!}
 									</div>
 								</div>
+
+								<div class="form-group">
+									<div class="col-md-3">	
+										{!! Form::label('civil_status_suscriptor', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
+										{!! Form::select('civil_status_suscriptor',array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),old('civil_status_suscriptor'), array('class' => 'form-control','placeholder'=>'Selecciona una opción')) !!}	
+									</div>
+								</div>
 								
 								<div class="form-group input-grp">									
 									<div class="col-md-3">
@@ -154,7 +161,7 @@
 								</div>								
 								
 								<div class="form-group input-grp">									
-									<div class="col-md-3">
+									<div class="col-md-4">
 										{!! Form::label('birthdate', 'Fecha de nacimiento', array('class' => 'col-md-12 control-label')) !!}
 										{!! Form::text('birthdate',old('birthdate'), array('class' => 'form-control','placeholder'=>'aaaa-mm-dd')) !!}
 									</div>
@@ -483,7 +490,7 @@
 																							</div>
 																							<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																								{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-																								{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																								{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																							</div>											
 																							<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">	
 																								{!! Form::label('birthdate', 'Fecha Nacimiento', array('class' => 'col-md-12 control-label')) !!}
@@ -549,7 +556,7 @@
 																			</div>
 																			<div class="col-md-3 bne_add_{{$cnt['id']}}_1" style = "display:none">
 																				{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-																				{!! Form::select('bne_civil_status_'.$cnt['id'].'_1',array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),old('civil_status_1'), array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																				{!! Form::select('bne_civil_status_'.$cnt['id'].'_1',array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),old('civil_status_1'), array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																			</div>
 																			{{--									
 																			<div class="col-md-3 bne_add_{{$cnt['id']}}_1" style = "display:none">
@@ -632,7 +639,7 @@
 																						</div>
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																							{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-																							{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																							{!! Form::select('bne_civil_status_'.$cnt['id'].'_'.$bne['id'],array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																						</div>
 																						{{--
 																						<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
@@ -737,7 +744,7 @@
 																	</div>
 																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
 																		{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-																		{!! Form::select('bneadd_civil_status_'.$cnt['id'].'_'.$bne['id'],array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+																		{!! Form::select('bneadd_civil_status_'.$cnt['id'].'_'.$bne['id'],array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),$bne['civil_status'], array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 																	</div>
 																	{{--
 																	<div class="col-md-3 bne_add_{{$cnt['id'].'_'.$bne['id']}}" style = "display:none">
@@ -906,7 +913,7 @@
 														</div>
 														<div class="col-md-3 bne_add_1_1" style = "display:none">
 															{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
-															{!! Form::select('bne_civil_status_1_1',array('SOLTERO' => 'SOLTERO','COMPROMETIDO' => 'COMPROMETIDO' ,'CASADO' => 'CASADO','DIVORSIADO' => 'DIVORSIADO','VIUDO' => 'VIUDO'),old('civil_status'), array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
+															{!! Form::select('bne_civil_status_1_1',array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),old('civil_status'), array('class' => 'form-control','placeholder'=>'SELECCIONA UNA OPCIÓN')) !!}	
 														</div>
 														{{--									
 														<div class="col-md-3 bne_add_1_1" style = "display:none">

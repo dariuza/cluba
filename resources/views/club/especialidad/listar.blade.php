@@ -137,7 +137,7 @@
 @section('modal')
 
 	<div class="modal fade" id="especialidad_ver_modal" role="dialog" data-backdrop="false">
-	    <div class="modal-dialog">	    
+	    <div class="modal-dialog modal-lg">	    
 	    <!-- Modal content-->      
 	      	<div class="modal-content">
 				<div class="modal-header">
@@ -159,6 +159,10 @@
 						            	<th>Especialista</th>
 						            	<th>Precio</th>
 						            	<th>Precio Suscripción</th>
+						            	<th>Entidad</th>
+						            	<th>Sucursal</th>
+						            	<th>Ciudad</th>
+						            	<th>Dirección</th>
 						            </tr>
 						        </thead>              
 						    </table>
@@ -185,10 +189,11 @@
 		    "serverSide": true,	        
 		    "ajax": "{{url('especialidad/listarajax')}}",	
 		    "iDisplayLength": 25,       
-		    "columns": [				   
+		    "columns": [
+		    					   
 		        { "data": "name"}, 
 		        { "data": "code"}, 
-		        { "data": "description"}       	            
+		        { "data": "description"}	             	            
 		        		                   
 		    ],	       
 		    "language": {
@@ -224,11 +229,22 @@
 		    "serverSide": true,	        
 		    "ajax": "{{url('especialidad/listarspecialtyajax')}}",	
 		    "iDisplayLength": 25,       
-		    "columns": [				   
+		    "columns": [
+		    	/*				   
 		        { "data": "specialty"}, 
 		        { "data": "name"}, 
 		        { "data": "rate_particular"}, 
-		        { "data": "rate_suscriptor"}       	            
+		        { "data": "rate_suscriptor"} 
+		        */
+
+		       	{ "data": "specialty"}, 
+		        { "data": "name"}, 
+		        { "data": "rate_particular"}, 
+		        { "data": "rate_suscriptor"},
+		        { "data": "entity"},      
+		        { "data": "subentity"},
+		        { "data": "city"},
+		        { "data": "adress"}           	            
 		        		                   
 		    ],	       
 		    "language": {

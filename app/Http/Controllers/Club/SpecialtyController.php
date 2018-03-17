@@ -215,9 +215,11 @@ class SpecialtyController extends Controller {
 				
 			$moduledata['especialidades']=
 			SpecialistSpecialty::
-			select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty')
+			select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty','clu_entity.business_name as entity','clu_subentity.sucursal_name as subentity','clu_subentity.adress as adress','clu_subentity.city as city')
 			->leftjoin('clu_specialty', 'clu_specialist_x_specialty.specialty_id', '=', 'clu_specialty.id')	
 			->leftjoin('clu_specialist', 'clu_specialist_x_specialty.specialist_id', '=', 'clu_specialist.id')	
+			->leftjoin('clu_entity', 'clu_specialist.entity_id', '=', 'clu_entity.id')	
+			->leftjoin('clu_subentity', 'clu_entity.id', '=', 'clu_subentity.entity_id')	
 			->where('clu_specialist_x_specialty.specialty_id',intval(Session::get('specialty_id')))
 			->where(function ($query) {
 				$query->where('clu_specialist_x_specialty.rate_suscriptor', 'like', '%'.Session::get('search').'%')				
@@ -228,10 +230,13 @@ class SpecialtyController extends Controller {
 			$moduledata['filtro'] = count($moduledata['especialidades']);
 		}else{		
 
-			$moduledata['especialidades']=\DB::table('clu_specialist_x_specialty')
-			->select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty')
+			$moduledata['especialidades']=
+			SpecialistSpecialty::
+			select('clu_specialist_x_specialty.*','clu_specialist.*','clu_specialty.name as specialty','clu_entity.business_name as entity','clu_subentity.sucursal_name as subentity','clu_subentity.adress as adress','clu_subentity.city as city')
 			->leftjoin('clu_specialty', 'clu_specialist_x_specialty.specialty_id', '=', 'clu_specialty.id')	
 			->leftjoin('clu_specialist', 'clu_specialist_x_specialty.specialist_id', '=', 'clu_specialist.id')	
+			->leftjoin('clu_entity', 'clu_specialist.entity_id', '=', 'clu_entity.id')	
+			->leftjoin('clu_subentity', 'clu_entity.id', '=', 'clu_subentity.entity_id')	
 			->where('clu_specialist_x_specialty.specialty_id',intval(Session::get('specialty_id')))			
 			->skip($request->input('start'))
 			->take($request->input('length'))

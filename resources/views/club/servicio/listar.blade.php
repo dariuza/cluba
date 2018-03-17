@@ -463,7 +463,8 @@
 		$('.chosen-container').width('100%');
 
 		javascript:seg_user.iniciarDatepikerInicio('fechainicio');	
-		javascript:seg_user.iniciarDatepikerFin('fechafin');
+		//javascript:seg_user.iniciarDatepikerFin('fechafin');
+		javascript:seg_user.iniciarDatepikerInicio('fechafin');
 
 		$("#select_especialidad").chosen().change(function(event) {
 			//consultamos las cusursales correspondientes al municipio

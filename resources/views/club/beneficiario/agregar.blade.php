@@ -134,7 +134,7 @@
 							<div class="form-group">
 								{!! Form::label('civil_status', 'Estado Civil', array('class' => 'col-md-12 control-label')) !!}
 								<div class="col-md-12">	
-									{!! Form::select('civil_status',array('SOLTERO' => 'SOLTERO', 'COMPROMETIDO' => 'COMPROMETIDO', 'CASADO' => 'CASADO', 'COMPROMETIDO' => 'COMPROMETIDO', 'DICORSIADO' => 'DICORSIADO', 'VIUDO' => 'VIUDO'),old('civil_status'), array('class' => 'form-control','placeholder'=>'Selecciona una  opción')) !!}
+									{!! Form::select('civil_status',array('CASADO' => 'CASADO','UNIÓN LIBRE' => 'UNIÓN LIBRE' ,'SEPARADO' => 'SEPARADO','SOLTERO' => 'SOLTERO','VIUDO' => 'VIUDO'),old('civil_status'), array('class' => 'form-control','placeholder'=>'Selecciona una  opción')) !!}
 								</div>
 								</div>
 							

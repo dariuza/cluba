@@ -857,6 +857,7 @@ class SuscriptionController extends Controller {
 					//crear su perfil
 					$userprofile ->identificacion =  $request->input()['identification'];
 					$userprofile ->type_id =  $request->input()['type_id'];
+					$userprofile ->civil_status =  $request->input()['civil_status_suscriptor'];
 					$userprofile ->names =  $request->input()['names'];
 					$userprofile ->surnames =  $request->input()['surnames'];
 					$userprofile ->birthdate =  $request->input()['birthdate'];
@@ -882,6 +883,7 @@ class SuscriptionController extends Controller {
 						$userProfileAffectedRows = UserProfile::where('user_id', $request->input()['user_id'])->update(array(
 						'identificacion' => $userprofile->identificacion,
 						'type_id' => $userprofile->type_id,
+						'civil_status' => $userprofile->civil_status,
 						'names' => $userprofile->names,
 						'surnames' => $userprofile->surnames,
 						'birthdate' => $userprofile->birthdate,
@@ -1305,6 +1307,7 @@ class SuscriptionController extends Controller {
 					//crear su perfil
 					$userprofile ->identificacion =  $request->input()['identification'];
 					$userprofile ->type_id =  $request->input()['type_id'];
+					$userprofile ->civil_status =  $request->input()['civil_status_suscriptor'];
 					$userprofile ->names =  $request->input()['names'];
 					$userprofile ->surnames =  $request->input()['surnames'];
 					$userprofile ->birthdate =  $request->input()['birthdate'];
@@ -1330,6 +1333,7 @@ class SuscriptionController extends Controller {
 						$userProfileAffectedRows = UserProfile::where('user_id', $request->input()['user_id'])->update(array(
 						'identificacion' => $userprofile->identificacion,
 						'type_id' => $userprofile->type_id,
+						'civil_status' => $userprofile->civil_status,
 						'names' => $userprofile->names,
 						'surnames' => $userprofile->surnames,
 						'birthdate' => $userprofile->birthdate,
@@ -1440,6 +1444,7 @@ class SuscriptionController extends Controller {
 				
 				if($request->input()['edit'] == 'TRUE'){
 
+
 					/***SE PRETENDE ACTUALIZAR LA SUSCRIPCION***/
 					//preparación de datos				
 								
@@ -1470,6 +1475,7 @@ class SuscriptionController extends Controller {
 					//crear su perfil
 					$userprofile ->identificacion =  $request->input()['identification'];
 					$userprofile ->type_id =  $request->input()['type_id'];
+					$userprofile ->civil_status =  $request->input()['civil_status_suscriptor'];
 					$userprofile ->names =  $request->input()['names'];
 					$userprofile ->surnames =  $request->input()['surnames'];
 					$userprofile ->birthdate =  $request->input()['birthdate'];
@@ -1495,6 +1501,7 @@ class SuscriptionController extends Controller {
 						$userProfileAffectedRows = UserProfile::where('user_id', $request->input()['user_id'])->update(array(
 						'identificacion' => $userprofile->identificacion,
 						'type_id' => $userprofile->type_id,
+						'civil_status' => $userprofile->civil_status,
 						'names' => $userprofile->names,
 						'surnames' => $userprofile->surnames,
 						'birthdate' => $userprofile->birthdate,
@@ -1881,7 +1888,8 @@ class SuscriptionController extends Controller {
 					Session::flash('_old_input.email',  $user->email);
 					
 					Session::flash('_old_input.identification',  $userprofile->identificacion);
-					Session::flash('_old_input.type_id',  $userprofile->type_id);				
+					Session::flash('_old_input.type_id',  $userprofile->type_id);	
+					Session::flash('_old_input.civil_status_suscriptor', $userprofile->civil_status);			
 					Session::flash('_old_input.names',  $userprofile->names);				
 					Session::flash('_old_input.surnames',  $userprofile->surnames);
 					Session::flash('_old_input.birthdate',  $userprofile->birthdate);
@@ -1940,6 +1948,7 @@ class SuscriptionController extends Controller {
 				//crear su perfil
 				$userprofile ->identificacion =  $request->input()['identification'];
 				$userprofile ->type_id =  $request->input()['type_id'];
+				$userprofile ->civil_status =  $request->input()['civil_status_suscriptor'];
 				$userprofile ->names =  $request->input()['names'];
 				$userprofile ->surnames =  $request->input()['surnames'];
 				$userprofile ->birthdate =  $request->input()['birthdate'];
@@ -2387,6 +2396,7 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.surnames',  $suscripcion[0]['surnames']);
 		Session::flash('_old_input.identification',  $suscripcion[0]['identificacion']);
 		Session::flash('_old_input.type_id',  $suscripcion[0]['type_id']);
+		Session::flash('_old_input.civil_status_suscriptor',  $suscripcion[0]['civil_status']);
 		Session::flash('_old_input.email',  $suscripcion[0]['email']);
 		Session::flash('_old_input.sex',  $suscripcion[0]['sex']);
 		Session::flash('_old_input.birthdate',  $suscripcion[0]['birthdate']);
@@ -2857,6 +2867,7 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.surnames',  $suscripcion[0]['surnames']);
 		Session::flash('_old_input.identification',  $suscripcion[0]['identificacion']);
 		Session::flash('_old_input.type_id',  $suscripcion[0]['type_id']);
+		Session::flash('_old_input.civil_status_suscriptor',  $suscripcion[0]['civil_status']);
 		Session::flash('_old_input.email',  $suscripcion[0]['email']);
 		Session::flash('_old_input.sex',  $suscripcion[0]['sex']);
 		Session::flash('_old_input.birthdate',  $suscripcion[0]['birthdate']);

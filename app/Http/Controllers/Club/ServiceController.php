@@ -760,6 +760,14 @@ class ServiceController extends Controller {
 		->where('clu_suscription.id',$request->input()['suscription_id'])
 		->get();	
 
+		//usuario de cita
+		$array['usuario'] =  \DB::table('clu_service')
+		->select('seg_user_profile.*','clu_beneficiary.*')
+		->leftjoin('seg_user_profile', 'clu_service.identification_user', '=', 'seg_user_profile.identificacion')
+		->leftjoin('clu_beneficiary', 'clu_service.identification_user', '=', 'clu_beneficiary.identification')
+		->where('clu_service.id',$request->input()['id_service'])
+		->get();		
+
 		return response()->json(['respuesta'=>true,'data'=>$array]);
 
 	}
