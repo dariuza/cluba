@@ -311,23 +311,23 @@ clu_suscripcion.prototype.add_cnt = function() {
 clu_suscripcion.prototype.add_bne = function(crnt,add) {
 		
 	if(add != undefined){
-		if(clu_suscripcion.benes >= 7){
+		if(clu_suscripcion.benes >= 8){
 			//es beneficiario adicional
 			clu_suscripcion.bene_add(crnt,'add');
 			clu_suscripcion.n_add++;
 		}else{
-			$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Agregar Beneficiarios! </strong>Aún hay menos de 7 Beneficiarios por Susripción!!!.<br><br><ul><li>Para agregar más beneficiarios es necesario inscribirlos como beneficiarios por suscripción.</li></ul></div>');
+			$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Agregar Beneficiarios! </strong>Aún hay menos de 8 Beneficiarios por Susripción!!!.<br><br><ul><li>Para agregar más beneficiarios es necesario inscribirlos como beneficiarios por suscripción.</li></ul></div>');
 		}
 		
 	}else{
-		if(clu_suscripcion.benes < 7){
+		if(clu_suscripcion.benes < 8){
 			//llamamos el metodo de agregar beneficiario
 			clu_suscripcion.bene_add(crnt,'');	
 			$("input[name='numer_b']").val(parseInt(n)+1);
 			clu_suscripcion.benes = clu_suscripcion.benes + 1;			
 			clu_suscripcion.n_add++;
 		}else{			
-			$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Agregar Beneficiarios! </strong>Solo es posible tener hasta 7 Beneficiarios por Susripción!!!.<br><br><ul><li>Para agregar más beneficiarios es necesario inscribirlos como beneficiarios adicionales.</li></ul></div>');
+			$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Agregar Beneficiarios! </strong>Solo es posible tener hasta 8 Beneficiarios por Susripción!!!.<br><br><ul><li>Para agregar más beneficiarios es necesario inscribirlos como beneficiarios adicionales.</li></ul></div>');
 		}
 	}
 	

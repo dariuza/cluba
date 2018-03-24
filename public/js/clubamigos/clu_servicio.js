@@ -168,7 +168,7 @@ clu_servicio.prototype.verServicioRespuesta = function(result) {
 	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" ><b>TELÉFONO FIJO:</b> '+result.data.titular[0].fix_number+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" ><b>TELÉFONO MOVIL:</b> '+result.data.titular[0].movil_number+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" ><b>DIRECCIÓN:</b> '+result.data.titular[0].city+' - '+result.data.titular[0].adress+'</div>');
-	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" ><b>FECHA VIGENCIA:</b> '+result.data.titular[0].identificacion+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab2_content").html($("#servicio_ver_modal .modal-body .row_tab2_content").html()+'<div class="col-md-4" ><b>NÚMERO IDENTIFICACIÓN:</b> '+result.data.titular[0].identificacion+'</div>');
 	
 	$("#servicio_ver_modal").modal();
 };

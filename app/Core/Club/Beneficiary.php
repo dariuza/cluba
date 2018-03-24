@@ -11,7 +11,7 @@ class Beneficiary extends Model
      */
 	protected $table = 'clu_beneficiary';
 	
-	protected $fillable =['id','type_id','identification','names','surnames','relationship','movil_number','state','alert','price','civil_status','more','birthdate','adress','city','email'];
+	protected $fillable =['id','type_id','identification','names','surnames','relationship','movil_number','state','alert','price','civil_status','birthplace','more','birthdate','adress','city','email'];
 			
 }
 
