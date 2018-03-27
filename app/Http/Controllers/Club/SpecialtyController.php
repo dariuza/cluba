@@ -70,7 +70,8 @@ class SpecialtyController extends Controller {
 				
 			$moduledata['especialidades']=
 			Specialty::
-			where(function ($query) {
+			where('clu_specialty.active',1)
+			->where(function ($query) {
 				$query->where('clu_specialty.name', 'like', '%'.Session::get('search').'%')				
 				->orWhere('clu_specialty.code', 'like', '%'.Session::get('search').'%');
 			})
@@ -78,7 +79,9 @@ class SpecialtyController extends Controller {
 			->get();
 			$moduledata['filtro'] = count($moduledata['especialidades']);
 		}else{
-			$moduledata['especialidades']=\DB::table('clu_specialty')->skip($request->input('start'))->take($request->input('length'))->get();
+			$moduledata['especialidades']=\DB::table('clu_specialty')
+			->where('clu_specialty.active',1)
+			->skip($request->input('start'))->take($request->input('length'))->get();
 		
 			$moduledata['filtro'] = $moduledata['total'];
 		}
@@ -247,6 +250,27 @@ class SpecialtyController extends Controller {
 		
 		return response()->json(['draw'=>$request->input('draw')+1,'recordsTotal'=>$moduledata['total'],'recordsFiltered'=>$moduledata['filtro'],'data'=>$moduledata['especialidades']]);
 		
+	}
+
+	public function postDelete(Request $request){
+		//consultamos los precios de las especialidades segùn los especialistas
+		
+		//asignamos el id al session
+		//Session::put('specialty_id', $request->input('id'));
+		if($request->input()['id']){
+			//editar especialidad							
+			$especialidad = Specialty::find($request->input('id'));
+			$especialidad->active = -1;
+			
+			try {
+				$especialidad->save();					
+			}catch (\Illuminate\Database\QueryException $e) {											
+				return Redirect::to('especialidad/listar')->with('error', $e->getMessage())->withInput();
+			}
+
+		}
+
+		return response()->json(['respuesta'=>true,'data'=>$request->input()]);	
 	}
 	
 }

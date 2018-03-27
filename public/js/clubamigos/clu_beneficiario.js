@@ -40,6 +40,7 @@ clu_beneficiario.prototype.verRespuesta = function(result) {
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6"  style="background-color: '+clu_beneficiario.table.rows('.selected').data()[0].alert+';">Estado: '+clu_beneficiario.table.rows('.selected').data()[0].state+'</div>');
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Estado Civil: '+clu_beneficiario.table.rows('.selected').data()[0].civil_status+'</div>');
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Fecha Nacimiento: '+clu_beneficiario.table.rows('.selected').data()[0].birthdate+'</div>');
+	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Lugar de Nacimiento: '+clu_beneficiario.table.rows('.selected').data()[0].birthplace+'</div>');
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Precio: '+clu_beneficiario.table.rows('.selected').data()[0].price+'</div>');
 	
 	$("#beneficiario_ver_modal .modal-body .tab2").html('');

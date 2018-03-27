@@ -68,4 +68,21 @@ clu_especialidad.prototype.verRespuesta = function(result) {
 	$("#especialidad_ver_modal").modal();
 };
 
+clu_especialidad.prototype.opt_eliminar = function() {
+	if(clu_especialidad.table.rows('.selected').data().length){		
+		var datos = new Array();
+  		datos['id'] = clu_especialidad.table.rows('.selected').data()[0].id;  		
+  		seg_ajaxobject.peticionajax($('#form_eliminar').attr('action'),datos,"clu_especialidad.eliminarRespuesta");
+	}else{
+		$('.alerts').html('<div class="alert alert-info fade in"><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>');
+	} 	
+	
+};
+
+clu_especialidad.prototype.eliminarRespuesta = function(result) {
+	$('.alerts').html('<div class="alert alert-success fade in"><strong>¡Registro Eliminado corectamente!</strong>Si deseas recuperlo, comunicate con el administrador!!!.<br><br></div>');
+	//eliminar de la tabla
+	clu_especialidad.table.row('.selected').remove().draw( false );
+}
+
 var clu_especialidad = new clu_especialidad();

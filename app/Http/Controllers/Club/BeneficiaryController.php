@@ -394,6 +394,7 @@ class BeneficiaryController extends Controller {
 			$beneficiario->movil_number = $request->input()['movil_number'];
 			$beneficiario->civil_status = $request->input()['civil_status'];
 			$beneficiario->birthdate = $request->input()['birthdate'];
+			$beneficiario->birthplace = $request->input()['birthplace'];
 			$beneficiario->adress = $request->input()['adress'];
 			$beneficiario->city = $request->input()['city'];
 			$beneficiario->email = $request->input()['email'];
@@ -418,6 +419,7 @@ class BeneficiaryController extends Controller {
 						'movil_number' => $beneficiario->movil_number,
 						'civil_status' => $beneficiario->civil_status,
 						'birthdate' => $beneficiario->birthdate,
+						'birthplace' => $beneficiario->birthplace,
 						'adress' => $beneficiario->adress,
 						'city' => $beneficiario->city,
 						'email' => $beneficiario->email
@@ -534,6 +536,7 @@ class BeneficiaryController extends Controller {
 		Session::flash('_old_input.movil_number', $bne[0]['movil_number']);
 		Session::flash('_old_input.civil_status', $bne[0]['civil_status']);	
 		Session::flash('_old_input.birthdate', $bne[0]['birthdate']);	
+		Session::flash('_old_input.birthplace', $bne[0]['birthplace']);	
 		Session::flash('_old_input.adress', $bne[0]['adress']);	
 		Session::flash('_old_input.city', $bne[0]['city']);	
 		Session::flash('_old_input.email', $bne[0]['email']);		

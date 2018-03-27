@@ -27,6 +27,7 @@ class CreateCluBeneficiaryTable extends Migration
     		$table->string('civil_status');
     		$table->string('more');
             $table->date('birthdate')->nullable();
+            $table->string('birthplace')->nullable();   
             $table->string('adress')->nullable();
             $table->string('city')->nullable();
             $table->string('email')->nullable();

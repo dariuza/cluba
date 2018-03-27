@@ -302,6 +302,12 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 		);
 		\DB::table('seg_permit')->insert(array(
 			'rol_id'=>1,
+			'module_id'=>10,
+			'option_id'=>10
+			)
+		);
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>1,
 			'module_id'=>9,
 			'option_id'=>3
 			)
@@ -578,6 +584,12 @@ class PermitTableSeeder extends Illuminate\Database\Seeder {
 			'rol_id'=>2,
 			'module_id'=>8,
 			'option_id'=>6
+			)
+		);
+		\DB::table('seg_permit')->insert(array(
+			'rol_id'=>2,
+			'module_id'=>8,
+			'option_id'=>10
 			)
 		);
 		\DB::table('seg_permit')->insert(array(

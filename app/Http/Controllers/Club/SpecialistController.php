@@ -62,7 +62,7 @@ class SpecialistController extends Controller {
 		
 		//consultamos las especialidades
 		$especialidades_null = array("NO HAY ESPECIALIDADES");
-		$specialties= \DB::table('clu_specialty')->get();
+		$specialties= \DB::table('clu_specialty')->where('clu_specialty.active',1)->get();
 		foreach ($specialties as $especial){
 			$especialidades[$especial->id] = $especial->name;
 		}

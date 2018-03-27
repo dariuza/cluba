@@ -171,6 +171,13 @@
 
 							<div class="form-group ">									
 								<div class="col-md-12">
+									{!! Form::label('birthplace', 'Lugar de nacimiento', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('birthplace',old('birthplace'), array('class' => 'form-control','placeholder'=>'Ingresa el lugar de nacimiento')) !!}
+								</div>
+							</div>
+
+							<div class="form-group ">									
+								<div class="col-md-12">
 									{!! Form::label('adress', 'Dirección', array('class' => 'col-md-12 control-label')) !!}
 									{!! Form::text('adress',old('adress'), array('class' => 'form-control','placeholder'=>'Ingresa la dirección de residencia')) !!}
 								</div>

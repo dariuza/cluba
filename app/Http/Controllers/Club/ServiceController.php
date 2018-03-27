@@ -73,6 +73,18 @@ class ServiceController extends Controller {
 	public function getListarajax(Request $request){
 
 		$moduledata['total'] = Service::count();
+
+		$order_column = 'names';
+		$order_dir = 'desc';		
+		if(!empty($request->input('columns'))){
+			$order_column = $request->input('columns')[$request->input('order')[0]['column']]['data'];
+			$order_dir = $request->input('order')[0]['dir'];
+			
+			if($order_column == 'beneficiario')$order_column = 'names';
+			if($order_column == 'suscriptor')$order_column = 'names_fr';
+			
+		}
+
 		//realizamos la consulta
 		if(!empty($request->input('search')['value'])){
 			Session::flash('search', $request->input('search')['value']);			
@@ -95,7 +107,7 @@ class ServiceController extends Controller {
 				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%');			
 			})
-
+			->orderBy($order_column, $order_dir)
 			->skip($request->input('start'))
 			->take($request->input('length'))
 			->get();
@@ -113,6 +125,7 @@ class ServiceController extends Controller {
 			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
 			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
 			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->orderBy($order_column, $order_dir)
 			->skip($request->input('start'))->take($request->input('length'))
 			->get();		
 			

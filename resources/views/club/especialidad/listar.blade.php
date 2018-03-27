@@ -37,6 +37,7 @@
 			</div>		
 		</div>
 		<div class="option_mod col-md-12" data-spy="affix">
+
 			@if(Session::has('modulo'))
             	@foreach (Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['opciones'] as $key => $opc)            		
             		@if($opc['lugar'] == Session::get('opaplus.usuario.lugar.lugar'))
@@ -60,12 +61,14 @@
 			            			</a>
 	            				</div>	            			
 	            			@elseif($opc['accion'] == 'recuperar')
-	            				<div id = "1" class = "message_mod bnt_lugar" >           				
+	            				<div id = "1" class = "col-md-1 message_mod bnt_lugar" >           				
 	            					<span class="{{$opc['icono']}}" aria-hidden="true" style = "margin-right:5px; color:#666699;" ></span>{{$opc[$key]}}
 	            				</div>
 	            			@elseif($opc['accion'] == 'eliminar')
-	            				<div id = "-1" class = "message_mod bnt_lugar" >           				
-	            					<span class="{{$opc['icono']}}" aria-hidden="true" style = "margin-right:5px; color:#666699;" ></span>{{$opc[$key]}}
+	            				<div id = "-1" class = "col-md-1 bnt_lugar" title = "{{$opc[$key]}}" >	
+	            					<a href="javascript:clu_especialidad.opt_eliminar()" class="site_title site_title2" style = "text-decoration: none; ">
+			            				<i class="{{$opc['icono']}}"></i>
+			            			</a>
 	            				</div>
 	            			@else
 	            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
@@ -130,6 +133,8 @@
     
     <!-- Form en blanco para capturar la url editar y eliminar-->
     {!! Form::open(array('id'=>'form_ver','url' => 'especialidad/ver')) !!}
+    {!! Form::close() !!}
+    {!! Form::open(array('id'=>'form_eliminar','url' => 'especialidad/delete')) !!}
     {!! Form::close() !!}
 	</div>
 @endsection
