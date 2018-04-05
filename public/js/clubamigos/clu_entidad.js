@@ -333,6 +333,12 @@ clu_entidad.prototype.editRespuesta = function(result) {
 			subnodo_6.appendChild(label_6);
 			subnodo_6.appendChild(select_6);
 
+			var subnodo_8 = document.createElement("div")	
+			subnodo_8.setAttribute("class", "col-md-12");
+			var hr_8 = document.createElement("hr");
+			hr_8.setAttribute("size", "1");
+			subnodo_8.appendChild(hr_8);
+
 			nodo.appendChild(input_0);//Nombre de sucursal
 			nodo.appendChild(subnodo_1);//Nombre de sucursal
 			nodo.appendChild(subnodo_2);//Dirección de sucursal
@@ -340,6 +346,7 @@ clu_entidad.prototype.editRespuesta = function(result) {
 			nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 			nodo.appendChild(subnodo_5);//Email sucursal
 			nodo.appendChild(subnodo_6);//Municipio sucursal
+			nodo.appendChild(subnodo_8);
 
 			document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 
@@ -440,12 +447,20 @@ clu_entidad.prototype.editRespuesta = function(result) {
 		subnodo_6.appendChild(label_6);
 		subnodo_6.appendChild(select_6);
 
+
+		var subnodo_8 = document.createElement("div")	
+		subnodo_8.setAttribute("class", "col-md-12");
+		var hr_8 = document.createElement("hr");
+		hr_8.setAttribute("size", "1");
+		subnodo_8.appendChild(hr_8);
+
 		nodo.appendChild(subnodo_1);//Nombre de sucursal
 		nodo.appendChild(subnodo_2);//Dirección de sucursal
 		nodo.appendChild(subnodo_3);//Telefono 1 sucursal
 		nodo.appendChild(subnodo_4);//Telefono 2 sucursal
 		nodo.appendChild(subnodo_5);//Email sucursal
 		nodo.appendChild(subnodo_6);//Municipio sucursal
+		nodo.appendChild(subnodo_8);
 
 		document.getElementsByClassName('tab_entidad2')[0].appendChild(nodo);
 	}

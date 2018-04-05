@@ -22,6 +22,7 @@ class CreateCluSubentityTable extends Migration
             $table->string('email_contact');
             $table->string('description');
             $table->string('city');
+            $table->string('neighborhood');
             $table->boolean('active')->default(true);
             $table->integer('entity_id')->unsigned();         
             $table->foreign('entity_id')->references('id')->on('clu_entity')->onDelete('cascade');
