@@ -818,10 +818,10 @@ class ServiceController extends Controller {
 		$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
 		$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
 		$servicio->hour_start = date_format($date,"H:i");
-
+		
 		try {
 			$servicio->save();						
-		}catch (\Illuminate\Database\QueryException $e) {			
+		}catch (\Illuminate\Database\QueryException $e) {				
 			$message = 'No se puedo editar el servicio';				
 			return Redirect::to('servicio/listar')->with('error', $message)->withInput();			
 		}

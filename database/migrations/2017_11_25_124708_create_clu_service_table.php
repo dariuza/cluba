@@ -34,6 +34,7 @@ class CreateCluServiceTable extends Migration
             //estados
             
             $table->boolean('active')->default(true);
+            $table->string('description');            
 
             //realciones
 
