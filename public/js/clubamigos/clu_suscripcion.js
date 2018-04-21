@@ -311,7 +311,7 @@ clu_suscripcion.prototype.add_cnt = function() {
 clu_suscripcion.prototype.add_bne = function(crnt,add) {
 		
 	if(add != undefined){
-		if(clu_suscripcion.benes >= 8){
+		if(clu_suscripcion.benes >= 7){
 			//es beneficiario adicional
 			clu_suscripcion.bene_add(crnt,'add');
 			clu_suscripcion.n_add++;
@@ -320,7 +320,7 @@ clu_suscripcion.prototype.add_bne = function(crnt,add) {
 		}
 		
 	}else{
-		if(clu_suscripcion.benes < 8){
+		if(clu_suscripcion.benes < 7){
 			//llamamos el metodo de agregar beneficiario
 			clu_suscripcion.bene_add(crnt,'');	
 			$("input[name='numer_b']").val(parseInt(n)+1);

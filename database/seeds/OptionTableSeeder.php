@@ -180,6 +180,14 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 			'active'=>1
 			)
 		);	
+
+		\DB::table('seg_option')->insert(array(
+			'option'=>'Carnet',
+			'action'=>'imprimir_carnet',
+			'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-file-pdf-o"}',
+			'active'=>1
+			)
+		);	
 			
 		
 	}
