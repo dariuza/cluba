@@ -4,7 +4,13 @@
 		<meta charset="UTF-8">
 		<title>Carnet PDF</title>
 	</head>	
-	{{ Html::style('css/license.css')}}	
+	{{ Html::style('css/license.css')}}
+	{{--
+	@php ($cnts=$array["cnts"])
+	@php ($suscription=$array["suscription"])
+	@php ($bnes=$array["bnes"])
+	--}}
+	
 	<body>			
 		<div class ="cnt_conteiner">		
 			@php ($c=0)			

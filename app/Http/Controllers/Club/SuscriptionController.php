@@ -2935,7 +2935,7 @@ class SuscriptionController extends Controller {
 		->get()
 		->toArray();
 		
-		if(!empty($array))return response()->json(['respuesta'=>true,'data'=>$array]);
+		if(!empty($array))return response()->json(['respuesta'=>true,'data'=>$array,'request'=>$request->input()]);
 		
 		return response()->json(['respuesta'=>true,'data'=>null]);
 	}
@@ -2974,8 +2974,8 @@ class SuscriptionController extends Controller {
 		return $pdf->download(''.$array['suscription']['code'].'.pdf');		
 	}
 	
-	public function postCarnetprint(Request $request){
-		
+	public function postCarnetprint(Request $request){		 
+
 		$array = array();
 		$array['suscription'] = Suscription::where('clu_suscription.id', $request->input()['suscription_id'])
 		->select('clu_suscription.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','fr.type_id','ufr.email','fr.movil_number','fr.fix_number','fr.birthdate','fr.birthplace','fr.sex','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.profession','fr.paymentadress','fr.reference','fr.reference_phone')
@@ -2987,7 +2987,7 @@ class SuscriptionController extends Controller {
 		foreach($request->input() as $key=>$value){
 			if(strpos($key,'cnt_') !== false) $checkbox[$key] = $value;			
 		}
-				
+		
 		$cnts =
 		License::
 		where('clu_license.suscription_id', $request->input()['suscription_id'])
@@ -3022,9 +3022,27 @@ class SuscriptionController extends Controller {
 			$cnt_prn->suscription_id = $request->input()['suscription_id'];
 			$cnt_prn->save();
 		}
+
+
+		if($request->input()['button_action'] == 'bnt_imprimir_carnet'){
+
+			//nuevo formato carner rosa
+			return view('license.carnet')->with('array',$array);			
+
+		}else{
+			//con formato anterior carnet azul		
+			$pdf = \PDF::loadView('license.suscription',$array);
+			//return view('license.suscription')->with('array',$array);
+
+			//nuevo formato carner rosa		
+			//$pdf = \PDF::loadView('license.carnet',$array);
+
+			//return view('license.carnet')->with('array',$array);
+			//return $pdf->stream(''.$array['suscription']['code'].'.pdf');				
+			return $pdf->download(''.$array['suscription']['code'].'.pdf');		
+
+		}
 		
-		$pdf = \PDF::loadView('license.suscription',$array);
-		return $pdf->download(''.$array['suscription']['code'].'.pdf');		
 	}
 	
 	//para consultar las reimpresiones realizadad

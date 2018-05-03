@@ -5,7 +5,7 @@
 		<title>Carnet PDF</title>
 	</head>
 	
-	{{ Html::style('css/license.css')}}	
+	{{ Html::style('css/license.css')}}		
 	<body>			
 		<div class ="cnt_conteiner">
 			@php ($c=0)			
@@ -15,7 +15,7 @@
 						<p style = "color:white"> {{ $dato['suscription']['code']}}</p>
 						<p style = "color:white"> {{ $dato['suscription']['code']}}</p>
 						@php ($c=4)	
-					@endif
+					@endif					
 					<div class="cnt_cnt">
 						<div class ="bnt_container">
 							<div class = "bnt_body">
@@ -43,7 +43,7 @@
 									</div>
 								</div>
 							</div>
-						</div>	
+						</div>
 						<div class="info_container">
 							<div class = "info_body">
 								<div> <font>  Esta credencial de descuanto es para uso de</font> </div>
@@ -61,12 +61,10 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					
+					</div>					
 					@php ($c--)
 				@endforeach
 			@endforeach
-			
 		</div>
 	</body>
 </html>

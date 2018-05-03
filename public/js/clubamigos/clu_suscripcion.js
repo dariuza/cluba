@@ -761,7 +761,15 @@ clu_suscripcion.prototype.carnetRespuesta = function(result) {
 			suscciption_input.setAttribute("type", "hidden");
 			suscciption_input.setAttribute("name", "suscription_id");
 			suscciption_input.setAttribute("value", clu_suscripcion.table.rows('.selected').data()[0]['id']);
+
+			var action_input = document.createElement("input");
+			action_input.setAttribute("type", "hidden");
+			action_input.setAttribute("name", "button_action");
+			action_input.setAttribute("value", result.request.button);
+
+
 			$("#suscripcion_carnet_modal .modal-body .tab_cnt_bnt1").append(suscciption_input);
+			$("#suscripcion_carnet_modal .modal-body .tab_cnt_bnt1").append(action_input);
 			
 			for(var i = 0; i < result.data.cnts.length; i++){
 				//carnet
