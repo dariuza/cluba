@@ -5,6 +5,10 @@
 		<title>Carnet PDF</title>
 	</head>	
 	{{ Html::style('css/invoice.css')}}	
+
+	
+	@php ($suscripciones=$array)	
+
 	<body>
 		<div class = "conteiner">
 			@foreach ($suscripciones as $sct)
