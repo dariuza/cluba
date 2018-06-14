@@ -16,10 +16,13 @@
 	{{ Html::style('css/lib/jquery-ui.css')}}	
 	{{ Html::style('css/lib/datatables.min.css')}}
 	{{ Html::style('css/lib/datatables.tabletools.css')}}	
-	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}
-
-			
+	{{ Html::style('css/lib/bootstrap-datepicker.min.css')}}			
 </head>
+<style type="text/css">
+	.nav li li.current-page a {
+	    color: #000 !important;
+	}
+</style>
 <body class="nav-md">
 	<div class="container body">
 		<div class="main_container">

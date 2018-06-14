@@ -1,7 +1,6 @@
 @extends('app')
 
-@section('content')
-	
+@section('content')	
 	@if(Session::has('error'))
 		<div class="alert alert-danger">
 			<strong>¡Acceso seguro!</strong> Acceso denegado.<br><br>
@@ -71,9 +70,7 @@
 		javascript:clu_suscripcion.colores_pie = [];
 		javascript:clu_suscripcion.datos_bar = [];
 		javascript:clu_suscripcion.datos_pie_down = [];
-		javascript:clu_suscripcion.datos_bar_down = [];
-
-					
+		javascript:clu_suscripcion.datos_bar_down = [];					
 	</script>
 @endsection
     

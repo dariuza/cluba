@@ -89,7 +89,8 @@
 
 		.foot{			
 		    color: white;
-		    margin-left: 221px;
+	        margin-left: 231px;
+    		font-size: 14px;
 		}
 
 		.info_foot{
@@ -109,6 +110,18 @@
 
 		.conteiner .page_conteiner:nth-of-type(4){
 			margin-bottom: 9px;
+		}
+
+
+		/*reverse de crarnets*/
+		/*solo para la parte trasera, solo los pares*/
+		.conteiner .page_conteiner:nth-of-type(even) .cnt_conteiner:nth-of-type(even){
+			
+		}
+
+		/*impares*/
+		.conteiner .page_conteiner:nth-of-type(even) .cnt_conteiner:nth-of-type(odd){			
+			float: right;	
 		}
 		
 
