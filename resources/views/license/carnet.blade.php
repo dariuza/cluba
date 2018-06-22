@@ -29,12 +29,12 @@
 		}
 		.conteiner{
 			/*width: 100%;*/
-			width:  832px;
+			width:  860px;
 		}
 
 		.page_conteiner{
 			border: 1px solid;
-		    height: 1214px;
+		    height: 1254px;
 		}
 		.cnt_conteiner{    
 		    /*border: 1px solid;*/
@@ -53,7 +53,7 @@
 		}
 
 		.mini_contenedor{
-			width: 363px;
+			width: 390px;
 		    height: 245px;
 		    /*height: 80%;*/
 		    background-image: url("carnet_front.png");
@@ -62,7 +62,7 @@
 		}
 
 		.mini_contenedor_back{
-			width: 363px;
+			width: 390px;
 		    height: 245px;
 		    /*height: 80%;*/
 		    background-image: url("carnet_back.png");
@@ -89,7 +89,7 @@
 
 		.foot{			
 		    color: white;
-	        margin-left: 231px;
+	        margin-left: 258px;
     		font-size: 14px;
 		}
 
