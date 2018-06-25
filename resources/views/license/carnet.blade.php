@@ -33,8 +33,8 @@
 		}
 
 		.page_conteiner{
-			border: 1px solid;
-		    height: 1254px;
+			border: 0px solid transparent;
+		    height: 1256px;
 		}
 		.cnt_conteiner{    
 		    /*border: 1px solid;*/
@@ -68,6 +68,7 @@
 		    background-image: url("carnet_back.png");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;	
+		    margin-top: 14px;
 		}
 
 		.mini_contenedor_relleno{
@@ -97,6 +98,7 @@
 
 		}
 		
+		/*
 		.conteiner .page_conteiner:nth-of-type(1){
 			margin-bottom: 2px;
 		}
@@ -111,7 +113,7 @@
 		.conteiner .page_conteiner:nth-of-type(4){
 			margin-bottom: 9px;
 		}
-
+		*/
 
 		/*reverse de crarnets*/
 		/*solo para la parte trasera, solo los pares*/
