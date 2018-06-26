@@ -5,6 +5,8 @@
 		<title>Carnet PDF</title>
 	</head>
 	
+	@php ($data=$array["data"])
+
 	{{ Html::style('css/license.css')}}		
 	<body>			
 		<div class ="cnt_conteiner">

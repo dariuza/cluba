@@ -59,6 +59,7 @@
 		    background-image: url("carnet_front.png");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
+	        margin-left: 18px;
 		}
 
 		.mini_contenedor_back{
@@ -68,7 +69,8 @@
 		    background-image: url("carnet_back.png");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;	
-		    margin-top: 14px;
+		    margin-top: 18px;
+		    margin-left: 18px;
 		}
 
 		.mini_contenedor_relleno{

@@ -5,6 +5,7 @@
 		<title>Carnet PDF</title>
 	</head>	
 	{{ Html::style('css/license.css')}}
+	
 	{{--
 	@php ($cnts=$array["cnts"])
 	@php ($suscription=$array["suscription"])
