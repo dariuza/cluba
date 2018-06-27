@@ -24,7 +24,7 @@
 		html{margin:0px 0px 0px 0px;}
 		*/
 		font{
-			font-size: 11px;
+			font-size: 14px;
 			/*font-family: 'Raleway', sans-serif;*/
 		}
 		.conteiner{
@@ -50,13 +50,15 @@
 		    -webkit-justify-content: center;
 		    -ms-flex-pack: center;
 		    justify-content: center;
+		    color: #575757;
+		    font-family: sans-serif;
 		}
 
 		.mini_contenedor{
 			width: 390px;
 		    height: 245px;
 		    /*height: 80%;*/
-		    background-image: url("carnet_front.png");
+		    background-image: url("carnet_front.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
 	        margin-left: 18px;
@@ -66,10 +68,10 @@
 			width: 390px;
 		    height: 245px;
 		    /*height: 80%;*/
-		    background-image: url("carnet_back.png");
+		    background-image: url("carnet_back.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;	
-		    margin-top: 18px;
+		    margin-top: 24px;
 		    margin-left: 18px;
 		}
 
@@ -80,19 +82,23 @@
 
 		.name_titular{
 			margin-top: 42px;
-    		padding-left: 15px;
+    		padding-left:22px;
     		font-size: 14px;
 		}
 
+		.id_titular{
+			padding-left: 22px;
+		}
+
 		.cnt_bnt{
-			margin-top: 50px;
-			padding-left: 15px;
-		    height: 114px;	
+			margin-top: 45px;
+			padding-left: 22px;
+		    height: 100px;	
 		}
 
 		.foot{			
 		    color: white;
-	        margin-left: 258px;
+	        margin-left: 248px;
     		font-size: 14px;
 		}
 
@@ -150,13 +156,14 @@
 				@endif
 					<div class="cnt_conteiner">	
 						<div class="mini_contenedor">
-							<div class="name_titular">{{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }}</div>
+							<div class="name_titular"><b>{{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }}</b></div>
+							<div class="id_titular">{{ $suscription['identificacion_fr'] }}</div>
 							<div class = "cnt_bnt" >
 							@foreach ($bnes as $bnt)
 								@if($bnt['license_id'] ==$cnt['id'] )
 									
 									<div class="name_beneficiario">
-										<font> {{ $bnt['names'].' '.$bnt['surnames'] }} </font>
+										<font> {{ ucwords(strtolower($bnt['names'].' '.$bnt['surnames'])) }} </font>
 									</div>
 									
 								@endif						
