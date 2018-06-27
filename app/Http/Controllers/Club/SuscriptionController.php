@@ -3138,11 +3138,11 @@ class SuscriptionController extends Controller {
 			$i++;
 		}
 		$array['data'] = $array;
-		return view('license.suscriptions')->with('array',$array);	
-		/* Para exportar como pdf		
+		//return view('license.suscriptions')->with('array',$array);	
+		/* Para exportar como pdf */
 		$pdf = \PDF::loadView('license.suscriptions',$array);
 		return $pdf->download('Carnest'.date("Y-m-d H:i:s").'.pdf');
-		*/
+		/**/
 	}
 
 	public function postCargasus(Request $request){
