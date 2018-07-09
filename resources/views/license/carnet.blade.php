@@ -90,6 +90,31 @@
 			padding-left: 22px;
 		}
 
+		.name_titular_big{
+			margin-top: 42px;
+    		padding-left:2px;
+    		font-size: 14px;
+		}
+
+		.id_titular_big{
+			padding-left: 2px;
+			font-size: 14px;
+		}
+
+
+		.name_titular_big_2{
+			margin-top: 42px;
+    		padding-left:2px;
+    		font-size: 12px;
+		}
+
+		.id_titular_big_2{
+			padding-left: 2px;
+			font-size: 14px;
+		}
+
+
+
 		.cnt_bnt{
 			margin-top: 45px;
 			padding-left: 22px;
@@ -98,7 +123,7 @@
 
 		.foot{			
 		    color: white;
-	        margin-left: 248px;
+	        margin-left: 244px;
     		font-size: 14px;
 		}
 
@@ -156,8 +181,27 @@
 				@endif
 					<div class="cnt_conteiner">	
 						<div class="mini_contenedor">
-							<div class="name_titular"><b>{{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }}</b></div>
-							<div class="id_titular">{{ $suscription['identificacion_fr'] }}</div>
+							@if( strlen($suscription['names_fr'].' '.$suscription['surnames_fr']) < 24 )
+								<div class="name_titular">
+									<b>{{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }}</b>
+								</div>
+								<div class="id_titular">{{ $suscription['identificacion_fr'] }}</div>
+							@else
+
+								@if( strlen($suscription['names_fr'].' '.$suscription['surnames_fr']) < 32 )
+									<div class="name_titular_big">
+									<b>{{ ucwords(strtolower($suscription['names_fr'].' '.$suscription['surnames_fr'] ))}}</b>
+									</div>
+									<div class="id_titular_big">{{ $suscription['identificacion_fr'] }}</div>
+								@else
+									<div class="name_titular_big_2">
+									<b>{{ ucwords(strtolower($suscription['names_fr'].' '.$suscription['surnames_fr'] ))}}</b>
+									</div>
+									<div class="id_titular_big_2">{{ $suscription['identificacion_fr'] }}</div>
+								@endif
+								
+							@endif
+							
 							<div class = "cnt_bnt" >
 							@foreach ($bnes as $bnt)
 								@if($bnt['license_id'] ==$cnt['id'] )
