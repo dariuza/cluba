@@ -79,7 +79,6 @@ class ReportController extends Controller {
 	}
 
 	public function postReportegeneral(Request $request){
-
 		
 		//se quieren consultar desde una fecha inicial			
 		if($request->input('inicio_rsg') != "" && $request->input('fin_rsg') == "" && $request->input('state') == "" && $request->input('adviser') == "" && $request->input('city') == ""){			
@@ -1512,11 +1511,13 @@ class ReportController extends Controller {
 		}
 
 		$array['suscripciones']=$export->toArray();
+
+		return view('invoice.generalpdf')->with('array',$array['suscripciones']);			
+		
 		//dd($array['suscripciones']);
 		//return view('invoice.generalpdf')->with('array',$array);
 		
-		//exportamos a pdf
-		
+		//exportamos a pdf		
 		ini_set('max_execution_time', 1200); //300 seconds = 5 minutes
 		$pdf = \PDF::loadView('invoice.generalpdf',$array);
 		return $pdf->download(''.'facturacion'.'.pdf');		

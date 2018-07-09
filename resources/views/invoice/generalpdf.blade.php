@@ -2,21 +2,25 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<title>Carnet PDF</title>
+		<title>Factura PDF</title>
 	</head>	
 	{{ Html::style('css/invoice.css')}}	
+
+	
+	@php ($suscripciones=$array)	
+
 	<body>
 		<div class = "conteiner">
 			@foreach ($suscripciones as $sct)
 
 			<div class="suscription">
 				<div class="fecha" >
-					<span class="spanfecha1"> {{$sct['annos']}}  &nbsp;&nbsp;</span>
+					<span class="spanfecha1"> {{$sct['dias']}}  &nbsp;&nbsp;</span>
 					<span>{{$sct['mess']}}  &nbsp;&nbsp; &nbsp;&nbsp;</span>
-					<span>{{$sct['dias']}}</span>
-					<span class="spanfecha2"> {{$sct['annoe']}}  &nbsp;&nbsp;</span>
+					<span>{{$sct['annos']}}</span>
+					<span class="spanfecha2"> {{$sct['diae']}}  &nbsp;&nbsp;</span>
 					<span>{{$sct['mese']}}  &nbsp;&nbsp; &nbsp;&nbsp;</span>
-					<span>{{$sct['diae']}}</span>
+					<span>{{$sct['annoe']}}</span>
 				</div>
 				<div class="nombre">
 					<span class="spannombre">  {{$sct['Nombres_socio']}} </span>
