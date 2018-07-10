@@ -101,8 +101,7 @@
 			padding-left: 18px;
 			font-size: 14px;
 		}
-
-
+		
 		.name_titular_big_2{
 			margin-top: 42px;
     		padding-left:8px;
@@ -114,8 +113,6 @@
 			font-size: 14px;
 		}
 
-
-
 		.cnt_bnt{
 			margin-top: 45px;
 			padding-left: 8px;
@@ -124,7 +121,7 @@
 
 		.foot{			
 		    color: white;
-	        margin-left: 244px;
+	        margin-left: 270px;
     		font-size: 14px;
 		}
 
