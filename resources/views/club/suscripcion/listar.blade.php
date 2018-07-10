@@ -140,19 +140,14 @@
 		            			</div>
 
 		            		@elseif($opc['accion'] == 'imprimir_carnet')
-<<<<<<< HEAD
-		            			<div class="col-md-1 bnt_imprimir_carnet" data-toggle="tooltip" title = "{{$opc[$key]}}">
-=======
+
 	            				<div class="col-md-1 bnt_imprimir_carnet" data-toggle="tooltip" title = "{{$opc[$key]}}">
->>>>>>> 8de7b3d00653f8d5769fbc4fd0c2608e30fd8752
+
 		            				<a href="#" class="site_title site_title2" style = "text-decoration: none; ">
 			            				<i class="{{$opc['icono']}}"></i>
 			            			</a>
 		            			</div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 8de7b3d00653f8d5769fbc4fd0c2608e30fd8752
 		            		@elseif($opc['accion'] == 'cargasus')
 	            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">
 		            				<a href="javascript:clu_suscripcion.opt_cargarsus()" class="site_title site_title2" style = "text-decoration: none; ">
@@ -781,11 +776,9 @@
 	  		}  	  		
   		});
 
-<<<<<<< HEAD
-	    $('.bnt_carnet,.bnt_imprimir_carnet').click(function(e){
-=======
+
 	    $('.bnt_carnet, .bnt_imprimir_carnet').click(function(e){
->>>>>>> 8de7b3d00653f8d5769fbc4fd0c2608e30fd8752
+
   	  		//e.preventDefault();//evita que la pagina se refresque
 	  	  	if(clu_suscripcion.table.rows('.selected').data().length){
 	  	  			  	  		
@@ -809,13 +802,8 @@
 		  	  	
 		  	  	
 	  		}else{
-<<<<<<< HEAD
-	  			$('.alerts').html(
-	  				'<div class="alert alert-info alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción</li></ul></div>'
-	  				);
-=======
+
 	  			$('.alerts').html('<div class="alert alert-info alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>¡Seleccione un registro!</strong> Esta opción requiere la selección de un registro o varios registros!!!.<br><br><ul><li>Selecciona un registro dando click sobre él, luego prueba nuevamente la opción.</li></ul></div>');
->>>>>>> 8de7b3d00653f8d5769fbc4fd0c2608e30fd8752
 	  			
 	  		}  	  		
   		});

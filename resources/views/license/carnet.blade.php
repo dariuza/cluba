@@ -55,24 +55,24 @@
 		}
 
 		.mini_contenedor{
-			width: 390px;
+			width: 418px;
 		    height: 245px;
 		    /*height: 80%;*/
 		    background-image: url("carnet_front.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
-	        margin-left: 18px;
+	        margin-left: 8px;
 		}
 
 		.mini_contenedor_back{
-			width: 390px;
+			width: 416px;
 		    height: 245px;
 		    /*height: 80%;*/
 		    background-image: url("carnet_back.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;	
 		    margin-top: 24px;
-		    margin-left: 18px;
+		    margin-left: 22px;
 		}
 
 		.mini_contenedor_relleno{
@@ -82,34 +82,35 @@
 
 		.name_titular{
 			margin-top: 42px;
-    		padding-left:22px;
+    		padding-left:8px;
     		font-size: 14px;
 		}
 
 		.id_titular{
-			padding-left: 22px;
+			padding-left: 8px;
+			font-size: 14px;
 		}
 
 		.name_titular_big{
 			margin-top: 42px;
-    		padding-left:2px;
+    		padding-left:8px;
     		font-size: 14px;
 		}
 
 		.id_titular_big{
-			padding-left: 2px;
+			padding-left: 18px;
 			font-size: 14px;
 		}
 
 
 		.name_titular_big_2{
 			margin-top: 42px;
-    		padding-left:2px;
+    		padding-left:8px;
     		font-size: 12px;
 		}
 
 		.id_titular_big_2{
-			padding-left: 2px;
+			padding-left: 8px;
 			font-size: 14px;
 		}
 
@@ -117,7 +118,7 @@
 
 		.cnt_bnt{
 			margin-top: 45px;
-			padding-left: 22px;
+			padding-left: 8px;
 		    height: 100px;	
 		}
 
@@ -185,19 +186,19 @@
 								<div class="name_titular">
 									<b>{{ $suscription['names_fr'].' '.$suscription['surnames_fr'] }}</b>
 								</div>
-								<div class="id_titular">{{ $suscription['identificacion_fr'] }}</div>
+								<div class="id_titular">C.C {{ $suscription['identificacion_fr'] }}</div>
 							@else
 
 								@if( strlen($suscription['names_fr'].' '.$suscription['surnames_fr']) < 32 )
 									<div class="name_titular_big">
 									<b>{{ ucwords(strtolower($suscription['names_fr'].' '.$suscription['surnames_fr'] ))}}</b>
 									</div>
-									<div class="id_titular_big">{{ $suscription['identificacion_fr'] }}</div>
+									<div class="id_titular_big">C.C {{  $suscription['identificacion_fr'] }}</div>
 								@else
 									<div class="name_titular_big_2">
 									<b>{{ ucwords(strtolower($suscription['names_fr'].' '.$suscription['surnames_fr'] ))}}</b>
 									</div>
-									<div class="id_titular_big_2">{{ $suscription['identificacion_fr'] }}</div>
+									<div class="id_titular_big_2">C.C {{ $suscription['identificacion_fr'] }}</div>
 								@endif
 								
 							@endif
