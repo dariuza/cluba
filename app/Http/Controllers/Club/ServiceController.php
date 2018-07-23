@@ -97,7 +97,9 @@ class ServiceController extends Controller {
 				'clu_state_service.alert as status_alert')
 			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
 			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
-			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')	
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->where('clu_suscription.state_id','<>',6)
 			->where(function ($query) {
 				$query
 				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
@@ -105,7 +107,8 @@ class ServiceController extends Controller {
 				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
-				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%');			
+				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%');			
 			})
 			->orderBy($order_column, $order_dir)
 			->skip($request->input('start'))
