@@ -34,7 +34,7 @@
 
 		.page_conteiner{
 			border: 0px solid transparent;
-		    height: 1256px;
+		    height: 1258px;
 		}
 		.cnt_conteiner{    
 		    /*border: 1px solid;*/
@@ -61,18 +61,18 @@
 		    background-image: url("carnet_front.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;
-	        margin-left: 8px;
+	        /*margin-left: 8px;*/
 		}
 
 		.mini_contenedor_back{
-			width: 416px;
+			width: 418px;
 		    height: 245px;
 		    /*height: 80%;*/
 		    background-image: url("carnet_back.jpg");
 		    background-repeat: no-repeat;
 		    background-size: 100% 100%;	
 		    margin-top: 24px;
-		    margin-left: 22px;
+		    margin-left: 12px;
 		}
 
 		.mini_contenedor_relleno{
@@ -114,14 +114,14 @@
 		}
 
 		.cnt_bnt{
-			margin-top: 45px;
+			margin-top: 40px;
 			padding-left: 8px;
-		    height: 100px;	
+		    height: 105px;	
 		}
 
 		.foot{			
 		    color: white;
-	        margin-left: 270px;
+	        margin-left: 268px;
     		font-size: 14px;
 		}
 
