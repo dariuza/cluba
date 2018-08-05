@@ -75,6 +75,26 @@
 		    margin-left: 12px;
 		}
 
+		/*
+		.mini_contenedor_back::before{
+			content: "Esta credencial de descuento es para uso de los clientes aquí registrados <b>hola</b>";
+			position: absolute;
+		    margin-left: 15px;
+		    margin-top: 60px;
+		    font-size: 12px;
+		    width: 180px;
+    		text-align: right;
+		}
+		*/
+
+		.cont_back{
+			margin-left: 0px;
+		    margin-top: 60px;
+		    font-size: 11px;
+		    width: 200px;
+		    text-align: right;
+		}
+
 		.mini_contenedor_relleno{
 			width: 363px;
 		    height: 245px;
@@ -228,35 +248,43 @@
 					<div class="page_conteiner">
 						<!--Back-->
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 						<div class="cnt_conteiner">	
-							<div class="mini_contenedor_back">	
+							<div class="mini_contenedor_back">
+								<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 							</div>
 						</div>
 					</div>
@@ -279,7 +307,8 @@
 				<div class="page_conteiner">
 				@for($i=0 ;$i< intval(count($cnts)); $i++)	
 					<div class="cnt_conteiner">	
-						<div class="mini_contenedor_back">	
+						<div class="mini_contenedor_back">
+							<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 						</div>
 					</div>
 				@endfor
@@ -299,7 +328,8 @@
 				<div class="page_conteiner">
 				@for($i=0 ;$i< intval(count($cnts)%8); $i++)				
 					<div class="cnt_conteiner">	
-						<div class="mini_contenedor_back">	
+						<div class="mini_contenedor_back">
+							<div class="cont_back">Esta credencial de descuento es para uso de los clientes aquí registrados<br><br>La actualización de la misma está condicionada por el acuerdo con la <b>Revista Club de Amigos</b> <br><br> Calle 51 Nº 50-66 int 506<br>Edificio Plaza Parque Itaguí<br> Itaguí - Antioquia </div>
 						</div>
 					</div>
 				@endfor
