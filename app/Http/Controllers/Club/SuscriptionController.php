@@ -3026,11 +3026,11 @@ class SuscriptionController extends Controller {
 
 		if($request->input()['button_action'] == 'bnt_imprimir_carnet'){
 
-			//nuevo formato carner rosa
+			//nuevo formato carner rosa			
 			return view('license.carnet')->with('array',$array);			
 
 		}else{
-			//con formato anterior carnet azul		
+			//con formato anterior carnet azul					
 			$pdf = \PDF::loadView('license.suscription',$array);
 			//return view('license.suscription')->with('array',$array);
 
@@ -3137,11 +3137,26 @@ class SuscriptionController extends Controller {
 			
 			$i++;
 		}
-		$array['data'] = $array;
-		//return view('license.suscriptions')->with('array',$array);	
+		
+
+		$suscripciones = array();
+		$carnets = array();
+		$benes = array();
+
+		foreach ($array as $key => $value) {
+			$suscripciones[$value['suscription']['id']] = $value['suscription'];
+			$carnets = array_merge($carnets,$value['cnts']);
+			$benes = array_merge($benes,$value['bnes']);
+		}
+
+		$array['data'][] = $suscripciones;
+		$array['data'][] = $carnets;
+		$array['data'][] = $benes;
+		
+		return view('license.suscriptions_html')->with('array',$array['data']);	
 		/* Para exportar como pdf */
-		$pdf = \PDF::loadView('license.suscriptions',$array);
-		return $pdf->download('Carnest'.date("Y-m-d H:i:s").'.pdf');
+		//$pdf = \PDF::loadView('license.suscriptions',$array);
+		//return $pdf->download('Carnest'.date("Y-m-d H:i:s").'.pdf');
 		/**/
 	}
 
