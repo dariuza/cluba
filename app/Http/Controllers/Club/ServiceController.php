@@ -99,7 +99,9 @@ class ServiceController extends Controller {
 			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
 			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
 			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
-			->where('clu_suscription.state_id','<>',6)
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
 			->where(function ($query) {
 				$query
 				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
@@ -108,7 +110,9 @@ class ServiceController extends Controller {
 				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
-				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%');			
+				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%');
+						
 			})
 			->orderBy($order_column, $order_dir)
 			->skip($request->input('start'))
@@ -553,7 +557,7 @@ class ServiceController extends Controller {
 		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
 		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
 		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-		->where('seg_user_profile.identificacion',$request->input('id'))
+		->where('seg_user_profile.identificacion',$request->input('id'))		
 		->get();
 
 		if(empty($array['titular'])){
@@ -648,6 +652,8 @@ class ServiceController extends Controller {
 						'clu_suscription.*',
 						'clu_suscription.id as suscription_id')				
 					->where('clu_suscription.code','LIKE',$request->input('id'))
+					->where('clu_suscription.state_id','<>',6)
+					->where('clu_suscription.state_id','<>',5)
 					->get();
 					if(empty($array['suscripcion'])){
 						$array['suscripcion'] = \DB::table('clu_suscription')
