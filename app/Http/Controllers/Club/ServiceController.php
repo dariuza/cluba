@@ -111,7 +111,8 @@ class ServiceController extends Controller {
 				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
-				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%');
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
 						
 			})
 			->orderBy($order_column, $order_dir)
