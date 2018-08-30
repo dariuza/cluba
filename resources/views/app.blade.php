@@ -60,7 +60,9 @@
 							<ul class="nav side-menu">
 							
 							<!-- Menu DASHBOARD -->
+							@if(Session::get('opaplus.usuario.rol_id') == 1)
 							<li><a href="{{ url('/') }}"> <i class = "fa fa-dashboard fa-fw"> </i> DASHBOARD </a></li>
+							@endif
 														
 							@foreach (Session::get('opaplus.usuario.permisos') as $llave_permiso => $permiso)
 								@if($llave_permiso == 1)								

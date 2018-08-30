@@ -112,6 +112,7 @@ class ServiceController extends Controller {
 				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
 				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_state_service.state', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
 						
 			})

@@ -25,6 +25,7 @@
 	@foreach ($modulo['suscripciones_advser'] as $key => $value)		
 		<script type="text/javascript">  clu_suscripcion.datos_bar.push({name:"{{$value->names}}",y:{{$value->total}}});</script>
 	@endforeach
+	@if(Session::get('opaplus.usuario.rol_id') == 1)
     <div class="col-md-12" style = "margin-bottom: 10px;">
 		<div class="col-md-12 col-md-offset-0 cuadro">
 			<div id="container_pie" style="width:100%; height:100%;"></div>	
@@ -35,6 +36,7 @@
 			<div id="container_bar" style="width:100%; height:100%;"></div>	
 		</div>
 	</div>
+	@endif
 
 	@foreach ($modulo['suscripciones_state_down'] as $key => $value)		
 		<script type="text/javascript">  clu_suscripcion.datos_pie_down.push({name:"{{$value->state}}",y:{{$value->total}}});</script>		
@@ -42,6 +44,7 @@
 	@foreach ($modulo['suscripciones_advser_down'] as $key => $value)		
 		<script type="text/javascript">  clu_suscripcion.datos_bar_down.push({name:"{{$value->names}}",y:{{$value->total}}});</script>
 	@endforeach
+	@if(Session::get('opaplus.usuario.rol_id') == 1)
 	<div class="col-md-12" style="margin-top: 1%;margin-bottom: 1%; ">
 		<hr style="display: block;height: 1px;border: 0;border-top: 1px solid #ccc;margin: 1em 0;padding: 0;" size="1">
 	</div>
@@ -55,6 +58,7 @@
 			<div id="container_bar_down" style="width:100%; height:100%;"></div>	
 		</div>
 	</div>
+	@endif
 		
 @endsection
 @section('script')
