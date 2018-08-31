@@ -65,6 +65,7 @@
 	</style>
 
 	<div class="col-md-12 col-md-offset-0 container-fluid" >
+		
 		<div class="name_user">
 			<div>			
 				Modulo {{Session::get('modulo.modulo')}}
@@ -166,11 +167,25 @@
 	            <tr>
 	            	@if(Session::has('modulo.fillable'))
 	            		@foreach (Session::get('modulo.fillable') as $col)
-	            			<th>{{$col}}</th>
+	            			@if($col == "Estado")
+	            				<th class="select-filter">{{$col}}</th>
+	            			@else
+	            				<th >{{$col}}</th>
+	            			@endif	            			
+	            			
 	            		@endforeach
 	            	@endif               
 	            </tr>
-	        </thead>              
+	        </thead>
+	        <tfoot>
+	            <tr>
+	               @if(Session::has('modulo.fillable'))
+	            		@foreach (Session::get('modulo.fillable') as $col)
+	            			<th>{{$col}}</th>
+	            		@endforeach
+	            	@endif  
+	            </tr>
+	        </tfoot>             
 	    </table>
     
 
@@ -405,7 +420,7 @@
 		    "bLengthChange": false,
 		    "serverSide": true,	        
 		    "ajax": "{{url('servicio/listarajax')}}",	
-		    "iDisplayLength": 25,       
+		    "iDisplayLength": 25,		    
 		    "columns": [				   
 		        { "data": "names_user"},        	            
 		        { "data": "surnames_user" },
@@ -413,7 +428,7 @@
 		        { "data": "name_specialist" },		        
 		        { "data": "name_specialty" },
 		        { "data": "date_service_time" },
-		        { "data": "name_state" },
+		        { "data": "name_state", "orderable": false },
 		        { "data": "especialty_id", "visible":false },
 		        { "data": "especialist_id", "visible":false },
 		        { "data": "subentity_id", "visible":false },
@@ -431,7 +446,30 @@
 		        //	$(nRow).children()[5].style.backgroundColor = aData.next_alert;
 		        		        
 		        
-            },	    
+            },
+
+            initComplete: function () {
+	            this.api().columns('.select-filter').every( function () {
+	                var column = this;
+	                var select = $('<select><option value=""></option></select>')
+	                    .appendTo( $(column.header()).empty() )
+	                    .on( 'change', function () {
+	                        var val = $.fn.dataTable.util.escapeRegex(
+	                            $(this).val()
+	                        );
+	  
+	                        column
+	                            .search( val ? '^'+val+'$' : '', true, false )
+	                            .draw();
+	                    } );
+	  
+	                column.data().unique().sort().each( function ( d, j ) {
+	                    select.append( '<option value="'+d+'">'+d+'</option>' )
+	                } );
+	            } );
+	        }
+
+
 		});
 		@if(Session::has('filtro'))
 			clu_servicio.table.search( "{{Session::get('filtro')}}" ).draw();

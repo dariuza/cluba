@@ -71,7 +71,7 @@ class ServiceController extends Controller {
 	}
 
 	public function getListarajax(Request $request){
-
+		
 		$moduledata['total'] = Service::count();
 
 		$order_column = 'names';
@@ -81,12 +81,52 @@ class ServiceController extends Controller {
 			$order_dir = $request->input('order')[0]['dir'];
 			
 			if($order_column == 'beneficiario')$order_column = 'names';
-			if($order_column == 'suscriptor')$order_column = 'names_fr';
-			
+			if($order_column == 'suscriptor')$order_column = 'names_fr';			
 		}
 
 		//realizamos la consulta
-		if(!empty($request->input('search')['value'])){
+		//1. estan los dos
+		if(!empty($request->input('search')['value']) && !empty($request->input('columns')[6]['search']['value'])){
+
+			Session::flash('search', $request->input('search')['value']);
+			$select_value = str_replace('$','',str_replace('^','',$request->input('columns')[6]['search']['value']));				
+			
+			$moduledata['servicios']=\DB::table('clu_service')
+			->select('clu_service.*',
+				'clu_specialist.name as name_specialist',
+				'clu_specialty.name as name_specialty',
+				'clu_state_service.state as name_state',
+				'clu_state_service.alert as status_alert')
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
+			->where(function ($query) use ($select_value) {
+				$query
+				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_state_service.state', 'like', '%'.$select_value.'%')
+				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
+						
+			})
+			->orderBy($order_column, $order_dir)
+			->skip($request->input('start'))
+			->take($request->input('length'))
+			->get();
+
+			$moduledata['filtro'] = count($moduledata['servicios']);
+
+		}elseif(!empty($request->input('search')['value'])){
+			//2. solo search
 			Session::flash('search', $request->input('search')['value']);			
 			
 			$moduledata['servicios']=\DB::table('clu_service')
@@ -122,6 +162,37 @@ class ServiceController extends Controller {
 			->get();
 
 			$moduledata['filtro'] = count($moduledata['servicios']);
+
+
+		}elseif(!empty($request->input('columns')[6]['search']['value'])){
+			//solo selector, no ordena, solo cosulta
+
+			$select_value = str_replace('$','',str_replace('^','',$request->input('columns')[6]['search']['value']));				
+			
+			$moduledata['servicios']=\DB::table('clu_service')
+			->select('clu_service.*',
+				'clu_specialist.name as name_specialist',
+				'clu_specialty.name as name_specialty',
+				'clu_state_service.state as name_state',
+				'clu_state_service.alert as status_alert')
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
+			->where(function ($query) use ($select_value) {
+				$query				
+				->Where('clu_state_service.state', 'like', '%'.$select_value.'%');						
+			})
+			->orderBy($order_column, $order_dir)
+			->skip($request->input('start'))
+			->take($request->input('length'))
+			->get();
+
+			$moduledata['filtro'] = count($moduledata['servicios']);
+
 		}else{
 
 			$moduledata['servicios']=\DB::table('clu_service')
@@ -140,7 +211,8 @@ class ServiceController extends Controller {
 			
 				
 			$moduledata['filtro'] = $moduledata['total'];
-		}
+
+		}		
 
 		foreach($moduledata['servicios'] as $servicio){
 
