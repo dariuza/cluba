@@ -61,6 +61,11 @@ class ServiceController extends Controller {
 			$moduledata['municipios'][$city->city] = $city->city;
 		}
 
+		$estados= \DB::table('clu_state_service')->get();
+		foreach ($estados as $estado){
+			$moduledata['estados'][$estado->state] = $estado->state;
+		}
+
 		$moduledata['fillable'] = ['Usuario','Contacto','Ciudad','Especialista','Especialidad','Día y Hora','Estado'];
 
 		//para llevar temporalmente las variables a la vista.

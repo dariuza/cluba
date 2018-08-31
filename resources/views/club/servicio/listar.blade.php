@@ -65,7 +65,7 @@
 	</style>
 
 	<div class="col-md-12 col-md-offset-0 container-fluid" >
-		
+
 		<div class="name_user">
 			<div>			
 				Modulo {{Session::get('modulo.modulo')}}
@@ -462,10 +462,16 @@
 	                            .search( val ? '^'+val+'$' : '', true, false )
 	                            .draw();
 	                    } );
-	  
+	  				/*
 	                column.data().unique().sort().each( function ( d, j ) {
 	                    select.append( '<option value="'+d+'">'+d+'</option>' )
 	                } );
+	                */
+	                //buena forma de hacerce. OK
+	                @foreach (Session::get('modulo.estados') as $estado)
+	                	$(".select-filter select").append('<option value={{$estado}}>{{$estado}}</option>');
+	                @endforeach	                
+	                
 	            } );
 	        }
 
