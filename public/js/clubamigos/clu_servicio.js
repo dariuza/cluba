@@ -109,6 +109,8 @@ clu_servicio.prototype.verServicioRespuesta = function(result) {
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>ESTADO CIVIL:</b> '+result.data.usuario[0].civil_status+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>FECHA NACIMIENTO:</b> '+result.data.usuario[0].birthdate+'</div>');
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>EDAD:</b> '+clu_servicio.edad(result.data.usuario[0].birthdate)+'</div>');
+	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-4" ><b>DIRECCIÓN:</b> '+result.data.usuario[0].city+' - '+ result.data.usuario[0].adress+'</div>');
+	
 
 
 	$("#servicio_ver_modal .modal-body .row_tab1_content").html($("#servicio_ver_modal .modal-body .row_tab1_content").html()+'<div class="col-md-12" ><hr size="1"/></div>');

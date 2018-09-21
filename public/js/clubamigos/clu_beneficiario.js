@@ -42,17 +42,20 @@ clu_beneficiario.prototype.verRespuesta = function(result) {
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Fecha Nacimiento: '+clu_beneficiario.table.rows('.selected').data()[0].birthdate+'</div>');
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Lugar de Nacimiento: '+clu_beneficiario.table.rows('.selected').data()[0].birthplace+'</div>');
 	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Precio: '+clu_beneficiario.table.rows('.selected').data()[0].price+'</div>');
+	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Direción: '+clu_beneficiario.table.rows('.selected').data()[0].adress+'</div>');
+	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Ciudad: '+clu_beneficiario.table.rows('.selected').data()[0].city+'</div>');
+	$("#beneficiario_ver_modal .modal-body .row_izq").html($("#beneficiario_ver_modal .modal-body .row_izq").html()+'<div class="col-md-6" >Correo Electrónico: '+clu_beneficiario.table.rows('.selected').data()[0].email+'</div>');
 	
 	$("#beneficiario_ver_modal .modal-body .tab2").html('');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Suscriptor: '+clu_beneficiario.table.rows('.selected').data()[0].suscriptor+'</div>');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Identificación: '+clu_beneficiario.table.rows('.selected').data()[0].identificacion_fr+'</div>');
-	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Email: '+clu_beneficiario.table.rows('.selected').data()[0].email+'</div>');
+	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Email: '+clu_beneficiario.table.rows('.selected').data()[0].fr_email+'</div>');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Teléfono: '+clu_beneficiario.table.rows('.selected').data()[0].fix_number+'</div>');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Celular: '+clu_beneficiario.table.rows('.selected').data()[0].fr_movil+'</div>');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Departamento: '+clu_beneficiario.table.rows('.selected').data()[0].departamento+'</div>');
-	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Ciudad: '+clu_beneficiario.table.rows('.selected').data()[0].city+'</div>');	
+	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Ciudad: '+clu_beneficiario.table.rows('.selected').data()[0].fr_city+'</div>');	
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Barrio: '+clu_beneficiario.table.rows('.selected').data()[0].neighborhood+'</div>');
-	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Dirección: '+clu_beneficiario.table.rows('.selected').data()[0].adress+'</div>');
+	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Dirección: '+clu_beneficiario.table.rows('.selected').data()[0].fr_adress+'</div>');
 	
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-12" ><hr size="1"/></div>');
 	$("#beneficiario_ver_modal .modal-body .tab2").html($("#beneficiario_ver_modal .modal-body .tab2").html()+'<div class="col-md-12"  ><b>Información de Pago</b></div>');

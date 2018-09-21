@@ -103,11 +103,12 @@ class BeneficiaryController extends Controller {
 			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)
 				->where(function ($query) {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
 					->orWhere('clu_beneficiary.state', 'like', '%'.Session::get('search').'%')
@@ -127,11 +128,12 @@ class BeneficiaryController extends Controller {
 				
 			}elseif( Session::get('opaplus.usuario.rol_id') == 3){
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)
 				->where('ss.friend_id',Session::get('opaplus.usuario.id'))
 				->where(function ($query) {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
@@ -152,11 +154,12 @@ class BeneficiaryController extends Controller {
 				
 			}elseif(Session::get('opaplus.usuario.rol_id') == 4){
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)
 				->where('ss.adviser_id',Session::get('opaplus.usuario.id'))
 				->where(function ($query) {
 					$query->where('clu_beneficiary.identification', 'like', '%'.Session::get('search').'%')
@@ -194,11 +197,12 @@ class BeneficiaryController extends Controller {
 					}
 				
 					$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-					->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+					->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 					->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 					->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 					->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 					->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+					->where('ss.state_id','<>',6)
 					->where(function($q) use ($ciudades){
 						foreach($ciudades as $key => $value){
 							$q->orwhere('fr.city', '=', $value);
@@ -234,11 +238,12 @@ class BeneficiaryController extends Controller {
 			if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2 || Session::get('opaplus.usuario.rol_id') == 9){
 				//el administrador tien acceso total
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
-				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')				
+				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)				
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
 				->get();
@@ -247,11 +252,12 @@ class BeneficiaryController extends Controller {
 			}elseif(Session::get('opaplus.usuario.rol_id') == 3){
 				//el amigo solo puede ver sus beneficiarios
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)
 				->where('ss.friend_id',Session::get('opaplus.usuario.id'))				
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))				
@@ -261,11 +267,12 @@ class BeneficiaryController extends Controller {
 			}elseif(Session::get('opaplus.usuario.rol_id') == 4){
 				//el asesor solo puede ver los beneficiarios de las suscripciones adscritas a el			
 				$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+				->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 				->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 				->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 				->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 				->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+				->where('ss.state_id','<>',6)
 				->where('ss.adviser_id',Session::get('opaplus.usuario.id'))
 				->orderBy($order_column, $order_dir)
 				->skip($request->input('start'))->take($request->input('length'))
@@ -293,11 +300,12 @@ class BeneficiaryController extends Controller {
 					}
 				
 					$moduledata['beneficiarios']=\DB::table('clu_beneficiary')
-					->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email','fr.movil_number as fr_movil','fr.fix_number','fr.adress','fr.state as departamento','fr.city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
+					->select('clu_beneficiary.*','fr.names as names_fr','fr.surnames as surnames_fr','fr.identificacion as identificacion_fr','ufr.email as fr_email','fr.movil_number as fr_movil','fr.fix_number','fr.adress as fr_adress','fr.state as departamento','fr.city as fr_city','fr.neighborhood','fr.paymentadress','fr.reference','fr.reference_phone')
 					->leftjoin('clu_license as ls', 'clu_beneficiary.license_id', '=', 'ls.id')
 					->leftjoin('clu_suscription as ss', 'ls.suscription_id', '=', 'ss.id')
 					->leftjoin('seg_user as ufr', 'ss.friend_id', '=', 'ufr.id')
 					->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+					->where('ss.state_id','<>',6)
 					->where(function($q) use ($ciudades){
 						foreach($ciudades as $key => $value){
 							$q->orwhere('fr.city', '=', $value);

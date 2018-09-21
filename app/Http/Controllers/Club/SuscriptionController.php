@@ -14,6 +14,7 @@ use App\Core\Club\License;
 use App\Core\Club\LicensePrint;
 use App\Core\Club\Beneficiary;
 use App\Core\Club\City;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -948,6 +949,9 @@ class SuscriptionController extends Controller {
 						->where('identificacion','=',$identification)
 						->get()->toarray()[0]['user_id'];				
 						$suscription->adviser_id= $id_adviser;
+						//si es un asesor quie hace la consulta	rol de asesor 4 0 9					
+						
+
 						
 						try {
 							$suscriptionAffectedRows = Suscription::where('id', $request->input()['suscription_id'])->update(array(
@@ -1294,6 +1298,11 @@ class SuscriptionController extends Controller {
 						->where('identificacion','=',$identification)
 						->get()->toarray()[0]['user_id'];				
 						$suscription_renovation->adviser_id= $id_adviser;
+						if(Auth::user()->rol_id == 4 || Auth::user()->rol_id == 9){
+							$suscription_renovation->adviser_id= Auth::user()->id;
+						}
+
+							
 						$suscription_renovation->friend_id = $old_suscriptcion[0]['friend_id'];
 						$suscription_renovation->state_id= 2;
 						

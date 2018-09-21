@@ -340,7 +340,37 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	n=clu_suscripcion.n_add + 1;
 	
 	var node = document.createElement("div");
-	node.setAttribute("class", "form-group");	
+	node.setAttribute("class", "form-group");
+
+	var subnode_n = document.createElement("div")
+	subnode_n.setAttribute("class",  "col-md-3");
+	
+	var label_n = document.createElement("label");		
+	var input_n = document.createElement("input");
+	label_n.setAttribute("class", "col-md-12 control-label");
+	label_n.setAttribute("for", "names");
+	label_n.textContent = "Nombres";
+	input_n.setAttribute("class", "form-control");
+	input_n.setAttribute("placeholder", "Ingresa los nombres");
+	input_n.setAttribute("name", "bne"+add+"_names_"+crnt+"_"+n);
+	
+	subnode_n.appendChild(label_n);
+	subnode_n.appendChild(input_n);
+	
+	var subnode_sn = document.createElement("div")
+	subnode_sn.setAttribute("class",  "col-md-3");
+	
+	var label_sn = document.createElement("label");		
+	var input_sn = document.createElement("input");
+	label_sn.setAttribute("class", "col-md-12 control-label");
+	label_sn.setAttribute("for", "surnames");
+	label_sn.textContent = "Apellidos";
+	input_sn.setAttribute("class", "form-control");
+	input_sn.setAttribute("placeholder", "Ingresa los apellidos");
+	input_sn.setAttribute("name", "bne"+add+"_surnames_"+crnt+"_"+n);
+	
+	subnode_sn.appendChild(label_sn);
+	subnode_sn.appendChild(input_sn);
 	
 	var subnode_s = document.createElement("div")
 	subnode_s.setAttribute("class", "col-md-3 bne_add_"+crnt+"_"+n);
@@ -396,35 +426,7 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	subnode.appendChild(label);
 	subnode.appendChild(input);
 	
-	var subnode_n = document.createElement("div")
-	subnode_n.setAttribute("class",  "col-md-3");
 	
-	var label_n = document.createElement("label");		
-	var input_n = document.createElement("input");
-	label_n.setAttribute("class", "col-md-12 control-label");
-	label_n.setAttribute("for", "names");
-	label_n.textContent = "Nombres";
-	input_n.setAttribute("class", "form-control");
-	input_n.setAttribute("placeholder", "Ingresa los nombres");
-	input_n.setAttribute("name", "bne"+add+"_names_"+crnt+"_"+n);
-	
-	subnode_n.appendChild(label_n);
-	subnode_n.appendChild(input_n);
-	
-	var subnode_sn = document.createElement("div")
-	subnode_sn.setAttribute("class",  "col-md-3");
-	
-	var label_sn = document.createElement("label");		
-	var input_sn = document.createElement("input");
-	label_sn.setAttribute("class", "col-md-12 control-label");
-	label_sn.setAttribute("for", "surnames");
-	label_sn.textContent = "Apellidos";
-	input_sn.setAttribute("class", "form-control");
-	input_sn.setAttribute("placeholder", "Ingresa los apellidos");
-	input_sn.setAttribute("name", "bne"+add+"_surnames_"+crnt+"_"+n);
-	
-	subnode_sn.appendChild(label_sn);
-	subnode_sn.appendChild(input_sn);
 	
 	var subnode_r = document.createElement("div")
 	subnode_r.setAttribute("class",  "col-md-3 bne_add_"+crnt+"_"+n);
@@ -608,10 +610,11 @@ clu_suscripcion.prototype.bene_add = function(crnt,add) {
 	hr.setAttribute("size", 1);
 	subnode_hr.appendChild(hr);
 	
-	node.appendChild(subnode_s);//selector type_id
-	node.appendChild(subnode);//identification
+	
 	node.appendChild(subnode_n);//nombres
 	node.appendChild(subnode_sn);//apellidos
+	node.appendChild(subnode_s);//selector type_id
+	node.appendChild(subnode);//identification	
 	node.appendChild(subnode_r);//parentesco
 	node.appendChild(subnode_c);//Celular
 	node.appendChild(subnode_ss);//EstadoCivil

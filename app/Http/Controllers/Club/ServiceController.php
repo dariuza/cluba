@@ -109,17 +109,17 @@ class ServiceController extends Controller {
 			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
 			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
 			//->where('clu_suscription.state_id','<>',6)
+			->where('clu_state_service.state', 'like', '%'.$select_value.'%')
 			->where(function ($query) use ($select_value) {
 				$query
-				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orwhere('clu_service.city', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
-				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')
-				->orWhere('clu_state_service.state', 'like', '%'.$select_value.'%')
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')				
 				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
 						
 			})
@@ -128,7 +128,35 @@ class ServiceController extends Controller {
 			->take($request->input('length'))
 			->get();
 
-			$moduledata['filtro'] = count($moduledata['servicios']);
+
+			$moduledata['servicios_count']=\DB::table('clu_service')
+			->select()
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
+			->where('clu_state_service.state', 'like', '%'.$select_value.'%')
+			->where(function ($query) use ($select_value) {
+				$query
+				->orwhere('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')				
+				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
+						
+			})			
+			->count();
+
+
+			$moduledata['filtro'] = $moduledata['servicios_count'];
+			//$moduledata['filtro'] = count($moduledata['servicios']);
 
 		}elseif(!empty($request->input('search')['value'])){
 			//2. solo search
@@ -149,7 +177,7 @@ class ServiceController extends Controller {
 			//->where('clu_suscription.state_id','<>',6)
 			->where(function ($query) {
 				$query
-				->where('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orwhere('clu_service.city', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
 				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
@@ -166,7 +194,34 @@ class ServiceController extends Controller {
 			->take($request->input('length'))
 			->get();
 
-			$moduledata['filtro'] = count($moduledata['servicios']);
+
+			$moduledata['servicios_count']=\DB::table('clu_service')
+			->select()
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
+			->where(function ($query) {
+				$query
+				->orwhere('clu_service.city', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.identification_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.names_user', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.day', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialist.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_specialty.name', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_suscription.code', 'like', '%'.Session::get('search').'%')
+				->orWhere('fr.identificacion', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_state_service.state', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_service.date_service', 'like', '%'.Session::get('search').'%');
+						
+			})			
+			->count();
+
+			$moduledata['filtro'] = $moduledata['servicios_count'];
+			//$moduledata['filtro'] = count($moduledata['servicios']);
 
 
 		}elseif(!empty($request->input('columns')[6]['search']['value'])){
@@ -189,14 +244,29 @@ class ServiceController extends Controller {
 			//->where('clu_suscription.state_id','<>',6)
 			->where(function ($query) use ($select_value) {
 				$query				
-				->Where('clu_state_service.state', 'like', '%'.$select_value.'%');						
+				->where('clu_state_service.state', 'like', '%'.$select_value.'%');						
 			})
 			->orderBy($order_column, $order_dir)
 			->skip($request->input('start'))
 			->take($request->input('length'))
 			->get();
 
-			$moduledata['filtro'] = count($moduledata['servicios']);
+			$moduledata['servicios_count']=\DB::table('clu_service')
+			->select()
+			->leftjoin('clu_specialist', 'clu_service.especialist_id', '=', 'clu_specialist.id')
+			->leftjoin('clu_specialty', 'clu_service.especialty_id', '=', 'clu_specialty.id')
+			->leftjoin('clu_state_service', 'clu_service.status', '=', 'clu_state_service.id')
+			->leftjoin('clu_suscription', 'clu_service.suscription_id', '=', 'clu_suscription.id')
+			->leftjoin('seg_user as ufr', 'clu_suscription.friend_id', '=', 'ufr.id')
+			->leftjoin('seg_user_profile as fr', 'ufr.id', '=', 'fr.user_id')
+			//->where('clu_suscription.state_id','<>',6)
+			->where(function ($query) use ($select_value) {
+				$query				
+				->where('clu_state_service.state', 'like', '%'.$select_value.'%');						
+			})
+			->count();
+
+			$moduledata['filtro'] = $moduledata['servicios_count'];
 
 		}else{
 
@@ -636,7 +706,8 @@ class ServiceController extends Controller {
 		->join('seg_user', 'seg_user_profile.user_id', '=', 'seg_user.id')
 		->join('clu_suscription', 'seg_user.id', '=', 'clu_suscription.friend_id')
 		->join('clu_state', 'clu_suscription.state_id', '=', 'clu_state.id')
-		->where('seg_user_profile.identificacion',$request->input('id'))		
+		->where('seg_user_profile.identificacion',$request->input('id'))
+		->where('clu_suscription.state_id','<>',6)		
 		->get();
 
 		if(empty($array['titular'])){
@@ -906,6 +977,17 @@ class ServiceController extends Controller {
 		$servicio->date_service = date_format($date,"Y-m-d H:i");;//con hora y todo
 		$servicio->date_service_time = date_format($date,"Y-m-d H:i");//con hora y todo
 		$servicio->hour_start = date_format($date,"H:i");
+		//updateday
+		$arrayMapaDias = array(
+	    	'DOMINGO',
+	    	'LUNES',
+	    	'MARTES',
+	    	'MIERCOLES',
+	    	'JUEVES',
+	    	'VIERNES',
+	    	'SABADO'	    	
+	    );	    
+	    $servicio->day = $arrayMapaDias[date("w", strtotime($servicio->date_service))];
 		
 		try {
 			$servicio->save();						
