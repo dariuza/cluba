@@ -386,7 +386,8 @@
 		        { "data": "identification"}, 
 		        { "data": "phone1"},
 		        { "data": "phone2"},
-		        { "data": "email"}      	            
+		        { "data": "email"},
+		        { "data": "business_name"}        	            
 		        		                   
 		    ],	       
 		    "language": {

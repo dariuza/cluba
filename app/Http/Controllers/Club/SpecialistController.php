@@ -50,7 +50,7 @@ class SpecialistController extends Controller {
 	public function getListar(){
 		
 		//las siguientes dos lineas solo son utiles cuando se refresca la pagina, ya que al refrescar no se pasa por el controlador
-		$moduledata['fillable'] = ['Nombre','Identificación','Teléfono 1','Teléfono 2','Correo Electrónico'];
+		$moduledata['fillable'] = ['Nombre','Identificación','Teléfono 1','Teléfono 2','Correo Electrónico','Entidad'];
 		//recuperamos las variables del controlador anterior ante el echo de una actualización de pagina
 		$url = explode("/", Session::get('_previous.url'));
 		
@@ -85,15 +85,24 @@ class SpecialistController extends Controller {
 				
 			$moduledata['especialistas']=
 			Specialist::
-			where(function ($query) {
+			select('clu_specialist.*','clu_entity.business_name')
+			->leftjoin('clu_entity', 'clu_specialist.entity_id', '=', 'clu_entity.id')
+			->where(function ($query) {
 				$query->where('clu_specialist.name', 'like', '%'.Session::get('search').'%')				
-				->orWhere('clu_specialist.identification', 'like', '%'.Session::get('search').'%');
+				->orWhere('clu_specialist.identification', 'like', '%'.Session::get('search').'%')
+				->orWhere('clu_entity.business_name', 'like', '%'.Session::get('search').'%');
 			})
 			->skip($request->input('start'))->take($request->input('length'))
 			->get();
 			$moduledata['filtro'] = count($moduledata['especialistas']);
 		}else{
-			$moduledata['especialistas']=\DB::table('clu_specialist')->skip($request->input('start'))->take($request->input('length'))->get();
+			$moduledata['especialistas']=
+			\DB::table('clu_specialist')
+			->select('clu_specialist.*','clu_entity.business_name')
+			->leftjoin('clu_entity', 'clu_specialist.entity_id', '=', 'clu_entity.id')
+			->skip($request->input('start'))
+			->take($request->input('length'))
+			->get();
 		
 			$moduledata['filtro'] = $moduledata['total'];
 		}
