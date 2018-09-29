@@ -24,6 +24,7 @@ class CreateCliSuscriptionTable extends Migration
     		$table->integer('fee');
     		$table->string('reason')->nullable();
     		$table->string('observation')->nullable();
+            $table->string('pat')->nullable();
     		$table->integer('adviser_id')->unsigned();
     		$table->integer('friend_id')->unsigned();
     		$table->integer('state_id')->unsigned();

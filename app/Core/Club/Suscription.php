@@ -11,7 +11,7 @@ class Suscription extends Model
      */
 	protected $table = 'clu_suscription';
 	
-	protected $fillable = ['id','code','date_suscription','date_expiration','price','waytopay','pay_interval','fee','reason','observation','adviser_id','friend_id','state_id'];
+	protected $fillable = ['id','code','date_suscription','date_expiration','price','waytopay','pay_interval','fee','reason','observation','pat','adviser_id','friend_id','state_id'];
 			
 }
 

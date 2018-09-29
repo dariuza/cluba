@@ -96,6 +96,7 @@ clu_suscripcion.prototype.verRespuesta = function(result) {
 	$("#suscripcion_ver_modal .modal-body .tab2").html($("#suscripcion_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Email: '+clu_suscripcion.table.rows('.selected').data()[0].email+'</div>');
 	$("#suscripcion_ver_modal .modal-body .tab2").html($("#suscripcion_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Celular: '+clu_suscripcion.table.rows('.selected').data()[0].movil_number+'</div>');
 	$("#suscripcion_ver_modal .modal-body .tab2").html($("#suscripcion_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Teléfono fijo: '+clu_suscripcion.table.rows('.selected').data()[0].fix_number+'</div>');
+	$("#suscripcion_ver_modal .modal-body .tab2").html($("#suscripcion_ver_modal .modal-body .tab2").html()+'<div class="col-md-6" >Inscrito al PAT: '+clu_suscripcion.table.rows('.selected').data()[0].pat+'</div>');
 	
 	$("#suscripcion_ver_modal .modal-body .tabbne1").html('');
 	$("#suscripcion_ver_modal .modal-body .tabbne2").html('');

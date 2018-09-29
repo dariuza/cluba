@@ -384,7 +384,7 @@
 								@if(Session::get('opaplus.usuario.rol_id') == 1 || Session::get('opaplus.usuario.rol_id') == 2)
 									<!-- opciónes solo para superadministrador -->
 									<div class="form-group">								
-										<div class="col-md-12">
+										<div class="col-md-6" style="margin-top: 0px;">
 											{!! Form::label('adviser', 'Asesor', array('class' => 'col-md-12 control-label')) !!}
 											{!! Form::text('adviser',old('adviser'),array('class' => 'form-control','placeholder'=>'Ingresa un asesor')) !!}
 										</div>
@@ -397,12 +397,19 @@
 								
 								@if(old('edit') == 'true')
 								<div class="form-group">								
-									<div class="col-md-12">
+									<div class="col-md-3">
 										{!! Form::label('state', 'Estado', array('class' => 'col-md-12 control-label')) !!}
 										{!! Form::select('state_id',Session::get('modulo.estados'),old('state_id'),array('class' => 'form-control','placeholder'=>'Ingresa el estado')) !!}
 									</div>
 								</div>		
-								@endif						
+								@endif
+
+								<div class="form-group">								
+									<div class="col-md-3">
+										{!! Form::label('pat', 'PAT', array('class' => 'col-md-12 control-label')) !!}
+										{!! Form::text('pat',old('pat'), array('class' => 'form-control','placeholder'=>'Inscrito al PAT')) !!}
+									</div>
+								</div>							
 								
 							</div>							
 							

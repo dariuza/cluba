@@ -940,6 +940,7 @@ class SuscriptionController extends Controller {
 										
 						//$suscription->reason = $request->input()['reason'];
 						$suscription->observation = $request->input()['observation'];
+						$suscription->pat = $request->input()['pat'];
 						$suscription->reason = $request->input()['provisional'];
 						$suscription->state_id = $request->input()['state_id'];
 						//vamos por el asesor
@@ -963,6 +964,7 @@ class SuscriptionController extends Controller {
 							'pay_interval' => $suscription->pay_interval,
 							'reason' => $suscription->reason,
 							'observation' => $suscription->observation,
+							'pat' => $suscription->pat,
 							'adviser_id' => $suscription->adviser_id,
 							'state_id' => $suscription->state_id));
 						}catch (\Illuminate\Database\QueryException $e) {
@@ -1289,6 +1291,7 @@ class SuscriptionController extends Controller {
 						$suscription_renovation->price = env('PRICE_SUSCRIPTION',135000) + $request->input()['mora'];
 						$suscription_renovation->waytopay = $old_suscriptcion[0]['waytopay'];
 						$suscription_renovation->reason = $request->input()['provisional'];
+						$suscription_renovation->pat = $request->input()['pat'];
 						$suscription_renovation->pay_interval = date ( 'Y-m-j' , strtotime ( '+1 month' , strtotime (date('Y-m-j'))));
 						//$suscription_renovation->adviser_id = $old_suscriptcion[0]['adviser_id'];
 						//vamos por el asesor
@@ -1566,6 +1569,7 @@ class SuscriptionController extends Controller {
 										
 						//$suscription->reason = $request->input()['reason'];
 						$suscription->observation = $request->input()['observation'];
+						$suscription->pat = $request->input()['pat'];
 						$suscription->reason = $request->input()['provisional'];
 						$suscription->state_id = $request->input()['state_id'];
 						//vamos por el asesor
@@ -1586,6 +1590,7 @@ class SuscriptionController extends Controller {
 							'pay_interval' => $suscription->pay_interval,
 							'reason' => $suscription->reason,
 							'observation' => $suscription->observation,
+							'pat' => $suscription->pat,
 							'adviser_id' => $suscription->adviser_id,
 							'state_id' => $suscription->state_id));
 						}catch (\Illuminate\Database\QueryException $e) {
@@ -1925,6 +1930,7 @@ class SuscriptionController extends Controller {
 					Session::flash('_old_input.pay_interval',  $suscription->pay_interval);				
 					Session::flash('_old_input.reason',  $suscription->reason);
 					Session::flash('_old_input.observation',  $suscription->observation);
+					Session::flash('_old_input.pat',  $suscription->pat);
 					Session::flash('_old_input.provisional',  $suscription->reason);
 					Session::flash('_old_input.adviser',  $request->input()['adviser']);
 					Session::flash('_old_input.state_id',  $suscription->state_id);
@@ -2019,6 +2025,7 @@ class SuscriptionController extends Controller {
 				//$suscription->fee = $request->input()['fee'];//Las cuotas de pago ya no se estan usando
 				//$suscription->reason = $request->input()['reason'];//La razon de suscripcion ya no se usa más
 				$suscription->observation = $request->input()['observation'];
+				$suscription->pat = $request->input()['pat'];
 				$suscription->reason = $request->input()['provisional'];				
 				//vamos por el asesor
 				$array = explode(" ",$request->input()['adviser']);
@@ -2431,6 +2438,7 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.provisional',  $suscripcion[0]['reason']);
 		Session::flash('_old_input.state_id',  $suscripcion[0]['state_id']);
 		Session::flash('_old_input.observation',  $suscripcion[0]['observation']);
+		Session::flash('_old_input.pat',  $suscripcion[0]['pat']);
 		Session::flash('_old_input.adviser',  $suscripcion[0]['names_ad'].' '.$suscripcion[0]['surnames_ad'].' '.$suscripcion[0]['identificacion_ad']);		
 		
 		Session::flash('_old_input.suscription_id', $id);
@@ -2902,6 +2910,7 @@ class SuscriptionController extends Controller {
 		Session::flash('_old_input.provisional',  $suscripcion[0]['reason']);
 		Session::flash('_old_input.state_id',  $suscripcion[0]['state_id']);
 		Session::flash('_old_input.observation',  $suscripcion[0]['observation']);
+		Session::flash('_old_input.pat',  $suscripcion[0]['pat']);
 		Session::flash('_old_input.adviser',  $suscripcion[0]['names_ad'].' '.$suscripcion[0]['surnames_ad'].' '.$suscripcion[0]['identificacion_ad']);		
 		
 		Session::flash('_old_input.suscription_id', $suscription_id);

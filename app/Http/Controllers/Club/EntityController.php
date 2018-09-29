@@ -153,8 +153,8 @@ class EntityController extends Controller {
 			}
 
 			//agregar las suscripciones
-			//borramos las anteriores
-			Subentity::where("entity_id",$request->input('entity_id'))->delete();
+			//borramos las anteriores - esto borra los servicios, sedebe actualizar entidad por entidad
+			//Subentity::where("entity_id",$request->input('entity_id'))->delete();
 
 			$array = Array();
 			foreach($request->input() as $key=>$value){
@@ -167,28 +167,52 @@ class EntityController extends Controller {
 						$array[$id_bne][$vector[1]] = ($value);
 					}else{
 						$array[$id_bne][$vector[1]] = strtoupper($value);
-					}
-					
+					}					
 				}
 			}
 			
+
 			foreach($array as $key => $vector){
-				$subentidad = new Subentity();
-				if($vector['nombre'] != '' ) {
-					//podemos guardar
-					$subentidad->sucursal_name = $vector['nombre'];
-					$subentidad->adress = $vector['direccion'];
-					$subentidad->phone1_contact = $vector['telefonouno'];
-					$subentidad->phone2_contact = $vector['telefonodos'];
-					$subentidad->email_contact = $vector['email'];
-					$subentidad->city = $vector['municipio'];
-					$subentidad->entity_id =$entidad->id;
-					try {
-						$subentidad->save();					
-					}catch (\Illuminate\Database\QueryException $e) {										
-						return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
-					}	
+				//actualizar
+				if(array_key_exists('subent', $vector)){
+					$subentidad = Subentity::find($vector['subent']);
+					if($vector['nombre'] != '' ) {
+						//podemos guardar
+						$subentidad->sucursal_name = $vector['nombre'];
+						$subentidad->adress = $vector['direccion'];
+						$subentidad->phone1_contact = $vector['telefonouno'];
+						$subentidad->phone2_contact = $vector['telefonodos'];
+						$subentidad->email_contact = $vector['email'];
+						$subentidad->city = $vector['municipio'];
+						$subentidad->entity_id =$entidad->id;
+						try {
+							$subentidad->save();					
+						}catch (\Illuminate\Database\QueryException $e) {										
+							return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
+						}	
+					}
+				}else{
+					//para las nuevas
+					$subentidad = new Subentity();
+					if($vector['nombre'] != '' ) {
+						//podemos guardar
+						$subentidad->sucursal_name = $vector['nombre'];
+						$subentidad->adress = $vector['direccion'];
+						$subentidad->phone1_contact = $vector['telefonouno'];
+						$subentidad->phone2_contact = $vector['telefonodos'];
+						$subentidad->email_contact = $vector['email'];
+						$subentidad->city = $vector['municipio'];
+						$subentidad->entity_id =$entidad->id;
+						try {
+							$subentidad->save();					
+						}catch (\Illuminate\Database\QueryException $e) {										
+							return Redirect::to('entidad/listar')->with('error', $e->getMessage())->withInput();
+						}	
+					}
+
 				}
+
+
 				
 			}
 
