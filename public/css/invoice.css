@@ -1,5 +1,6 @@
 .conteiner{
-	width: 100%;	
+	/*width: 100%;*/
+	width:  860px;	
 }
 .suscription{
 	/*height: 946px;*/
@@ -57,7 +58,8 @@
 	margin-left: 157px;
 }
 .valorunitario{
-	margin-left: 207px;
+	/*margin-left: 207px;*/
+	margin-left: 187px;
 }
 .total{
 	margin-left: 37px;	
