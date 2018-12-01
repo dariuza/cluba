@@ -844,7 +844,7 @@ class SuscriptionController extends Controller {
 					//usuario
 					try {
 						/*
-						 $user = User::find($request->input()['user_id']);
+						$user = User::find($request->input()['user_id']);
 						$user->name = $request->input()['identification'];					
 						$user->email = $request->input()['email'];					
 						$user->save();
