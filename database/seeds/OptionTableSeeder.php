@@ -188,6 +188,14 @@ class OptionTableSeeder extends Illuminate\Database\Seeder {
 			'active'=>1
 			)
 		);	
+
+		\DB::table('seg_option')->insert(array(
+			'option'=>'FacturacionXLSX',
+			'action'=>'facturacionxlsx',
+			'preference'=>'{"lugar":"escritorio","vista":"listar","icono":"fa fa-file-excel-o"}',
+			'active'=>1
+			)
+		);	
 			
 		
 	}

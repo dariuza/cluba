@@ -29,5 +29,10 @@ clu_reporte.prototype.opt_factura_general = function() {
 	$("#suscripcion_reporte_general").modal();	   	  
 };
 
+clu_reporte.prototype.opt_factura_xlsx = function() {
+	//llamado a controlador para traer los datos del formulario
+	$("#suscripcion_reporte_xlsx").modal();	   	  
+};
+
 
 var clu_reporte = new clu_reporte();

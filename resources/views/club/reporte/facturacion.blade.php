@@ -159,6 +159,13 @@
 				            				<i class="{{$opc['icono']}}"></i>				            				
 				            			</a>
 			            			</div>
+			            		@elseif($opc['accion'] == 'facturacionxlsx')
+		            				
+		            				<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
+				            			<a href="javascript:clu_reporte.opt_factura_xlsx()" class="site_title site_title2" style = "text-decoration: none; ">
+				            				<i class="{{$opc['icono']}}"></i>				            				
+				            			</a>
+			            			</div>	
 		            			@else
 		            			<div class="col-md-1" data-toggle="tooltip" title = "{{$opc[$key]}}">           			
 			            			<a href="{{url(json_decode(Session::get('opaplus.usuario.permisos')[Session::get('modulo.id_app')]['modulos'][Session::get('modulo.categoria')][Session::get('modulo.id_mod')]['preferencias'])->controlador)}}/{{($opc['accion'])}}/{{Session::get('modulo.id_app')}}/{{Session::get('modulo.categoria')}}/{{Session::get('modulo.id_mod')}}" class="site_title site_title2" style = "text-decoration: none; ">
@@ -285,17 +292,77 @@
 								
 								<div class = "col-md-6">
 									{!! Form::label('state', 'ESTADO', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('state',old('state'),array('class' => 'form-control','placeholder'=>'Ingresa un estado')) !!}
+									{!! Form::text('state',old('state'),array('class' => 'form-control state','placeholder'=>'Ingresa un estado')) !!}
 								</div>
 
 								<div class = "col-md-6">
 									{!! Form::label('adviser', 'ASESOR', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('adviser',old('adviser'),array('class' => 'form-control','placeholder'=>'Ingresa un asesor')) !!}
+									{!! Form::text('adviser',old('adviser'),array('class' => 'form-control adviser','placeholder'=>'Ingresa un asesor')) !!}
 								</div>
 
 								<div class = "col-md-6">
 									{!! Form::label('city', 'CIUDAD', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('city',old('city'),array('class' => 'form-control','placeholder'=>'Ingresa una ciudad')) !!}
+									{!! Form::text('city',old('city'),array('class' => 'form-control city','placeholder'=>'Ingresa una ciudad')) !!}
+								</div>
+
+								<div class = "col-md-6">
+									{!! Form::label('code', 'Nº CONTRATO', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('code',old('code'),array('class' => 'form-control','placeholder'=>'Ingresa el Nº de contrato')) !!}
+								</div>
+
+							</div>
+						</div>						
+					</div>
+		        </div>
+
+		        <div class="modal-footer">
+		          {!! Form::submit('Enviar', array('class' => 'btn btn-default')) !!}
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		                  
+		        </div>
+		        {!! Form::close() !!}       
+	      </div>
+      </div>
+	</div>
+
+	<div class="modal fade" id="suscripcion_reporte_xlsx" role="dialog" data-backdrop="false">
+	    <div class="modal-dialog">	    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Reporte General Suscripción</h4>
+				</div>
+				<div class = "alerts-module"></div>
+
+				{!! Form::open(array('url' => 'reporte/facturacionxlsx')) !!}
+				<div class="modal-body">
+					<div class="row ">
+						<div class="col-md-12 col-md-offset-0 row_izq">
+							<div class="form-group">
+
+								<div class = "col-md-6">
+									{!! Form::label('inicio_rsg', 'FECHA SUSCRIPCION INICIAL', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('inicio_rsg', old('inicio_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha inicial'))!!}
+								</div>
+
+								<div class = "col-md-6">
+									{!! Form::label('fin_rsg', 'FECHA SUSCRIPCION FINAL', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('fin_rsg', old('fin_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha final'))!!}
+								</div>
+								
+								<div class = "col-md-6">
+									{!! Form::label('state', 'ESTADO', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('state',old('state'),array('class' => 'form-control state','placeholder'=>'Ingresa un estado')) !!}
+								</div>
+
+								<div class = "col-md-6">
+									{!! Form::label('adviser', 'ASESOR', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('adviser',old('adviser'),array('class' => 'form-control adviser','placeholder'=>'Ingresa un asesor')) !!}
+								</div>
+
+								<div class = "col-md-6">
+									{!! Form::label('city', 'CIUDAD', array('class' => 'col-md-12 control-label')) !!}
+									{!! Form::text('city',old('city'),array('class' => 'form-control city','placeholder'=>'Ingresa una ciudad')) !!}
 								</div>
 
 								<div class = "col-md-6">
@@ -325,13 +392,13 @@
 		javascript:seg_user.iniciarDatepiker('inicio_rsg');
 		javascript:seg_user.iniciarDatepiker('fin_rsg');
 		//autocomplete con los datos iniciales
-		$( "#adviser" ).autocomplete({
+		$( ".adviser" ).autocomplete({
 			source: clu_reporte.datos_advisers
 	    });
-	    $( "#city" ).autocomplete({
+	    $( ".city" ).autocomplete({
 			source: clu_reporte.datos_cities
 	    });
-	    $( "#state" ).autocomplete({
+	    $( ".state" ).autocomplete({
 			source: clu_reporte.datos_states
 	    });
 	    $(".ui-autocomplete").css("zIndex", 1500);	    
