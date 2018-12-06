@@ -156,6 +156,8 @@
 				            				<i class="{{$opc['icono']}}"></i>				            				
 				            			</a>
 			            			</div>
+			            		@elseif($opc['accion'] == 'facturacionxlsx')
+		            				<!--No se pinta nada-->
 			            		@elseif($opc['accion'] == 'facturaciongeneral')
 		            				<!--No se pinta nada-->
 		            			@else
