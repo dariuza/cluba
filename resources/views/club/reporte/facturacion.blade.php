@@ -282,12 +282,12 @@
 
 								<div class = "col-md-6">
 									{!! Form::label('inicio_rsg', 'FECHA SUSCRIPCION INICIAL', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('inicio_rsg', old('inicio_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha inicial'))!!}
+									{!! Form::text('inicio_rsg', old('inicio_rsg'), array('class' => 'form-control inicio_rsg','placeholder'=>'Ingresa la fecha inicial'))!!}
 								</div>
 
 								<div class = "col-md-6">
 									{!! Form::label('fin_rsg', 'FECHA SUSCRIPCION FINAL', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('fin_rsg', old('fin_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha final'))!!}
+									{!! Form::text('fin_rsg', old('fin_rsg'), array('class' => 'form-control fin_rsg','placeholder'=>'Ingresa la fecha final'))!!}
 								</div>
 								
 								<div class = "col-md-6">
@@ -342,12 +342,12 @@
 
 								<div class = "col-md-6">
 									{!! Form::label('inicio_rsg', 'FECHA SUSCRIPCION INICIAL', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('inicio_rsg', old('inicio_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha inicial'))!!}
+									{!! Form::text('inicio_rsg', old('inicio_rsg'), array('class' => 'form-control inicio_rsg','placeholder'=>'Ingresa la fecha inicial'))!!}
 								</div>
 
 								<div class = "col-md-6">
 									{!! Form::label('fin_rsg', 'FECHA SUSCRIPCION FINAL', array('class' => 'col-md-12 control-label')) !!}
-									{!! Form::text('fin_rsg', old('fin_rsg'), array('class' => 'form-control','placeholder'=>'Ingresa la fecha final'))!!}
+									{!! Form::text('fin_rsg', old('fin_rsg'), array('class' => 'form-control fin_rsg','placeholder'=>'Ingresa la fecha final'))!!}
 								</div>
 								
 								<div class = "col-md-6">
@@ -389,8 +389,8 @@
 @section('script')
 	<script type="text/javascript" src="{{ asset('/js/lib/datetimepiker.js') }}"></script>	
 	<script type="text/javascript">
-		javascript:seg_user.iniciarDatepiker('inicio_rsg');
-		javascript:seg_user.iniciarDatepiker('fin_rsg');
+		javascript:seg_user.iniciarDatepikerClass('inicio_rsg');
+		javascript:seg_user.iniciarDatepikerClass('fin_rsg');
 		//autocomplete con los datos iniciales
 		$( ".adviser" ).autocomplete({
 			source: clu_reporte.datos_advisers

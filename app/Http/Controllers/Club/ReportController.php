@@ -2053,7 +2053,7 @@ class ReportController extends Controller {
 				->where('suscription_id',$suscripcion->id)
 				->get();			
 				
-				if(!empty($suscripcion->precio_carnets)){
+				if(!empty($suscripcion->precio_carnets[0]->total_price)){
 					$suscripcion->precio_carnets = $suscripcion->precio_carnets[0]->total_price;
 				}else{
 					$suscripcion->precio_carnets = 0;
@@ -2082,7 +2082,7 @@ class ReportController extends Controller {
 				->groupBy('suscription_id')
 				->where('suscription_id',$suscripcion->id)
 				->get();
-				if(!empty($suscripcion->precio_carnets_reimpresion)){
+				if(!empty($suscripcion->precio_carnets_reimpresion[0]->total_price)){
 					$suscripcion->precio_carnets_reimpresion = $suscripcion->precio_carnets_reimpresion[0]->total_price;
 				}else{
 					$suscripcion->precio_carnets_reimpresion = 0;
@@ -2096,7 +2096,12 @@ class ReportController extends Controller {
 				
 				$hoy = new DateTime();
 				$diff = $hoy->diff(new DateTime($suscripcion->next_pay), true)->days + 1;
-				$suscripcion->edad = $hoy->diff(new DateTime($suscripcion->Fecha_nacimiento), true)->y;
+				/*
+				$suscripcion->edad = 0;
+				if(!empty($hoy->diff(new DateTime($suscripcion->Fecha_nacimiento), true)->y)){
+					$suscripcion->edad = $hoy->diff(new DateTime($suscripcion->Fecha_nacimiento), true)->y;
+				}
+				*/				
 				
 				//actualización de estado y mora
 				$bandera_pago = false;
@@ -2232,7 +2237,7 @@ class ReportController extends Controller {
 		}
 
 		//$array['suscripciones']=$export->toArray();
-		//dd($array);
+		//dd($export);
 		\Excel::create('ReporteFacturacionExcel',function($excel) use ($export){
             $excel->sheet('Sheet 1',function($sheet) use ($export){
                 $sheet->fromArray($export);

@@ -52,7 +52,7 @@ seg_user.prototype.edit = function(this_val) {
 };
 	
 seg_user.prototype.iniciarDatepiker = function(obj) {
-	$( "#"+obj ).datepicker({        
+	$( "."+obj ).datepicker({        
 		format: "yyyy-mm-dd",
         language: "es",
         autoclose: true
