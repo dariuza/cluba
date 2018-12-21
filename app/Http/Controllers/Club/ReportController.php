@@ -2233,6 +2233,12 @@ class ReportController extends Controller {
 			$suscripcion->annoe=date('Y',strtotime($suscripcion->fecha_expiracion));
 			$suscripcion->mese=date('m',strtotime($suscripcion->fecha_expiracion));
 			$suscripcion->diae=date('d',strtotime($suscripcion->fecha_expiracion));
+
+			$suscripcion->total=
+				$suscripcion->precio+
+				$suscripcion->precio_beneficiarios_adicionales+
+				$suscripcion->precio_carnets_reimpresion+
+				$suscripcion->precio_carnets;
 			
 		}
 
